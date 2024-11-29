@@ -1,2 +1,2 @@
-#Note
-Currently in development stage
+# Note
+Currently in the development stage
