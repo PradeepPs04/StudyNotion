@@ -1,84 +1,83 @@
 import React from 'react'
 
-import Logo1 from '../../../assets/TimeLineLogo/Logo1.svg';
-import Logo2 from '../../../assets/TimeLineLogo/Logo2.svg';
-import Logo3 from '../../../assets/TimeLineLogo/Logo3.svg';
-import Logo4 from '../../../assets/TimeLineLogo/Logo4.svg';
-import TimeLineImage from '../../../assets/Images/TimelineImage.png'
+import Logo1 from "../../../assets/TimeLineLogo/Logo1.svg"
+import Logo2 from "../../../assets/TimeLineLogo/Logo2.svg"
+import Logo3 from "../../../assets/TimeLineLogo/Logo3.svg"
+import Logo4 from "../../../assets/TimeLineLogo/Logo4.svg"
+import timelineImage from "../../../assets/Images/TimelineImage.png"
 
-const timeLine = [
+const timeline = [
     {
         Logo: Logo1,
-        Heading: "Leadership",
-        Desciptoin: "Fully commited to the success company",
-        DottedLine: true,
+        heading: "Leadership",
+        Description:"Fully committed to the success company",
     },
     {
         Logo: Logo2,
-        Heading: "Responsibility",
-        Desciptoin: "Students will always be our top priority",
-        DottedLine: true,
+        heading: "Leadership",
+        Description:"Fully committed to the success company",
     },
     {
         Logo: Logo3,
-        Heading: "Flexibility",
-        Desciptoin: "The ability to switch is an important skill",
-        DottedLine: true,
+        heading: "Leadership",
+        Description:"Fully committed to the success company",
     },
     {
         Logo: Logo4,
-        Heading: "Solve the problem",
-        Desciptoin: "Code your way to a solution",
-        DottedLine: false,
+        heading: "Leadership",
+        Description:"Fully committed to the success company",
     },
-]
+];
 
-function TimelineSection() {
+const TimelineSection = () => {
   return (
-    <div className='flex flex-row gap-15 items-center'>
-        <div className='w-[45%] flex flex-col gap-12'>
+    <div>
+      <div className='flex flex-row gap-15 items-center'>
+
+        <div className='w-[45%] flex flex-col gap-5'>
             {
-                timeLine.map((element, idx) => {
+                timeline.map( (element, index) => {
                     return (
-                        <div key={idx} className='flex flex-row gap-6'>
-                            <div className='relative h-[50px] w-[50px] rounded-full bg-white flex items-center justify-center'>
+                        <div className='flex flex-row gap-6' key={index}>
+
+                            <div className='w-[50px] h-[50px] bg-white flex items-center'>
                                 <img src={element.Logo} />
-                                {
-                                    element.DottedLine 
-                                    ? 
-                                    <div className=' absolute -bottom-10 h-8 border-richblack-50 border-dotted border-l-2'>
-                                    </div> 
-                                    : 
-                                    <div></div> 
-                                }
-                            </div   >
+                            </div>
 
                             <div>
-                                <h2 className='font-semibold text-[18px]'>{element.Heading}</h2>
-                                <p className='text-base'>{element.Desciptoin}</p>
+                                <h2 className='font-semibold text-[18px]'>{element.heading}</h2>
+                                <p className='text-base'>{element.Description}</p>
                             </div>
+
                         </div>
                     )
-                })
+                } )
             }
         </div>
-
         <div className='relative shadow-blue-200'>
-            <img src={TimeLineImage} className='shadow-white object-cover h-fit'/>
 
-            <div className='absolute left-[50%] -translate-x-[50%] -translate-y-[50%] bg-caribbeangreen-700 flex flex-row text-white uppercase py-7'>
-                <div className='flex flex-row gap-4 items-center border-r border-caribbeangreen-400 px-10'>
+            <img  src={timelineImage}
+            alt="timelineImage"
+            className='shadow-white object-cover h-fit'
+            />
+
+            <div className='absolute bg-caribbeangreen-700 flex flex-row text-white uppercase py-7
+                            left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                <div className='flex flex-row gap-5 items-center border-r border-caribbeangreen-300 px-7'>
                     <p className='text-3xl font-bold'>10</p>
-                    <p className='text-caribbeangreen-300 text-sm'>Years Experiences</p>
+                    <p className='text-caribbeangreen-300 text-sm'>Years of Experience</p>
                 </div>
 
-                <div className='flex gap-4 items-center px-10'>
-                    <p className='text-3xl font-bold'>250</p>
-                    <p className='text-caribbeangreen-300 text-sm'>Types of Courses</p>
+                <div className='flex gap-5 items-center px-7'>
+                <p className='text-3xl font-bold'>250</p>
+                    <p className='text-caribbeangreen-300 text-sm'>TYpe of Courses</p>
                 </div>
+
             </div>
-        </div>  
 
+        </div>
+
+      </div>
     </div>
   )
 }

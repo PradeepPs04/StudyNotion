@@ -1,44 +1,50 @@
-import React from 'react'
+import React from "react";
 
+// Importing React Icons
 import { HiUsers } from "react-icons/hi";
-import { TbBinaryTree2 } from "react-icons/tb";
+import { ImTree } from "react-icons/im";
 
-function CourseCard({cardData, currentCard, setCurrentCard}) {
+const CourseCard = ({cardData, currentCard, setCurrentCard}) => {
   return (
-    <div onClick={() => setCurrentCard(cardData.heading)} className={`${cardData.heading == currentCard ? 'bg-white shadow-[18px_18px_0px_0px_rgba(255,_214,_10)]' : 'bg-richblack-800'} w-[33%] -mb-20`}>
-
-        <div className='flex flex-col justify-end gap-7 transition-all duration-200 cursor-pointer'>
-        
-            <div className='flex flex-col gap-3 p-8'>
-                <h2 
-                className={
-                    `text-lg font-semibold 
-                    ${cardData.heading == currentCard ? 'text-richblack-900' : 'text-richblack-5'}`
-                    }>{cardData.heading}
-
-                </h2>
-                <p className='text-richblack-400 w-[90%]'>
-                    {cardData.description}
-                </p>
-            </div>
-
-            <div className={
-                `flex justify-between items-center mt-8  border-t-2 border-dashed p-4
-                ${cardData.heading == currentCard ? 'text-blue-500 border-richblack-100' : 'text-richblack-100 border-richblack-600'}`
-                }>
-                <div className='flex gap-3 font-semibold justify-center items-center'>
-                    <HiUsers className='text-xl'/>
-                    <p>{cardData.level}</p>
-                </div>
-                <div className='flex gap-3 font-semibold justify-center items-center'>
-                    <TbBinaryTree2 fill='blue-500' className='text-xl'/>
-                    <p>{cardData.lessionNumber} Lessions</p>
-                </div>
-            </div>
+    <div
+      className={`w-[360px] lg:w-[30%] ${
+        currentCard === cardData?.heading
+          ? "bg-white shadow-[12px_12px_0_0] shadow-yellow-50"
+          : "bg-richblack-800"
+      }  text-richblack-25 h-[300px] box-border cursor-pointer`}
+      onClick={() => setCurrentCard(cardData?.heading)}
+    >
+      <div className="border-b-[2px] border-richblack-400 border-dashed h-[80%] p-6 flex flex-col gap-3">
+        <div
+          className={` ${
+            currentCard === cardData?.heading && "text-richblack-800"
+          } font-semibold text-[20px]`}
+        >
+          {cardData?.heading}
         </div>
 
-    </div>
-  )
-}
+        <div className="text-richblack-400">{cardData?.description}</div>
+      </div>
 
-export default CourseCard
+      <div
+        className={`flex justify-between ${
+          currentCard === cardData?.heading ? "text-blue-300" : "text-richblack-300"
+        } px-6 py-3 font-medium`}
+      >
+        {/* Level */}
+        <div className="flex items-center gap-2 text-[16px]">
+          <HiUsers />
+          <p>{cardData?.level}</p>
+        </div>
+
+        {/* Flow Chart */}
+        <div className="flex items-center gap-2 text-[16px]">
+          <ImTree />
+          <p>{cardData?.lessionNumber} Lession</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CourseCard;
