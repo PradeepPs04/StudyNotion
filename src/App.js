@@ -1,7 +1,7 @@
 import "./App.css";
 import {Route, Routes } from "react-router-dom";
-import Home from "./pages/Home"
 import Navbar from "./components/common/Navbar"
+import Home from "./pages/Home"
 import OpenRoute from "./components/core/Auth/OpenRoute"
 
 import Login from "./pages/Login"
@@ -20,15 +20,15 @@ function App() {
               <Signup />
             </OpenRoute>
           }
-        />
-    <Route
+      />
+      <Route
           path="login"
           element={
             <OpenRoute>
               <Login />
             </OpenRoute>
           }
-        />
+      />
     </Routes>
 
    </div>

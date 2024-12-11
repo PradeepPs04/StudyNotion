@@ -1,26 +1,29 @@
 import React, { useEffect } from 'react'
-import logo from "../../assets/Logo/Logo-Full-Light.png"
-import { Link, matchPath } from 'react-router-dom'
-import {NavbarLinks} from "../../data/navbar-links"
-import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import {AiOutlineShoppingCart} from "react-icons/ai"
-import ProfileDropDown from '../core/Auth/ProfileDropDown'
-import { apiConnector } from '../../services/apiconnector'
-import { categories } from '../../services/apis'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Link, matchPath } from 'react-router-dom'
+
+import {NavbarLinks} from "../../data/navbar-links"
+import {AiOutlineShoppingCart} from "react-icons/ai"
 import {IoIosArrowDropdownCircle} from "react-icons/io"
 
-const subLinks = [
-    {
-        title: "python",
-        link:"/catalog/python"
-    },
-    {
-        title: "web dev",
-        link:"/catalog/web-development"
-    },
-];
+import logo from "../../assets/Logo/Logo-Full-Light.png"
+import ProfileDropDown from '../core/Auth/ProfileDropDown'
+
+import { apiConnector } from '../../services/apiconnector'
+import { categories } from '../../services/apis'
+
+// const subLinks = [
+//     {
+//         title: "python",
+//         link:"/catalog/python"
+//     },
+//     {
+//         title: "web dev",
+//         link:"/catalog/web-development"
+//     },
+// ];
 
 
 const Navbar = () => {
@@ -30,7 +33,7 @@ const Navbar = () => {
     const {totalItems} = useSelector( (state) => state.cart )
     const location = useLocation();
 
-    const [ssubLinks, setSsubLinks]  = useState([]);
+    const [subLinks, setSsubLinks]  = useState([]);
 
     const fetchSublinks = async() => {
         try{
@@ -46,8 +49,7 @@ const Navbar = () => {
 
     useEffect( () => {
         fetchSublinks();
-    },[] )
-
+    },[] );
 
 
     const matchRoute = (route) => {
@@ -76,25 +78,25 @@ const Navbar = () => {
 
                                 <div className='invisible absolute left-[50%]
                                     translate-x-[-50%] translate-y-[80%]
-                                 top-[50%]
-                                flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
-                                opacity-0 transition-all duration-200 group-hover:visible
-                                group-hover:opacity-100 lg:w-[300px]'>
+                                    top-[50%]
+                                    flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
+                                    opacity-0 transition-all duration-200 group-hover:visible
+                                    group-hover:opacity-100 lg:w-[300px]'>
 
-                                <div className='absolute left-[50%] top-0
-                                translate-x-[80%]
-                                translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-5'>
-                                </div>
+                                    <div className='absolute left-[50%] top-0
+                                    translate-x-[80%]
+                                    translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-5'>
+                                    </div>
 
-                                {
-                                    subLinks.length ? (
-                                            subLinks.map( (subLink, index) => (
-                                                <Link to={`${subLink.link}`} key={index}>
-                                                    <p>{subLink.title}</p>
-                                                </Link>
-                                            ) )
-                                    ) : (<div></div>)
-                                }
+                                    {
+                                        subLinks.length ? (
+                                                subLinks.map( (subLink, index) => (
+                                                    <Link to={`${subLink.name}`} key={index}>
+                                                        <p>{subLink.name}</p>
+                                                    </Link>
+                                                ) )
+                                        ) : (<div></div>)
+                                    }
 
                                 </div>
 

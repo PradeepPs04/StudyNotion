@@ -21,6 +21,8 @@ exports.auth = async (req, res, next) => {
         try{
             const decode =  jwt.verify(token, process.env.JWT_SECRET);
             console.log('decode is: ', decode);
+
+            // add decoded token as user in request object
             req.user = decode;
         }
         catch(err) {
