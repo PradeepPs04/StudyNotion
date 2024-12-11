@@ -1,12 +1,13 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
-const OTP = require("../models/OTP");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
+require("dotenv").config();
+
+const User = require("../models/User");
+const OTP = require("../models/OTP");
 const mailSender = require("../utils/mailSender");
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 const Profile = require("../models/Profile");
-require("dotenv").config();
 
 // Send OTP For Email Verification
 exports.sendotp = async (req, res) => {
@@ -30,7 +31,7 @@ exports.sendotp = async (req, res) => {
 		});
 
 		// check if generating same OTP again
-		const result = await OTP.findOne({ otp: otp });
+		let result = await OTP.findOne({ otp: otp });
 		// generate new OTP until a unique one is generated
 		while (result) {
 			otp = otpGenerator.generate(6, {
@@ -38,7 +39,9 @@ exports.sendotp = async (req, res) => {
 				lowerCaseAlphabets: false,
 				specialChars: false,
 			});
+			result = await OTP.findOne({ otp: otp }); // check again for unique OTP
 		}
+
 		const otpPayload = { email, otp };
 		// create OTP entry in DB
 		const otpBody = await OTP.create(otpPayload); // before saving entry in db it will call pre-save middleware
@@ -70,7 +73,6 @@ exports.signup = async (req, res) => {
 			password,
 			confirmPassword,
 			accountType,
-			contactNumber,
 			otp,
 		} = req.body;
 		
@@ -106,7 +108,7 @@ exports.signup = async (req, res) => {
 			});
 		}
 
-		// Find the most recent OTP for the email
+		// Find the most recent OTP for the email (sort in descending order accroding to create time)
 		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 		console.log(response);
 		if (response.length === 0) {
@@ -138,11 +140,10 @@ exports.signup = async (req, res) => {
 		});
 
 		// Create the user
-		const user = await User.create({
+		const createdUser = await User.create({
 			firstName,
 			lastName,
 			email,
-			contactNumber,
 			password: hashedPassword,
 			accountType: accountType,
 			approved: approved,
@@ -153,7 +154,7 @@ exports.signup = async (req, res) => {
 		// return response
 		return res.status(200).json({
 			success: true,
-			user,
+			createdUser,
 			message: "User registered successfully",
 		});
 	} catch (error) {
