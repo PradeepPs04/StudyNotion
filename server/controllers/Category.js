@@ -68,13 +68,13 @@ exports.showAllCategories = async (req, res) => {
 // categoryPageDetails 
 exports.categoryPageDetails = async (req, res) => {
     try {
-            //get categoryId
+            // get categoryId
             const {categoryId} = req.body;
-            //get courses for specified categoryId
+            // get courses for specified categoryId
             const selectedCategory = await Category.findById(categoryId)
                                             .populate("courses")
                                             .exec();
-            //validation
+            // validation
             if(!selectedCategory) {
                 return res.status(404).json({
                     success:false,
@@ -82,19 +82,19 @@ exports.categoryPageDetails = async (req, res) => {
                 });
             }
 
-            //get courses for different categories
+            // get courses for different categories
             const differentCategories = await Category.find(
                 { _id: {$ne: categoryId}}) // not equals to
                 .populate("courses")
                 .exec();
 
-            //get top 10 selling courses
+            // get top 10 selling courses
             const topSellingCourses = await Course.find()
             .sort({'studentsEnrolled.length':-1}) // sort by number of enrolled students in course (descending)
             .limit(10) // get first 10
             .exec();
 
-            //return response
+            // return response
             return res.status(200).json({
                 success:true,
                 data: {

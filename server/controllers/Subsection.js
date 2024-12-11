@@ -58,9 +58,9 @@ exports.createSubSection = async (req, res) => {
 exports.updateSubSection = async (req, res) => {
     try {
       // fetch data
-      const { sectionId, title, description } = req.body
+      const { subSectionId, title, description } = req.body
       // serach sub-section
-      const subSection = await SubSection.findById(sectionId)
+      const subSection = await SubSection.findById(subSectionId)
 
       if (!subSection) {
         return res.status(404).json({
@@ -94,7 +94,7 @@ exports.updateSubSection = async (req, res) => {
         success: true,
         message: "Section updated successfully",
         subSection: subSection,
-      })
+      });
     } catch (error) {
       console.error(error)
       return res.status(500).json({
