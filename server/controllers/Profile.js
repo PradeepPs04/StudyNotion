@@ -5,6 +5,8 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 // controller for updating a profile
 exports.updateProfile = async (req, res) => {
 	try {
+		// fetch data from request body
+		// if data not present then default value = ""
 		const { dateOfBirth = "", about = "", contactNumber = "", gender = "" } = req.body;
 		const id = req.user.id;
 
@@ -38,11 +40,7 @@ exports.updateProfile = async (req, res) => {
 // controller for deleting an account
 exports.deleteAccount = async (req, res) => {
 	try {
-		// TODO: Find More on Job Schedule
-		// const job = schedule.scheduleJob("10 * * * * *", function () {
-		// 	console.log("The answer to life, the universe, and everything!");
-		// });
-		// console.log(job);
+		// TODO: Delete user after few days using job schedule
 
 		const id = req.user.id;
 		// search user
@@ -105,9 +103,11 @@ exports.updateDisplayPicture = async (req, res) => {
 			displayPicture,
 			process.env.FOLDER_NAME,
 			1000,
-			1000
+			100
 		);
 		console.log(image);
+
+		// TODO: delete old profile picture from cloudniary ????????
 
 		// update profile picture
 		const updatedProfile = await User.findByIdAndUpdate(

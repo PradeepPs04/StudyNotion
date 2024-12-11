@@ -187,11 +187,11 @@ exports.login = async (req, res) => {
 		if (!user) {
 			return res.status(401).json({
 				success: false,
-				message: `User is not Registered with Us Please SignUp to Continue`,
+				message: `User is not Registered with us. Please SignUp to Continue`,
 			});
 		}
 
-		// Compare Password
+		// Compare input password with db password 
 		if (await bcrypt.compare(password, user.password)) {
 			// Generate JWT token 
 			const token = jwt.sign(
@@ -206,9 +206,10 @@ exports.login = async (req, res) => {
 				}
 			);
 
-			// Save token to user document in database
+			// Save token in user object
+			// this user object will be send in cookie
 			user.token = token;
-			user.password = undefined; // hide password
+			user.password = undefined; // hide password in user object
 
 			// Set cookie for token and return success response
 			const options = {

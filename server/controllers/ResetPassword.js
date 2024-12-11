@@ -62,7 +62,8 @@ exports.resetPassword = async (req, res) => {
 			});
 		}
 
-		// search user who has the token that is matching with the token that was saved in db for user while generating password reset token 
+		// search user who has the token that is matching with the token 
+		// that was saved in db for user while generating password reset token 
 		const userDetails = await User.findOne({ token: token });
 		if (!userDetails) {
 			return res.json({

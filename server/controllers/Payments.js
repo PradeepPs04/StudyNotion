@@ -134,7 +134,7 @@ exports.verifySignature = async (req, res) => {
             const emailResponse = await mailSender(
                                     enrolledStudent.email,
                                     "Congratulations from StudyNotion",
-                                    "Congratulations, you are onboarded into new StudyNotion Course",
+                                    courseEnrollmentEmail(enrolledCourse.courseName, `${enrolledStudent.firstName} ${enrolledStudent.lastName}`),
             );
 
             console.log(emailResponse);
