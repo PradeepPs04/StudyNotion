@@ -9,9 +9,9 @@ import {AiOutlineShoppingCart} from "react-icons/ai"
 import {IoIosArrowDropdownCircle} from "react-icons/io"
 
 import logo from "../../assets/Logo/Logo-Full-Light.png"
-import ProfileDropDown from '../core/Auth/ProfileDropDown'
+import ProfileDropDown from '../core/auth/ProfileDropDown'
 
-import { apiConnector } from '../../services/apiconnector'
+import { apiConnector } from '../../services/apiConnector'
 import { categories } from '../../services/apis'
 
 // const subLinks = [

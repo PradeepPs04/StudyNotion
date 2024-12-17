@@ -4,7 +4,7 @@ import { setLoading, setToken } from "../../slices/authSlice"
 import { resetCart } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
 
-import { apiConnector } from "../apiconnector"
+import { apiConnector } from "../apiConnector"
 import { endpoints } from "../apis"
 
 const {
@@ -110,7 +110,8 @@ export function login(email, password, navigate) {
       navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("LOGIN API ERROR............", error)
-      toast.error("Login Failed")
+      // toast.error("Login Failed")
+      toast.error(error.response.data.message);
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
@@ -136,7 +137,8 @@ export function getPasswordResetToken(email, setEmailSent) {
       setEmailSent(true)
     } catch (error) {
       console.log("RESETPASSTOKEN ERROR............", error)
-      toast.error("Failed To Send Reset Email")
+      // toast.error("Failed To Send Reset Email")
+      toast.error(error.message);
     }
     toast.dismiss(toastId)
     dispatch(setLoading(false))
@@ -165,6 +167,7 @@ export function resetPassword(password, confirmPassword, token, navigate) {
     } catch (error) {
       console.log("RESETPASSWORD ERROR............", error)
       toast.error("Failed To Reset Password")
+      navigate('/forgot-password')
     }
     toast.dismiss(toastId)
     dispatch(setLoading(false))
