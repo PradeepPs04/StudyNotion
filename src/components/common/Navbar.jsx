@@ -6,25 +6,13 @@ import { Link, matchPath } from 'react-router-dom'
 
 import {NavbarLinks} from "../../data/navbar-links"
 import {AiOutlineShoppingCart} from "react-icons/ai"
-import {IoIosArrowDropdownCircle} from "react-icons/io"
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 import logo from "../../assets/Logo/Logo-Full-Light.png"
 import ProfileDropDown from '../core/auth/ProfileDropDown'
 
 import { apiConnector } from '../../services/apiConnector'
 import { categories } from '../../services/apis'
-
-// const subLinks = [
-//     {
-//         title: "python",
-//         link:"/catalog/python"
-//     },
-//     {
-//         title: "web dev",
-//         link:"/catalog/web-development"
-//     },
-// ];
-
 
 const Navbar = () => {
     console.log("Printing base url: ",process.env.REACT_APP_BASE_URL);
@@ -73,8 +61,10 @@ const Navbar = () => {
                     {
                         link.title === "Catalog" ? (
                             <div className='relative flex items-center gap-2 group'>
-                                <p>{link.title}</p>
-                                <IoIosArrowDropdownCircle/>
+                                <div className='flex items-center'>
+                                    <p>{link.title}</p>
+                                    <RiArrowDropDownLine size={25}/>
+                                </div>
 
                                 <div className='invisible absolute left-[50%]
                                     translate-x-[-50%] translate-y-[80%]
