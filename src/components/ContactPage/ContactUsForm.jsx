@@ -5,6 +5,8 @@ import { toast } from "react-hot-toast"
 import { apiConnector } from '../../services/apiConnector';
 import { contactusEndpoint } from '../../services/apis';
 
+import CountryCode from '../../data/countrycode.json';
+
 export const ContactUsForm = () => {
   const [loading, setLoading] = useState(false);
   const {
@@ -50,24 +52,24 @@ export const ContactUsForm = () => {
       
       <div className='flex flex-col gap-6 text-richblack-50'>
           {/* first name & last name */}
-          <div className='flex gap-5'>
+          <div className='flex flex-col md:flex-row gap-5'>
               {/* first name */}
               <div>
                   <label className='flex flex-col'>
-                      <p>First Name</p>
+                      <p className='text-richblack-25 text-sm'>
+                        First Name<sup className='text-pink-200'>*</sup>
+                      </p>
                       <input 
                         type='text'
                         name='firstName'
                         id='firstName'
                         placeholder='Enter first name'
-                        className='bg-richblack-800'
+                        className='bg-richblack-800 text-richblack-25 border-b border-richblack-500 w-full py-3 px-3 pr-12 mt-2 rounded-md'
                         {...register('firstName', {required:true})}
                       />
                       {
                         errors.firstName && (
-                          <span>
-                            Please enter your name
-                          </span>
+                          <span className='text-richblack-300'>Enter your first name</span>
                         )
                       }
                   </label>
@@ -75,13 +77,15 @@ export const ContactUsForm = () => {
               {/* last name */}
               <div>
                   <label className='flex flex-col'>
-                      <p>Last Name</p>
+                      <p className='text-richblack-25 text-sm'>
+                        Last Name
+                      </p>
                       <input 
                         type='text'
                         name='lastName'
                         id='lastName'
                         placeholder='Enter last name'
-                        className='bg-richblack-800'
+                        className='bg-richblack-800 text-richblack-25 border-b border-richblack-500 w-full py-3 px-3 pr-12 mt-2 rounded-md'
                         {...register('lastName')}
                       />
                   </label>
@@ -91,9 +95,11 @@ export const ContactUsForm = () => {
           {/* email */}
           <div>
             <label>
-              <p>Email Address</p>
+              <p className='text-richblack-25 text-sm'>
+                Email Address<sup className='text-pink-200'>*</sup>
+              </p>
               <input
-                className='w-full bg-richblack-800'
+                className='bg-richblack-800 text-richblack-25 border-b border-richblack-500 w-full py-3 px-3 pr-12 mt-2 rounded-md'
                 type='email'
                 name='email'
                 id='email'
@@ -103,27 +109,77 @@ export const ContactUsForm = () => {
               />
                 {
                     errors.email && (
-                      <span>Please enter email address</span>
+                      <span className='text-richblack-300'>Enter your email address</span>
                     )
                 }
             </label>
           </div>
 
+          {/* phone-number */}
+          <div>
+              <label>
+                  <p className='text-richblack-25 text-sm'>
+                    Phone Number<sup className='text-pink-200'>*</sup>
+                  </p>
+                  <div className='flex gap-5 items-center'> 
+                    {/* country codes dropdown */}
+                    <select
+                    className='flex w-[80px] px-1 py-3 mt-2 gap-5 bg-richblack-800 text-richblack-200 border-b border-richblack-500 rounded-md'
+                    name='dropdown'
+                    id='dropdown'
+                    {...register('countrycode', {required:true})}
+                    >
+                      {
+                        CountryCode.map((item, idx) => (
+                          <option key={idx} value={item.code}>
+                            {item.country} {item.code}
+                          </option>
+                        ))
+                      }
+                    </select>
+                      
+                      {/* phone number input box */}
+                    <div className='relative'>
+                      <input
+                        type='number'
+                        name='phonenumber'
+                        id='phonenumber'
+                        placeholder='1234 567890'
+                        className='bg-richblack-800 text-richblack-25 border-b border-richblack-500 w-full py-3 px-3 pr-12 mt-2 rounded-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                        {...register('phonenumber',
+                          {
+                            required:{value:true, message:'Please enter phone number'}, 
+                            maxLength:{value:10, message:'Invalid phone number'},
+                            minLength: {value:8, message:'Invalid phone number'}
+                        })}
+                      />
+                      {
+                        errors.phonenumber && (
+                          <span className='text-richblack-300 md:absolute md:-bottom-6 md:left-0'>{errors.phonenumber.message}</span>
+                        )
+                      }
+                    </div>
+                  </div>
+              </label>
+          </div>
+
           {/* message-box */}
           <div>
               <label>
-                  <p>Message</p>
+                  <p className='text-richblack-25 text-sm'>
+                    Message<sup className='text-pink-200'>*</sup>
+                  </p>
                   <textarea
                     name='message'
                     id='message'
                     rows={4}
                     placeholder='Enter message here'
-                    className='w-full bg-richblack-800'
+                    className='bg-richblack-800 text-richblack-25 border-b border-richblack-500 w-full py-3 px-3 pr-12 mt-2 rounded-md'
                     {...register('message', {required:true})}
                   />
                   {
                       errors.message && (
-                        <span>Please enter your message</span>
+                        <span className='text-richblack-300'>Please enter your message</span>
                       )
                   }
               </label>
