@@ -9,7 +9,7 @@ exports.contactUs = async (req, res) => {
         const {firstName, lastName, email, phone, message} = req.body;
 
         // validate data
-        if(!firstName || !lastName || !email || !phone || !message) {
+        if(!firstName || !email || !phone || !message) {
             return res.status(403).json({
                 success: false,
                 message: 'All fields are reqired',
