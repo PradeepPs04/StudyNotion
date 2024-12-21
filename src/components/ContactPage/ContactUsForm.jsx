@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { toast } from "react-hot-toast"
-
-import { apiConnector } from '../../services/apiConnector';
-import { contactusEndpoint } from '../../services/apis';
 
 import CountryCode from '../../data/countrycode.json';
 import { contactUs } from '../../services/operations/authAPI';
@@ -109,10 +105,10 @@ export const ContactUsForm = () => {
                   <p className='text-richblack-25 text-sm'>
                     Phone Number<sup className='text-pink-200'>*</sup>
                   </p>
-                  <div className='flex gap-5 items-center'> 
+                  <div className='flex flex-col sm:flex-row gap-5 items-start sm:items-center'> 
                     {/* country codes dropdown */}
                     <select
-                    className='flex w-[80px] px-1 py-3 mt-2 gap-5 bg-richblack-800 text-richblack-200 border-b border-richblack-500 rounded-md'
+                    className='flex w-1/3 sm:w-[80px] px-1 py-3 mt-2 gap-5 bg-richblack-800 text-richblack-200 border-b border-richblack-500 rounded-md'
                     name='dropdown'
                     id='dropdown'
                     {...register('countryCode', {required:true})}
@@ -127,7 +123,7 @@ export const ContactUsForm = () => {
                     </select>
                       
                       {/* phone number input box */}
-                    <div className='relative'>
+                    <div className='relative w-full'>
                       <input
                         type='number'
                         name='phone'
