@@ -5,7 +5,7 @@ import { resetCart } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
 
 import { apiConnector } from "../apiConnector"
-import { endpoints } from "../apis"
+import { contactusEndpoint, endpoints } from "../apis"
 
 const {
   SENDOTP_API,
@@ -172,6 +172,22 @@ export function resetPassword(password, confirmPassword, token, navigate) {
     toast.dismiss(toastId)
     dispatch(setLoading(false))
   }
+}
+
+export async function contactUs(setLoading, data) {
+  setLoading(true);
+  const toastId = toast.loading("Loading...");
+  try {
+    const response = await apiConnector("POST", contactusEndpoint.CONTACT_US_API, data);
+    console.log('Logging response', response);
+    setLoading(false);
+    toast.success('Message sent successfully');
+  } catch(err) {
+    setLoading(false);
+    console.log(err);
+    toast.error(err.response.data.message);
+  }
+  toast.dismiss(toastId);
 }
 
 export function logout(navigate) {

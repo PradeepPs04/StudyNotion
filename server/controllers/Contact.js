@@ -6,7 +6,7 @@ require('dotenv').config();
 exports.contactUs = async (req, res) => {
     try {
         // fetch data from req body
-        const {firstName, lastName, email, phone, message} = req.body;
+        const {firstName, lastName, email, countryCode, phone, message} = req.body;
 
         // validate data
         if(!firstName || !email || !phone || !message) {
@@ -24,7 +24,7 @@ exports.contactUs = async (req, res) => {
                 `
                     <p>User name: ${firstName} ${lastName}</p>
                     <p>Email: ${email}</p>
-                    <p>Phone: ${phone}</p>
+                    <p>Phone: ${countryCode} ${phone}</p>
                     <p>Message: ${message}</p>
                 `, 
             );
@@ -41,7 +41,10 @@ exports.contactUs = async (req, res) => {
         try {
                 await mailSender(email, 
                     'Message received', 
-                    'Your message has been delievered successfully'
+                    `
+                        <p>Your message has been delievered successfully</p>
+                        <p>We will contact you soon</p>
+                    `
                 );
         } catch(err) {
             console.log('Error while sending (message received) mail to user');

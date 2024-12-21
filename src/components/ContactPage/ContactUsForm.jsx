@@ -6,6 +6,7 @@ import { apiConnector } from '../../services/apiConnector';
 import { contactusEndpoint } from '../../services/apis';
 
 import CountryCode from '../../data/countrycode.json';
+import { contactUs } from '../../services/operations/authAPI';
 
 export const ContactUsForm = () => {
   const [loading, setLoading] = useState(false);
@@ -18,21 +19,8 @@ export const ContactUsForm = () => {
 
   const contactFormSubmitHandler = async (data) => {
     console.log("logging data: ", data);
-    const toastId = toast.loading("Loading...")
-
-    try {
-      setLoading(true);
-      const response = await apiConnector('POST', contactusEndpoint.CONTACT_US_API, data);
-      console.log('logging response: ', response);
-      setLoading(false);
-      toast.success("Message Sent Successfully")
-    } catch(err) {
-        console.log(err);
-        toast.error(err.response.data.message);
-        setLoading(false);
-    }
-
-    toast.dismiss(toastId)
+    // call api
+    contactUs(setLoading, data);
   }
 
   useEffect(() => {
@@ -42,7 +30,7 @@ export const ContactUsForm = () => {
           firstName: '',
           lastName: '',
           message: '',
-          phoneNo: '',
+          phone: '',
         });
       }
   }, [reset, isSubmitSuccessful]);
@@ -127,7 +115,7 @@ export const ContactUsForm = () => {
                     className='flex w-[80px] px-1 py-3 mt-2 gap-5 bg-richblack-800 text-richblack-200 border-b border-richblack-500 rounded-md'
                     name='dropdown'
                     id='dropdown'
-                    {...register('countrycode', {required:true})}
+                    {...register('countryCode', {required:true})}
                     >
                       {
                         CountryCode.map((item, idx) => (
@@ -142,11 +130,11 @@ export const ContactUsForm = () => {
                     <div className='relative'>
                       <input
                         type='number'
-                        name='phonenumber'
-                        id='phonenumber'
+                        name='phone'
+                        id='phone'
                         placeholder='1234 567890'
                         className='bg-richblack-800 text-richblack-25 border-b border-richblack-500 w-full py-3 px-3 pr-12 mt-2 rounded-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                        {...register('phonenumber',
+                        {...register('phone',
                           {
                             required:{value:true, message:'Please enter phone number'}, 
                             maxLength:{value:10, message:'Invalid phone number'},
@@ -154,8 +142,8 @@ export const ContactUsForm = () => {
                         })}
                       />
                       {
-                        errors.phonenumber && (
-                          <span className='text-richblack-300 md:absolute md:-bottom-6 md:left-0'>{errors.phonenumber.message}</span>
+                        errors.phone && (
+                          <span className='text-richblack-300 md:absolute md:-bottom-6 md:left-0'>{errors.phone.message}</span>
                         )
                       }
                     </div>
