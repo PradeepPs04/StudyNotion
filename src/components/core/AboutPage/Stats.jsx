@@ -10,12 +10,12 @@ const stats = [
 export const Stats = () => {
   return (
     <section>
-        <div className='flex justify-evenly'>
+        <div className='flex flex-col space-y-6 sm:space-y-0 sm:flex-row justify-evenly'>
         {
             stats.map((data, idx) => (
-                <div key={idx} className='flex flex-col items-center'>
-                    <h2>{data.count}</h2>
-                    <p>{data.label}</p>
+                <div key={idx} className='flex flex-col sm:space-y-3 items-center'>
+                    <h2 className='text-3xl font-semibold text-richblack-5'>{data.count}</h2>
+                    <p className='text-richblack-400 font-semibold'>{data.label}</p>
                 </div>
             ))   
         }

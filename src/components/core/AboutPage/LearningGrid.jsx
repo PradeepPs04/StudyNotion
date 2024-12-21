@@ -72,7 +72,7 @@ export const LearningGrid = () => {
                             </div>
                         ) 
                         : (
-                            <div className='lg:w-[90%] flex flex-col pb-5 gap-10 px-3 py-3'>
+                            <div className='lg:w-[90%] flex flex-col pb-5 gap-10 px-3 py-7 lg:py-3'>
                                 <h2 className='text-md font-semibold text-richblack-5'>{card.heading}</h2>
                                 <p className='text-sm text-richblack-300 font-medium'>{card.description}</p>
                             </div>
