@@ -101,11 +101,18 @@ export function login(email, password, navigate) {
       }
 
       toast.success("Login Successful")
+
+      // set token of auth slice
       dispatch(setToken(response.data.token))
       const userImage = response.data?.user?.image
         ? response.data.user.image
         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
+
+      // set user of profile slice
       dispatch(setUser({ ...response.data.user, image: userImage }))
+      // set user in local storage
+      localStorage.setItem('user', JSON.stringify({ ...response.data.user, image: userImage }));
+      // set token in local storage
       localStorage.setItem("token", JSON.stringify(response.data.token))
       navigate("/dashboard/my-profile")
     } catch (error) {
