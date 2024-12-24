@@ -115,11 +115,11 @@ const Navbar = () => {
 
             {
                 user && user?.accountType != "Instructor" && (
-                    <Link to="/dashboard/cart" className='relative'>
+                    <Link to="/dashboard/cart" className='relative text-richblack-25 text-lg z-10'>
                         <AiOutlineShoppingCart />
                         {
                             totalItems > 0 && (
-                                <span>
+                                <span className='absolute -top-3 left-1 bg-caribbeangreen-200 rounded-full text-xs font-semibold text-richblack-900 px-1 -z-10'>
                                     {totalItems}
                                 </span>
                             )

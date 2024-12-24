@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SidebarLink } from './SidebarLink';
 import { useNavigate } from 'react-router-dom';
 import { ConfirmationModal } from '../../common/ConfirmationModal';
-import { set } from 'react-hook-form';
 
 export const Sidebar = () => {
     const {user, setLoading:profileLoading} = useSelector((state) => state.profile); 
@@ -59,7 +58,7 @@ export const Sidebar = () => {
                     })}
                     className='text-sm font-medium text-richblack-300'
                     >
-                    <div className='flex items-center gap-x-2'>
+                    <div className='flex items-center gap-x-2 px-8 py-2 hover:text-[#D11A2A] transition-all duration-200'>
                         <VscSignOut className='text-lg'/>
                         <span>Logout</span>
                     </div>

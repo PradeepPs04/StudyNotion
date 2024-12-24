@@ -16,8 +16,8 @@ export const SidebarLink = ({link, iconName}) => {
     <NavLink 
      to={link.path}
      onClick={()=> console.log('clicked')}
-     className={`${matchRoute(link.path) ? 'bg-yellow-800' : 'bg-opacity-0'} 
-      relative px-8 py-2 text-sm font-medium`}
+     className={`${matchRoute(link.path) ? 'bg-yellow-800 text-yellow-100' : 'bg-opacity-0 hover:text-richblack-100'} 
+      relative px-8 py-2 text-sm font-medium text-richblack-300 transition-all duration-200`}
     >
         <span className={` ${matchRoute(link.path) ? 'opacity-100' : 'opacity-0'}
         absolute left-0 top-0  h-full w-[0.2rem] bg-yellow-50`}></span>

@@ -83,8 +83,16 @@ function App() {
         }
       >
           <Route path="dashboard/my-profile" element={<MyProfile/>}/>
-          <Route path="/dashboard/settings" element={<Settings/>}/>
+          <Route path="/dashboard/settings" element={<Settings/>}/> 
+          {/* Student profile routes */}
+          <Route path="/dashboard/enrolled-courses" element={<></>}/>
+          <Route path="/dashboard/cart" element={<></>}/>
+          {/* Instructor profile routes */}
+          <Route path="/dashboard/instructor" element={<></>}/>
+          <Route path="/dashboard/my-courses" element={<></>}/>
+          <Route path="/dashboard/add-course" element={<></>}/>
       </Route>
+
 
       <Route 
         path='*'
