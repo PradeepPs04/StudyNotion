@@ -45,7 +45,7 @@ export const ContactUs = () => {
                             <div className='text-richblack-200 text-sm'>
                                 <h2 className='text-richblack-25 text-lg font-[500]'>Call us</h2>
                                 <p>Mon-Fri from 8am to 5pm</p>
-                                <p>+123 456 789-</p>
+                                <p>+123 456 7890</p>
 
                             </div>
                         </div>
