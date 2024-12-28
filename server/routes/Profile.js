@@ -26,6 +26,6 @@ router.get("/getUserDetails", auth, getAllUserDetails)
 router.get("/getEnrolledCourses", auth, getEnrolledCourses)
 
 // router for updating  profile picture of user
-router.put("/updateDisplayPicture", updateDisplayPicture)
+router.put("/updateDisplayPicture", auth, updateDisplayPicture)
 
 module.exports = router
