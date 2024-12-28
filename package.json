@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "concurrently": "^8.0.1",

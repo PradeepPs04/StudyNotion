@@ -10,9 +10,9 @@ export const MyProfile = () => {
   return (
     <div className='text-richblack-5 flex flex-col gap-10'>
 
-        <h1 className='text-3xl font-[500]'>
+        <h2 className='text-3xl font-[500]'>
             My Profile
-        </h1>
+        </h2>
 
 
         {/* Section-1 */}

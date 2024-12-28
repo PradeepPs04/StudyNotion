@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 
 import CountryCode from '../../data/countrycode.json';
-import { contactUs } from '../../services/operations/authAPI';
+import { contactUs } from '../../services/operations/contactUsAPI';
+
 
 export const ContactUsForm = () => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ export const ContactUsForm = () => {
 
   const contactFormSubmitHandler = async (data) => {
     console.log("logging data: ", data);
-    // call api
+    // call API
     contactUs(setLoading, data);
   }
 

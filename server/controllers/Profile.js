@@ -2,6 +2,43 @@ const Profile = require("../models/Profile");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
+// controller for updating proifle picture of user
+exports.updateDisplayPicture = async (req, res) => {
+    try {
+	  // fetch file
+		const displayPicture = req.files.displayPicture
+		const userId = req.user.id
+
+		const image = await uploadImageToCloudinary(
+			displayPicture,
+			process.env.FOLDER_NAME,
+			1000,
+			100
+		);
+		console.log(image);
+
+		// TODO: delete old profile picture from cloudniary ????????
+
+		// update profile picture
+		const updatedProfile = await User.findByIdAndUpdate(
+			{ _id: userId },
+			{ image: image.secure_url },
+			{ new: true }
+		);
+		
+		res.send({
+			success: true,
+			message: `Image Updated successfully`,
+			data: updatedProfile,
+		})
+    } catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: error.message,
+		});
+    }
+};
+
 // controller for updating a profile
 exports.updateProfile = async (req, res) => {
 	try {
@@ -92,44 +129,7 @@ exports.getAllUserDetails = async (req, res) => {
 	}
 };
 
-// controller for updating proifle picture of user
-exports.updateDisplayPicture = async (req, res) => {
-    try {
-	  // fetch file
-		const displayPicture = req.files.displayPicture
-		const userId = req.user.id
-
-		const image = await uploadImageToCloudinary(
-			displayPicture,
-			process.env.FOLDER_NAME,
-			1000,
-			100
-		);
-		console.log(image);
-
-		// TODO: delete old profile picture from cloudniary ????????
-
-		// update profile picture
-		const updatedProfile = await User.findByIdAndUpdate(
-			{ _id: userId },
-			{ image: image.secure_url },
-			{ new: true }
-		);
-		
-		res.send({
-			success: true,
-			message: `Image Updated successfully`,
-			data: updatedProfile,
-		})
-    } catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: error.message,
-		});
-    }
-};
-
-// controller for 
+// controller for getting enrolled courses of a user
 exports.getEnrolledCourses = async (req, res) => {
     try {
 		const userId = req.user.id;
