@@ -1,30 +1,41 @@
 import React, { useRef, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-
-import { IconBtn } from '../../common/IconBtn';
-import { FaXmark } from "react-icons/fa6";
-import { uploadDisplayPicture } from '../../../services/operations/settingsAPI';
-import { useReducer } from 'react';
 import toast from 'react-hot-toast';
+
+import { IconBtn } from '../../../common/IconBtn';
+import { FaXmark } from "react-icons/fa6";
+import { uploadDisplayPicture } from '../../../../services/operations/settingsAPI';
 import { UpdateProfileForm } from './UpdateProfileForm';
 
 export const Settings = () => {
   const {user} = useSelector((state) => state.profile);
+  const {token} = useSelector((state) => state.auth)
   const [file, setFile] = useState('');
 
   const ref = useRef();
   const dispatch = useDispatch();
 
-  const uploadProfilePictureHandler = (e) => {
-    e.preventDefault();
+  const uploadProfilePictureHandler = () => {
     if(!file) {
       toast.error('Please select a file to upload');
       return;
     }
-    console.log('printing file', file);
-    console.log('logging user: ', user);
-    dispatch(uploadDisplayPicture(file, useReducer));
+    // const formData = new FormData();
+    // formData.append("displayPicture", file);
+    // console.log(formData);
+
+    // validate image type
+    const file_extension = file.name.split('.').at(-1).toLowerCase();
+    // console.log(file_extension);
+    if(file_extension != 'jpeg' && file_extension != 'jpg' && file_extension != 'png') {
+      toast.error("Please upload jpg, jpeg or png image");
+      return;
+    }
+    
+    const formData = {displayPicture: file};
+    // console.log(formData);
+    dispatch(uploadDisplayPicture(token, formData));
   }
 
   return (
@@ -50,8 +61,8 @@ export const Settings = () => {
                 <div className='flex flex-col gap-2'>
                     <p className='text-center sm:text-start'>Change Profile Picture</p>
                     
-                    <form className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row justify-center space-x-4 items-center'>
-                      <label className='flex'>
+                    <div className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row justify-center space-x-4 items-center'>
+                      <div className='flex'>
                         <input
                             className={`w-full text-sm text-gray-500 cursor-pointer
                             ${file ? 'text-md' : 'text-[0px]'}
@@ -78,14 +89,14 @@ export const Settings = () => {
                               <FaXmark />
                             </span>
                           </button>
-                      </label>
+                      </div>
                       
                       <IconBtn
                           text='Upload'
                           iconName={'FaUpload'} 
                           onClick={uploadProfilePictureHandler} 
                       />
-                    </form>
+                    </div>
 
                 </div>
             </div>

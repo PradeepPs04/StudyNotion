@@ -16,7 +16,7 @@ import { MyProfile } from "./components/core/Dashboard/MyProfile";
 import { PrivateRoute } from "./components/core/auth/PrivateRoute";
 import { Error } from "./pages/Error";
 import { Dashboard } from "./pages/Dashboard";
-import { Settings } from "./components/core/Dashboard/Settings";
+import { Settings } from "./components/core/Dashboard/Settings/Settings";
 
 function App() {
   return (

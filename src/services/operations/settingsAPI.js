@@ -12,15 +12,18 @@ const {
     DELETE_PROFILE_API
 } = settingsEndpoints;
 
-export function uploadDisplayPicture(image, user) {
+export function uploadDisplayPicture(token, displayPicture) {
     return async (dispatch) => {
         const toastId = toast.loading('Uploading...');
         try {
             const response = await apiConnector(
                 "PUT", 
                 UPDATE_DISPLAY_PICTURE_API, 
-                {image, user}, 
-                {'Content-Type': 'multipart/form-data'}
+                displayPicture,
+                {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                }
             );
             console.log('Logging response', response);
 
