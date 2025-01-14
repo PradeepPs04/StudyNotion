@@ -44,12 +44,16 @@ exports.updateProfile = async (req, res) => {
 	try {
 		// fetch data from request body
 		// if data not present then default value = ""
-		const { dateOfBirth = "", about = "", contactNumber = "", gender = "" } = req.body;
+		const { firstName="", lastName="", dateOfBirth="", about="", contactNumber="", gender="" } = req.body;
 		const id = req.user.id;
 
 		// Find the user and profile
 		const userDetails = await User.findById(id);
 		const profile = await Profile.findById(userDetails.additionalDetails);
+
+		// update user fields
+		if(firstName !== userDetails.firstName)	userDetails.firstName = firstName;
+		if(lastName !== userDetails.lastName)	userDetails.lastName = lastName;
 
 		// Update the profile fields
 		profile.dateOfBirth = dateOfBirth;
@@ -58,12 +62,18 @@ exports.updateProfile = async (req, res) => {
 		profile.gender = gender;
 
 		// Save the updated profile
+		await userDetails.save();
 		await profile.save();
+
+		const updatedUser = await User.findById(id).populate('additionalDetails');
+
+
+		console.log('logging user details:', updatedUser);
 
 		return res.json({
 			success: true,
 			message: "Profile updated successfully",
-			profile,
+			data: updatedUser,
 		});
 	} catch (error) {
 		console.log(error);

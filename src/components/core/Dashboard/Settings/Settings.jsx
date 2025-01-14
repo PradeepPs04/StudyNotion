@@ -7,6 +7,7 @@ import { IconBtn } from '../../../common/IconBtn';
 import { FaXmark } from "react-icons/fa6";
 import { uploadDisplayPicture } from '../../../../services/operations/settingsAPI';
 import { UpdateProfileForm } from './UpdateProfileForm';
+import { ChangePassword } from './ChangePassword';
 
 export const Settings = () => {
   const {user} = useSelector((state) => state.profile);
@@ -47,7 +48,7 @@ export const Settings = () => {
     
     
             {/* Section-1 */}
-            <div className='flex flex-col sm:flex-row justify-center sm:justify-start gap-4 items-center bg-richblack-800 p-8 rounded-md'>
+            <section className='flex flex-col sm:flex-row justify-center sm:justify-start gap-4 items-center bg-richblack-800 p-8 rounded-md'>
                 {/* Profile picture div */}
                 <div>
                   <img 
@@ -99,19 +100,17 @@ export const Settings = () => {
                     </div>
 
                 </div>
-            </div>
+            </section>
     
             {/* Section-2 */}
-            <div className='flex flex-col gap-8 bg-richblack-800 p-8 rounded-md'>
-                <h4 className='font-[600] text-lg'>Profile Information</h4>
+            <section>
                 <UpdateProfileForm/>
-            </div>
+            </section>
     
             {/* Section-3 */}
-            <div className='flex flex-col gap-10 bg-richblack-800 p-8 rounded-md'>
-                
-    
-            </div>
+            <section className='flex flex-col gap-10 bg-richblack-800 p-8 rounded-md'>
+              <ChangePassword/>
+            </section>
     
         </div>
   )

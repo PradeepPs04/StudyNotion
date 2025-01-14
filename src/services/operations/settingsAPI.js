@@ -3,7 +3,6 @@ import { apiConnector } from "../apiConnector";
 
 import { settingsEndpoints } from "../apis";
 import { setUser } from "../../slices/profileSlice";
-import { useSelector } from "react-redux";
 
 const {
     UPDATE_DISPLAY_PICTURE_API,
@@ -30,6 +29,37 @@ export function uploadDisplayPicture(token, displayPicture) {
             // update user details in the store
             dispatch(setUser(response.data.data));
             toast.success('Profile picture updated successfully');
+        } catch(err) {
+            console.log(err);
+            toast.error(err.response.data.message);
+        }
+        toast.dismiss(toastId);
+    }
+}
+
+export function updateProfileDetails(token, formData, navigate) {
+    return async (dispatch) => {
+        const toastId = toast.loading('Saving...');
+        try {
+            const response = await apiConnector(
+                "PUT",
+                UPDATE_PROFILE_API,
+                formData,
+                { Authorization: `Bearer ${token}`,}
+            );
+
+            // console.log("update profile response: ",response);
+
+            // update user image if it was created using dicebar API
+            const responseImage = response.data.data.image;
+            const userImage = (responseImage && !responseImage.includes('api.dicebar.com'))
+                ? responseImage 
+                : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
+
+            dispatch(setUser({...response.data.data, image:userImage}));
+
+            toast.success('Profile details updated successfully');
+            navigate('/dashboard/my-profile');
         } catch(err) {
             console.log(err);
             toast.error(err.response.data.message);

@@ -6,6 +6,7 @@ import { IconBtn } from '../../common/IconBtn';
 export const MyProfile = () => {
     const {user} = useSelector((state) => state.profile);
     const navigate = useNavigate();
+    console.log('user details in slice: ',user);
 
   return (
     <div className='text-richblack-5 flex flex-col gap-10'>
@@ -16,7 +17,7 @@ export const MyProfile = () => {
 
 
         {/* Section-1 */}
-        <div className='flex justify-between items-center bg-richblack-800 p-8 rounded-md'>
+        <section className='flex justify-between items-center bg-richblack-800 p-8 rounded-md'>
             <div className='flex items-center gap-4'>
                 <img 
                     src={user?.image} 
@@ -34,10 +35,10 @@ export const MyProfile = () => {
                 onClick={() => navigate('/dashboard/settings')}
                 iconName={'FaEdit'}
             />
-        </div>
+        </section>
 
         {/* Section-2 */}
-        <div className='flex flex-col gap-8 bg-richblack-800 p-8 rounded-md'>
+        <section className='flex flex-col gap-8 bg-richblack-800 p-8 rounded-md'>
             <div className='flex justify-between items-center'>
                 <p className='font-semibold text-lg'>About</p>
                 <IconBtn
@@ -47,10 +48,10 @@ export const MyProfile = () => {
                 />
             </div>
             <p className='text-sm text-richblack-400 font-[500]'>{user?.additionalDetails?.about ?? 'Write something about yourself.'}</p>
-        </div>
+        </section>
 
         {/* Section-3 */}
-        <div className='flex flex-col gap-10 bg-richblack-800 p-8 rounded-md'>
+        <section className='flex flex-col gap-10 bg-richblack-800 p-8 rounded-md'>
             <div className='flex justify-between items-center'>
                 <p className='font-semibold text-lg'>Personal Details</p>
                 <IconBtn
@@ -92,7 +93,7 @@ export const MyProfile = () => {
                 </div>
             </div>
 
-        </div>
+        </section>
 
     </div>
   )
