@@ -67,3 +67,25 @@ export function updateProfileDetails(token, formData, navigate) {
         toast.dismiss(toastId);
     }
 }
+
+export async function changePassword(token, formData, navigate) {
+    const toastId = toast.loading("Changing password...");
+    try {
+        const response = await apiConnector(
+            "POST",
+            CHANGE_PASSWORD_API,
+            formData,
+            { Authorization: `Bearer ${token}` },
+        )
+
+        // console.log("change password response: ", response);
+
+        toast.success("Password changed successfully");
+        navigate('/dashboard/my-profile');
+    } catch(err) {
+        console.log(err);
+        toast.error(err.response.data.message);
+    }
+
+    toast.dismiss(toastId);
+}

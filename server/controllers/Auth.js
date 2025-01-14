@@ -254,10 +254,10 @@ exports.changePassword = async (req, res) => {
 		);
 		if (!isPasswordMatch) {
 			// If old password does not match
-			return res.status(401),json(
+			return res.status(401).json(
 				{ 
 					success: false, 
-					message: "The password is incorrect" 
+					message: "Current password is incorrect" 
 				});
 		}
 
@@ -282,9 +282,10 @@ exports.changePassword = async (req, res) => {
 		try {
 			const emailResponse = await mailSender(
 				updatedUserDetails.email,
+				'Password Changed',
 				passwordUpdated(
 					updatedUserDetails.email,
-					`Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
+					`${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
 				)
 			);
 			console.log("Email sent successfully:", emailResponse.response);

@@ -6,7 +6,6 @@ import { IconBtn } from '../../common/IconBtn';
 export const MyProfile = () => {
     const {user} = useSelector((state) => state.profile);
     const navigate = useNavigate();
-    console.log('user details in slice: ',user);
 
   return (
     <div className='text-richblack-5 flex flex-col gap-10'>
