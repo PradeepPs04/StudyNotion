@@ -72,11 +72,11 @@ export function updateProfileDetails(token, formData, navigate) {
 export async function changePassword(token, formData, navigate) {
     const toastId = toast.loading("Changing password...");
     try {
-        const response = await apiConnector(
-            "POST",
-            CHANGE_PASSWORD_API,
-            formData,
-            { Authorization: `Bearer ${token}` },
+        await apiConnector(
+        "POST",
+        CHANGE_PASSWORD_API,
+        formData,
+        { Authorization: `Bearer ${token}` },
         )
 
         // console.log("change password response: ", response);
@@ -95,7 +95,7 @@ export function deleteAccount(token, navigate) {
     return async (dispatch) => {
         const toastId = toast.loading("Deleting account...");
         try {
-            const response = await apiConnector(
+            await apiConnector(
                 "DELETE",
                 DELETE_PROFILE_API,
                 null,

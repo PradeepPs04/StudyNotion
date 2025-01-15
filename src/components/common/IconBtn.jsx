@@ -18,7 +18,7 @@ export const IconBtn = ({
     <button 
     disabled={disabled}
     onClick={onClick}
-    className={`${customClasses ? customClasses : 'bg-yellow-50 text-richblack-900 font-bold '} 
+    className={`${customClasses ? customClasses : 'bg-yellow-50 text-richblack-900 font-bold'} 
         px-6 py-2 rounded-md hover:scale-95 transition-all duration-300`}
     type={type}>
         {

@@ -1,4 +1,7 @@
 import "./App.css";
+
+import { ACCOUNT_TYPE } from "./utils/constants";
+
 import {Route, Routes } from "react-router-dom";
 import Navbar from "./components/common/Navbar"
 import Home from "./pages/Home"
@@ -17,8 +20,13 @@ import { PrivateRoute } from "./components/core/auth/PrivateRoute";
 import { Error } from "./pages/Error";
 import { Dashboard } from "./pages/Dashboard";
 import { Settings } from "./components/core/Dashboard/Settings/Settings";
+import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
+import Cart from "./components/core/Dashboard/Cart/Index";
+import { useSelector } from "react-redux";
 
 function App() {
+  const {user} = useSelector((state) => state.profile);
+  console.log('logging user: ', user);
   return (
    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
     <Navbar/>
@@ -85,12 +93,24 @@ function App() {
           <Route path="dashboard/my-profile" element={<MyProfile/>}/>
           <Route path="/dashboard/settings" element={<Settings/>}/> 
           {/* Student profile routes */}
-          <Route path="/dashboard/enrolled-courses" element={<></>}/>
-          <Route path="/dashboard/cart" element={<></>}/>
+          {
+            user?.accountType === ACCOUNT_TYPE.STUDENT && (
+              <>
+                <Route path="/dashboard/enrolled-courses" element={<EnrolledCourses/>}/>
+                <Route path="/dashboard/cart" element={<Cart/>}/>
+              </>
+            )
+          }
           {/* Instructor profile routes */}
-          <Route path="/dashboard/instructor" element={<></>}/>
-          <Route path="/dashboard/my-courses" element={<></>}/>
-          <Route path="/dashboard/add-course" element={<></>}/>
+          {
+            user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+              <>
+                <Route path="/dashboard/instructor" element={<></>}/>
+                <Route path="/dashboard/my-courses" element={<></>}/>
+                <Route path="/dashboard/add-course" element={<></>}/>
+              </>
+            )
+          }
       </Route>
 
 
