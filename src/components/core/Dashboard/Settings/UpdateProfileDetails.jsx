@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IconBtn } from '../../../common/IconBtn';
@@ -6,7 +6,7 @@ import { IconBtn } from '../../../common/IconBtn';
 import { updateProfileDetails } from '../../../../services/operations/settingsAPI';
 import { useNavigate } from 'react-router-dom';
 
-export const UpdateProfileForm = () => {
+export const UpdateProfileDetails = () => {
     const {user} = useSelector((state) => state.profile);
     const {token} = useSelector((state) => state.auth);
 

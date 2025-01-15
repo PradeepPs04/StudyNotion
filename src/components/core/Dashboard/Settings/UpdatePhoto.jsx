@@ -9,8 +9,8 @@ import { uploadDisplayPicture } from '../../../../services/operations/settingsAP
 
 function UpdatePhoto() {
 
-    const {user} = useSelector((state) => state.profile);
-  const {token} = useSelector((state) => state.auth)
+  const {user} = useSelector((state) => state.profile);
+  const {token} = useSelector((state) => state.auth);
   const [file, setFile] = useState('');
 
   const ref = useRef();
@@ -25,7 +25,7 @@ function UpdatePhoto() {
     // validate image type
     const file_extension = file.name.split('.').at(-1).toLowerCase();
     // console.log(file_extension);
-    if(file_extension != 'jpeg' && file_extension != 'jpg' && file_extension != 'png') {
+    if(file_extension !== 'jpeg' && file_extension !== 'jpg' && file_extension !== 'png') {
       toast.error("Please upload jpg, jpeg or png image");
       return;
     }

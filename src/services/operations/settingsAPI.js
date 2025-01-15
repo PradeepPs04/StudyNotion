@@ -3,6 +3,7 @@ import { apiConnector } from "../apiConnector";
 
 import { settingsEndpoints } from "../apis";
 import { setUser } from "../../slices/profileSlice";
+import { logout } from "./authAPI";
 
 const {
     UPDATE_DISPLAY_PICTURE_API,
@@ -88,4 +89,25 @@ export async function changePassword(token, formData, navigate) {
     }
 
     toast.dismiss(toastId);
+}
+
+export function deleteAccount(token, navigate) {
+    return async (dispatch) => {
+        const toastId = toast.loading("Deleting account...");
+        try {
+            const response = await apiConnector(
+                "DELETE",
+                DELETE_PROFILE_API,
+                null,
+                { Authorization: `Bearer ${token}`,}
+            );
+            toast.success("Account deleted successfully");
+            dispatch(logout(navigate));
+        } catch(err) {
+            console.log(err);
+            toast.error(err.response.data.message);
+        }
+
+        toast.dismiss(toastId);
+    }
 }
