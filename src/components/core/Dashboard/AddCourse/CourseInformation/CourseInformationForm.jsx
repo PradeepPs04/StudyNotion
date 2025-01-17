@@ -188,7 +188,7 @@ export const CourseInformationForm = () => {
           {...register('coursePrice', {required:true, valueAsNumber:true})}
           className='w-full form-style pl-10'
         />
-        <HiOutlineCurrencyRupee size={20} className='absolute top-[53%] left-2 text-richblack-500'/>
+        <HiOutlineCurrencyRupee size={18} className='absolute top-10 left-2 text-richblack-400'/>
         {
           errors.coursePrice && (
             <span>Course price is required</span>
@@ -222,7 +222,6 @@ export const CourseInformationForm = () => {
       </div>
 
       {/* course Tags */}
-      {/* TODO: Create chip input */}
       <ChipInput
         label="Tags"
         name="CourseTags"
