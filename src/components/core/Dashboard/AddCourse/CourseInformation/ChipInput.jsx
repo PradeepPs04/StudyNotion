@@ -22,7 +22,8 @@ export const ChipInput = ({label, name, placeholder, register, errors, setValue,
       const inputTag = currentTag.trim().split(',')
       // console.log(inputTag);
      inputTag.forEach((tag) => {
-      setTagList((prevTags) => [...prevTags, tag]);
+      const capitalizeTag = tag.replace(/^./, char => char.toUpperCase());
+      setTagList((prevTags) => [...prevTags, capitalizeTag]);
      });
       setCurrentTag('');
     }

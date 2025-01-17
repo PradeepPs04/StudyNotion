@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+
+import { HiOutlineCurrencyRupee } from 'react-icons/hi';
+
+import { addCourseDetails, editCourseDetails, fetchCourseCategories } from '../../../../../services/operations/courseDetailsAPI';
+
+import { setStep, setCourse } from '../../../../../slices/courseSlice';
 
 import { ChipInput } from './ChipInput';
-
-import {addCourseDetails, editCourseDetails, fetchCourseCategories} from '../../../../../services/operations/courseDetailsAPI';
-import { HiOutlineCurrencyRupee } from 'react-icons/hi';
 import { UploadImage } from './UploadImage';
 import { RequirementField } from './RequirementField';
 import { IconBtn } from '../../../../common/IconBtn';
-import toast from 'react-hot-toast';
 import { COURSE_STATUS } from '../../../../../utils/constants';
 
 export const CourseInformationForm = () => {
@@ -25,7 +28,7 @@ export const CourseInformationForm = () => {
   const {token} = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
-  const {course, editCourse, setStep, setCourse} = useSelector((state) => state.course);
+  const {course, editCourse} = useSelector((state) => state.course);
   
   const [loading, setLoading] = useState(false);
   const [courseCategory, setCourseCategory] = useState([]);
@@ -60,10 +63,10 @@ export const CourseInformationForm = () => {
         currentValues.courseTitle !== course.courseName ||
         currentValues.courseShortDescription !== course.courseDescription ||
         currentValues.coursePrice !== course.price ||
-        // currentValues.courseTags.toString() !== course.tag.toString() ||
+        currentValues.courseTags.toString() !== course.tag.toString() ||
         currentValues.courseBenefits !== course.whatYouWillLearn ||
         currentValues.courseCategory._id !== course.categories._id ||
-        // currentValues.courseImage !== course.thumbnail ||
+        currentValues.courseImage !== course.thumbnail ||
         currentValues.courseRequirements.toString() !== course.instructions.toString()
       ) {
       return true;
@@ -91,7 +94,9 @@ export const CourseInformationForm = () => {
           formData.append("price", data.coursePrice);
         }
 
-        // handle for tags
+        if(currentValues.courseTags.toString() !== course.tag.toString()) {
+          formData.append("tag", JSON.stringify(data.courseTags));
+        }
 
         if(currentValues.courseBenefits !== course.whatYouWillLearn) {
           formData.append("whatYouWillLearn", data.courseBenefits);
@@ -101,7 +106,9 @@ export const CourseInformationForm = () => {
           formData.append("category", data.courseCategory);
         }
 
-        // handle for thumbnail image
+        if(currentValues.courseImage !== course.thumbnail) {
+          formData.append("thumbnail", data.courseImage);
+        }
 
         if(currentValues.courseRequirements.toString() !== course.instructions.toString()) {
           formData.append("instructions", JSON.stringify(data.courseRequirements));
@@ -126,10 +133,10 @@ export const CourseInformationForm = () => {
     formData.append("courseName", data.courseTitle);
     formData.append("courseDescription", data.courseShortDescription);
     formData.append("price", data.coursePrice);
-    // handle tag
+    formData.append("tag", JSON.stringify(data.courseTags));
     formData.append("whatYouWillLearn", data.courseBenefits);
     formData.append("category", data.courseCategory);
-    // handle thumbnain
+    formData.append("thumbnail", data.courseImage);
     formData.append("instructions", JSON.stringify(data.courseRequirements));
     formData.append("status", COURSE_STATUS.DRAFT);
 
@@ -144,7 +151,7 @@ export const CourseInformationForm = () => {
   return (
     <form 
     onSubmit={handleSubmit(onSubmit)}
-    className='rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8'>
+    className='rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8 flex flex-col'>
       {/* course title */}
       <div>
         <label htmlFor='courseTitle' className='label-style'>Course Title<sup className='text-pink-300'>*</sup></label>
@@ -233,7 +240,6 @@ export const CourseInformationForm = () => {
       />
 
       {/* course thumbnail */}
-      {/* TODO: create a component for uploading and showing preview of course thumbnil */}
       <UploadImage
         name="courseImage"
         label="Course thumbnail"

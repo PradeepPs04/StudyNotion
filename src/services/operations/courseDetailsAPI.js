@@ -75,7 +75,7 @@ export const addCourseDetails = async(data, token) => {
             CREATE_COURSE_API,
             data,
             {
-                "Content-Type":"multipart/form-data", // form with file inputs
+                "Content-Type": "multipart/form-data", // form with file inputs
                 Authorization: `Bearer ${token}`
             },
         );
