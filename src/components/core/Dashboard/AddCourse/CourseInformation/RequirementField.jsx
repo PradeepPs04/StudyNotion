@@ -58,7 +58,7 @@ export const RequirementField = ({label, name, register, errors, setValue, getVa
                 <ul>
                     {
                         requirementList.map((value, index) => (
-                            <li key={index} className='flex space-x-2 items-centertext-richblack-5'>
+                            <li key={index} className='flex space-x-2 items-center text-richblack-300'>
                                 <span>{value}</span>
                                 <button 
                                 type='button'

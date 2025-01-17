@@ -171,8 +171,9 @@ export const updateSection = async (data, token) => {
     
     try {
         const response = await apiConnector(
-            "POST",
+            "PUT",
             UPDATE_SECTION_API,
+            data,
             {Authorization: `Bearer ${token}`},
         );
 

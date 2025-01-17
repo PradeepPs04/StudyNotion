@@ -273,12 +273,12 @@ export const CourseInformationForm = () => {
         getValues={getValues}
       />
 
-      <div>
+      <div className='w-full flex space-x-4 justify-end'>
         {
           editCourse && (
             <button
             onClick={() => dispatch(setStep(2))}
-            className='flex items-center gap-x-2 bg-richblack-300 rounded-md'>
+            className='px-2 bg-richblack-400 text-richblack-900 font-semibold rounded-md hover:bg-richblack-300 transition-all duration-200'>
               Continue Without Saving
             </button>
           )
