@@ -51,7 +51,7 @@ export const RenderSteps = () => {
             <div>
                 {
                     steps.map((item) => (
-                        <div>
+                        <div key={item.id}>
                             <p>{item.title}</p>
                         </div>
                     ))

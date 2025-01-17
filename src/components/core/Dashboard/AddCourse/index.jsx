@@ -11,6 +11,7 @@ export default function AddCourse() {
                     </div>
                 </div>
 
+                {/* Course upload tips */}
                 <div>
                     <p>Course Upload Tips</p>
                     <ul>

@@ -53,7 +53,7 @@ export const fetchCourseDetails = async (courseId) => {
 }
 
 export const fetchCourseCategories = async () => {
-    const result = [];
+    let result = [];
     try {
         const response = await apiConnector("GET", COURSE_CATEGORIES_API);
         console.log("fetch course categoires api response...", response);
@@ -68,7 +68,7 @@ export const fetchCourseCategories = async () => {
 
 export const addCourseDetails = async(data, token) => {
     const toastId = toast.loading("Loading...");
-    const result = null;
+    let result = null;
     try {
         const response = await apiConnector(
             "POST", 
