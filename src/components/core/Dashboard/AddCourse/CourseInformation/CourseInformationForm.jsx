@@ -10,7 +10,7 @@ import { addCourseDetails, editCourseDetails, fetchCourseCategories } from '../.
 import { setStep, setCourse } from '../../../../../slices/courseSlice';
 
 import { ChipInput } from './ChipInput';
-import { UploadImage } from './UploadImage';
+import { Upload } from './Upload';
 import { RequirementField } from './RequirementField';
 import { IconBtn } from '../../../../common/IconBtn';
 import { COURSE_STATUS } from '../../../../../utils/constants';
@@ -240,7 +240,7 @@ export const CourseInformationForm = () => {
       />
 
       {/* course thumbnail */}
-      <UploadImage
+      <Upload
         name="courseImage"
         label="Course thumbnail"
         register={register}

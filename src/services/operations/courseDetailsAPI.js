@@ -80,11 +80,13 @@ export const addCourseDetails = async(data, token) => {
             },
         );
 
+        console.log('ADD COURSE API Response.....', response);
+
         result = response.data.data;
         toast.success("Course Details Added Successfully")
     } catch(err) {
         console.log("Add Course Details API error....",  err);
-        toast.error(err.response.data.message)
+        toast.error("Can not create course");
     }
 
     toast.dismiss(toastId);
@@ -110,7 +112,7 @@ export const editCourseDetails = async (data, token) => {
         toast.success("Course Details Updated Successfully")
     } catch(err) {
         console.log("Edit course Details API error...", err);
-        toast.error(err.response.data.message);
+        toast.error("Can not edit course");
     }
 
     toast.dismiss(toastId);
@@ -134,7 +136,7 @@ export const createSection = async (data, token) => {
         toast.success("Course Section Created")
     } catch(err) {
         console.log("Create Section API Error....", err);
-        toast.error(err.response.data.message);
+        toast.error("Can not create section");
     }
 
     toast.dismiss(toastId);
@@ -158,7 +160,7 @@ export const createSubSection = async (data, token) => {
         toast.success("Lecture Added")
     } catch(err) {
         console.log("Create Sub section API error...", err);
-        toast.error(err.response.data.message);
+        toast.error("Can not create sub section");
     }
 
     toast.dismiss(toastId);
@@ -167,7 +169,7 @@ export const createSubSection = async (data, token) => {
 
 export const updateSection = async (data, token) => {
     const toastId = toast.loading("Loading...");
-    let result = null;
+    let result = [];
     
     try {
         const response = await apiConnector(
@@ -181,7 +183,7 @@ export const updateSection = async (data, token) => {
         result = response?.data?.data;
     } catch(err) {
         console.log("Update section API error...", err);
-        toast.error(err.response.data.message);
+        toast.error("Can not update section");
     }
 
     toast.dismiss(toastId);
@@ -204,8 +206,8 @@ export const updateSubSection = async (data, token) => {
         result = response?.data?.subSection;
         toast.success("Course Section Updated")
     } catch(err) {
-        console.log("Update Section API error...", err);
-        toast.error(err.response.data.message);
+        console.log("Update SUB Section API error...", err);
+        toast.error("Can not update sub section");
     }
 
     toast.dismiss(toastId);
@@ -214,40 +216,49 @@ export const updateSubSection = async (data, token) => {
 
 export const deleteSection = async (data, token) => {
     const toastId = toast.loading("Loading...");
+    let result = null;
     try {
         const response = await apiConnector(
-            "DELETE",
+            "POST",
             DELETE_SECTION_API,
             data,
             {Authorization: `Bearer ${token}`},
         );
 
         console.log('Delete Section API response....', response);
+        result = response?.data?.data;
         toast.success("Course Section deleted");
     } catch(err) {
         console.log("Delete section API error...", err);
-        toast.error(err.response.data.message);
+        // toast.error(err.response.data.message);
+        toast.error("Can not delete section");
     }
     
     toast.dismiss(toastId);
+    return result;
 }
 
 export const deleteSubSection = async (data, token) => {
     const toastId = toast.loading("Loading...");
+    let result = null;
     try {
         const response = await apiConnector(
-            "DELETE",
+            "POST",
             DELETE_SUBSECTION_API,
             data,
             {Authorization: `Bearer ${token}`},
         );
 
         console.log("Delete Sub Section API response...", response);
+        result = response.data.data;
         toast.success("Lecture deleted");
     } catch(err) {
         console.log("Delete Sub Section API error....", err);
-        toast.error(err.response.data.message);
+        toast.error("Can not delete sub section");
     }
+
+    toast.dismiss(toastId);
+    return result;
 }
 
 export const fetchInstructorCourses = async (token) => {

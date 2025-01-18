@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { IoMdCloseCircle } from "react-icons/io";
 
-export const UploadImage = ({name, label, register, errors, setValue}) => {
+export const Upload = ({name, label, register, errors, setValue}) => {
 
   const [previewFile, setPreviewFile] = useState(null);
   const [file, setFile] = useState(null);

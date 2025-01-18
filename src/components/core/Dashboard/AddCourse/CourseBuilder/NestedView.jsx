@@ -6,7 +6,14 @@ import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
+
+import {setCourse} from '../../../../../slices/courseSlice';
+
 import { SubSectionModal } from './SubSectionModal';
+import {ConfirmationModal} from '../../../../common/ConfirmationModal';
+
+import { deleteSection, deleteSubSection } from '../../../../../services/operations/courseDetailsAPI';
+
 
 export const NestedView = ({handleChangeEditSectionName}) => {
     const {course} = useSelector((state) => state.course);
@@ -20,17 +27,35 @@ export const NestedView = ({handleChangeEditSectionName}) => {
 
     const [confirmationModal, setConfirmationModal] = useState(null);
 
-    const handleDeleteSection = (sectionId) => {
+    const handleDeleteSection = async (sectionId) => {
+        const result = await deleteSection(
+            {sectionId, courseId: course._id,},
+            token,                               
+        );
+        
+        if(result) {
+            dispatch(setCourse(result));
+        }
 
+        setConfirmationModal(null);
     }
 
-    const handleDeleteSubSection = (subSectionId, sectionId) => {
+    const handleDeleteSubSection = async (subSectionId, sectionId) => {
+        const result = await deleteSubSection(
+            {subSectionId, sectionId},
+            token
+        );
 
+        if(result) {
+            dispatch(setCourse(result));
+        }
+
+        setConfirmationModal(null);
     }
 
   return (
     <div>
-        <div className='rounded-md bg-richblack-700 p-6 px-8'>
+        <div className='rounded-md bg-richblack-700 p-6 px-8 flex flex-col gap-6'>
             {
                 course?.courseContent?.map((section) => (
                     <details key={section._id} open>
@@ -114,10 +139,29 @@ export const NestedView = ({handleChangeEditSectionName}) => {
         </div>
 
         {
-            addSubsection ? (<SubSectionModal/>) : 
-            viewSubsection ? (<SubSectionModal/>) : 
-            editSubsection ? <SubSectionModal/> : 
+            addSubsection ? (
+                <SubSectionModal 
+                    modalData={addSubsection} 
+                    setModalData={setAddSubsection}
+                    add={true}
+                />) : 
+            viewSubsection ? (
+                <SubSectionModal
+                    modalData={viewSubsection}
+                    setModalData={setViewSubsection}
+                    view={true}
+                />) : 
+            editSubsection ? (
+                <SubSectionModal
+                    modalData={editSubsection}
+                    setModalData={setEditSubsection}
+                    edit={true}
+                />) : 
             (<div></div>)
+        }
+
+        {
+            confirmationModal && (<ConfirmationModal modalData={confirmationModal}/>)
         }
     </div>
   )
