@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react'
 
 import { IoMdCloseCircle } from "react-icons/io";
+import { useSelector } from 'react-redux';
 
 export const RequirementField = ({label, name, register, errors, setValue, getValues}) => {
+
+    const {editCourse, course} = useSelector((state) => state.course);
 
     const [requirement, setRequirement] = useState("");
     const [requirementList, setRequirementList] = useState([]);
 
     useEffect(() => {
+        if(editCourse) {
+            setRequirementList(course?.instructions)
+        }
         register(name, {
             required:true, 
             // validate: (value) => value.length > 0
@@ -20,6 +26,7 @@ export const RequirementField = ({label, name, register, errors, setValue, getVa
 
     const handleAddRequirement = (e) => {
         e.preventDefault();
+        
         if(requirement) {
             setRequirementList([...requirementList, requirement]);
             setRequirement('');

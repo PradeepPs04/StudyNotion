@@ -1,76 +1,93 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
-import { IoMdCloseCircle } from "react-icons/io";
+import { MdClose } from "react-icons/md"
+import toast from "react-hot-toast"
 
-export const ChipInput = ({label, name, placeholder, register, errors, setValue, getValues}) => {
+export default function ChipInput({label, name, placeholder, register, errors, setValue, getValues }) {
+  const { editCourse, course } = useSelector((state) => state.course)
 
-  const [currentTag, setCurrentTag] = useState('');
-  const [tagList, setTagList] = useState([]);
-
-  useEffect(() => {
-    register(name, {
-      required: true
-    });
-  }, []);
+  const [chips, setChips] = useState([])
 
   useEffect(() => {
-    setValue(name, tagList);
-  }, [tagList]);
+    if (editCourse) {
+      setChips(course?.tag)
+    }
+    register(name, { required: true, validate: (value) => value.length > 0 })
+  }, [])
 
-  const handleTagEnter = (e) => {
-    if(e.key === "Enter") {
-      const inputTag = currentTag.trim().split(',')
-      // console.log(inputTag);
-     inputTag.forEach((tag) => {
-      const capitalizeTag = tag.replace(/^./, char => char.toUpperCase());
-      setTagList((prevTags) => [...prevTags, capitalizeTag]);
-     });
-      setCurrentTag('');
+  useEffect(() => {
+    setValue(name, chips)
+  }, [chips])
+
+  const handleKeyDown = (event) => {
+    // Check if user presses "Enter" or ","
+    if (event.key === "Enter" || event.key === ",") {
+      event.preventDefault()
+      const chipValue = event.target.value.trim()
+
+      if(chips.includes(chipValue)) {
+        toast.error("Tag already added");
+        return;
+      }
+
+      if (chipValue && !chips.includes(chipValue)) {
+        const newChips = [...chips, chipValue]
+        setChips(newChips)
+        event.target.value = ""
+      }
     }
   }
 
-  const handleTagRemove = (index) => {
-    let updatedTags = [...tagList];
-    updatedTags.splice(index, 1);
-    setTagList(updatedTags);
+  const handleDeleteChip = (index) => {
+    // Filter the chips array to remove the chip with the given index
+    // const newChips = chips.filter((_, index) => index !== index)
+
+    // second way to do the same
+    let newChips = [...chips];
+    newChips.splice(index, 1);
+    
+    setChips(newChips)
   }
 
   return (
-    <div className='space-y-3 text-richblack-25'>
+    <div className="flex flex-col space-y-2">
+      <label className="text-sm text-richblack-5" htmlFor={name}>
+        {label}<sup className="text-pink-200">*</sup>
+      </label>
 
-        <label className='label-style' htmlFor={name}>{label}<sup className='text-pink-300'>*</sup></label>
-        {/* Input Tags */}
-        <div className='flex flex-wrap gap-4'>
-          {
-            tagList.length > 0 && (
-              tagList.map((tag, index) => (
-                <div 
-                key={index}
-                className='flex items-center space-x-2 bg-yellow-400 px-2 py-1 rounded-full'>
-                  <span>{tag}</span>
-                  <span onClick={() => handleTagRemove(index)} className='hover:scale-125 transition-all duration-200 cursor-pointer'>
-                    <IoMdCloseCircle size={14}/>
-                  </span>
-                </div>
-              ))
-            )
-          }
-        </div>
+      <div className="flex w-full flex-wrap gap-y-2">
+        {chips.map((chip, index) => (
+          <div
+            key={index}
+            className="m-1 flex items-center rounded-full bg-yellow-400 px-2 py-1 text-sm text-richblack-5"
+          >
+            {chip}
+            {/* button to delete the chip */}
+            <button
+              type="button"
+              className="ml-2 focus:outline-none"
+              onClick={() => handleDeleteChip(index)}
+            >
+              <MdClose className="text-sm" />
+            </button>
+          </div>
+        ))}
 
         <input
-          type='text'
           id={name}
-          value={currentTag}
-          onChange={(e) => setCurrentTag(e.target.value)}
-          onKeyDown={handleTagEnter}
+          name={name}
+          type="text"
           placeholder={placeholder}
-          className='form-style w-full'
+          onKeyDown={handleKeyDown}
+          className="form-style w-full"
         />
-        {
-          errors[name] && (
-            <span>{label} is required</span>
-          )
-        }
-    </div>  
+      </div>
+      {errors[name] && (
+        <span className="ml-2 text-xs tracking-wide text-pink-200">
+          {label} is required
+        </span>
+      )}
+    </div>
   )
 }

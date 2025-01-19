@@ -1,99 +1,124 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from "react"
+import { useDropzone } from "react-dropzone"
+import { useSelector } from "react-redux"
+import "video-react/dist/video-react.css"
+import { Player } from "video-react"
 
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import { IoMdCloseCircle } from "react-icons/io";
+import { FiUploadCloud } from "react-icons/fi"
 
-export const Upload = ({name, label, register, errors, setValue}) => {
+export const Upload = ({name, label, register, setValue, errors, video=false, viewData=null, editData=null,
+}) => {
 
-  const [previewFile, setPreviewFile] = useState(null);
-  const [file, setFile] = useState(null);
+  const { course } = useSelector((state) => state.course);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewSource, setPreviewSource] = useState(
+    viewData ? viewData : editData ? editData : ""
+  );
 
-  const acceptedFormats = ".bmp, .png, .webp, .jpeg, .jpg, .gif, .tiff, .svg, .ico, .heic";
+  const inputRef = useRef(null);
 
-  useEffect(() => {
-      register(name, {required:true});
-  }, []);
-  
-  useEffect(() => {
-      setValue(name, file);
-  }, [file]);
-
-  const handleChange = (e) => {
-    setPreviewFile(URL.createObjectURL(e.target.files[0]));
-    setFile(e.target.files[0]);
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0]
+    if (file) {
+      previewFile(file);
+      setSelectedFile(file);
+    }
   }
 
-  const handleFileRemove = (e) => {
-    e.stopPropagation(); // Prevent triggering the parent click (i.e. prevents file input on clicking this)
-    setFile(null);
-    setPreviewFile(null);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: video
+      ? { "video/*": [".mp4"] }
+      : { "image/*": [".jpeg", ".jpg", ".png"] },
+    onDrop,
+  });
+
+  const previewFile = (file) => {
+    // console.log(file)
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+      setPreviewSource(reader.result)
+    }
   }
+
+  useEffect(() => {
+    register(name, { required: true })
+  }, [register])
+
+  useEffect(() => {
+    setValue(name, selectedFile)
+  }, [selectedFile, setValue])
 
   return (
-    <>
-      <label htmlFor={name} className='label-style'>{label}<sup className='text-pink-300'>*</sup></label>
-      <div className="flex flex-col w-full">
-          
-          <div className="relative flex flex-col items-center justify-center w-full p-8 border-2 border-richblack-600 border-dashed rounded-lg cursor-pointer bg-richblack-700"
-          onClick={() => document.getElementById(name).click()}>
-          
-            {/* file input box */}
-            {
-              !previewFile && (
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <div className=" p-4 mb-4 text-yellow-50 bg-richblack-800 rounded-full flex items-center justify-center">
-                    <AiOutlineCloudUpload size={30}/>
-                  </div>
+    <div className="flex flex-col space-y-2">
+      <label className="text-sm text-richblack-5" htmlFor={name}>
+        {label} {!viewData && <sup className="text-pink-200">*</sup>}
+      </label>
 
-                  <div className='flex flex-col justify-center items-center -space-y-1 text-richblack-200'>
-                    <p className="mb-2 text-gray-500">
-                      Drag and drop an image, or <span className='text-yellow-50'>Browse</span>
-                    </p>
-                    <p className="text-gray-500">
-                      Max 6MB each (12MB for videos)
-                    </p>
-                  </div>
-
-                  <ul className='mt-8 flex space-x-28 list-disc text-richblack-400 font-semibold'>
-                    <li>Aspect ratio 16:9</li>
-                    <li>Recommended size 1024x576</li>
-                  </ul>
-              </div>
-              )}
-
-              <input id={name} type="file" accept={acceptedFormats} className="hidden" onChange={handleChange}/>
-
-              {/* File preview */}
-              {
-                previewFile && (
-                  <img 
-                  src={previewFile}
-                  alt='file preview'
-                  className=' h-[400px] object-cover' 
-                  />
-                )
-              }
-
-              {/* Remove file button */}
-              {
-                previewFile && (
-                  <div 
-                  onClick={handleFileRemove}
-                  className='absolute right-2 top-2 p-3 bg-richblack-800 rounded-full text-pink-300 hover:bg-pink-400 hover:text-pink-800 transition-all duration-200'>
-                    <IoMdCloseCircle size={18}/>
-                  </div>
-                )
-              }
+      <div
+        className={`${
+          isDragActive ? "bg-richblack-600" : "bg-richblack-700"
+        } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-richblack-500`}
+      >
+        {previewSource ? (
+          <div className="flex w-full flex-col p-6">
+            {!video ? (
+              <img
+                src={previewSource}
+                alt="Preview"
+                className="h-full w-full rounded-md object-cover"
+              />
+            ) : (
+              <Player aspectRatio="16:9" playsInline src={previewSource} />
+            )}
+            
+            {/* Cancel button */}
+            {!viewData && (
+              <button
+                type="button"
+                onClick={() => {
+                  setPreviewSource("")
+                  setSelectedFile(null)
+                  setValue(name, null)
+                }}
+                className="mt-3 text-richblack-400 underline"
+              >
+                Cancel
+              </button>
+            )}
 
           </div>
-          
-          {
-            errors[name] && (
-              <span className='mt-1'>{label} is required</span>
-            )
-          }
-      </div> 
-    </>
+        ) : (
+          <div
+            className="flex w-full flex-col items-center p-6"
+            {...getRootProps()}
+          >
+            <input id={name} {...getInputProps()} ref={inputRef} />
 
+            <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
+              <FiUploadCloud className="text-2xl text-yellow-50" />
+            </div>
+
+            <p className="mt-2 max-w-[200px] text-center text-sm text-richblack-200">
+              Drag and drop an {!video ? "image" : "video"}, or click to{" "}
+              <span className="font-semibold text-yellow-50">Browse</span> a
+              file
+            </p>
+
+            <ul className="mt-10 flex list-disc justify-between space-x-12 text-center  text-xs text-richblack-200">
+              <li>Aspect ratio 16:9</li>
+              <li>Recommended size 1024x576</li>
+            </ul>
+
+          </div>
+        )}
+        
+      </div>
+      {errors[name] && (
+        <span className="ml-2 text-xs tracking-wide text-pink-200">
+          {label} is required
+        </span>
+      )}
+    </div>
   )
 }

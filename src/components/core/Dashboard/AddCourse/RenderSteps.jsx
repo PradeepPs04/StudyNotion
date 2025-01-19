@@ -25,7 +25,7 @@ export const RenderSteps = () => {
     ]
 
   return (
-    <>
+    <section>
         {/* Step number and dashed line */}
         <div className='relative mb-2 flex w-full justify-center'>
             {
@@ -40,7 +40,8 @@ export const RenderSteps = () => {
                                 className={`grid cursor-default aspect-square w-[34px] place-items-center rounded-full border-[1px] ${
                                 step === item.id 
                                 ? 'border-yellow-50 bg-yellow-900 text-yellow-50' 
-                                : 'border-richblack-700 bg-richblack-800 text-richblack-300'}`}
+                                : 'border-richblack-700 bg-richblack-800 text-richblack-300'}
+                                ${item.id < step ? 'bg-yellow-50' : ''}`}
                             >
                                     {
                                         step > item.id 
@@ -81,7 +82,8 @@ export const RenderSteps = () => {
                         >
                             <p
                                 className={`text-sm 
-                                ${step >= item.id ? 'text-richblack-5' : 'text-richblack-500'}`}
+                                ${step === item.id ? 'text-richblack-5' : 'text-richblack-500'}
+                                ${item.id < step ? 'text-richblack-500' : ''}`}
                             >
                                 {item.title}
                             </p>
@@ -94,6 +96,6 @@ export const RenderSteps = () => {
         {step === 1 && <CourseInformationForm/>}
         {step === 2 && <CourseBuilderForm/>}
         {/* {step === 3 && <PublishCourse/>} */}
-    </>
+    </section>
   )
 }

@@ -9,7 +9,7 @@ import { addCourseDetails, editCourseDetails, fetchCourseCategories } from '../.
 
 import { setStep, setCourse } from '../../../../../slices/courseSlice';
 
-import { ChipInput } from './ChipInput';
+import ChipInput from './ChipInput';
 import { Upload } from './Upload';
 import { RequirementField } from './RequirementField';
 import { IconBtn } from '../../../../common/IconBtn';
@@ -151,7 +151,7 @@ export const CourseInformationForm = () => {
   return (
     <form 
     onSubmit={handleSubmit(onSubmit)}
-    className='rounded-md text-richblack-25 border-richblack-700 bg-richblack-800 p-6 space-y-8 flex flex-col'>
+    className='rounded-md text-richblack-5 border-richblack-700 bg-richblack-800 p-6 space-y-8 flex flex-col'>
       {/* course title */}
       <div>
         <label htmlFor='courseTitle' className='label-style'>Course Title<sup className='text-pink-300'>*</sup></label>
@@ -163,7 +163,7 @@ export const CourseInformationForm = () => {
         />
         {
           errors.courseTitle && (
-            <span>Course title is required</span>
+            <span className="ml-2 text-xs tracking-wide text-pink-200">Course title is required</span>
           )
         }
 
@@ -180,7 +180,7 @@ export const CourseInformationForm = () => {
         />
         {
           errors.courseShortDescription && (
-            <span>Course description is required</span>
+            <span className="ml-2 text-xs tracking-wide text-pink-200">Course description is required</span>
           )
         }
       </div>
@@ -198,7 +198,7 @@ export const CourseInformationForm = () => {
         <HiOutlineCurrencyRupee size={18} className='absolute top-10 left-2 text-richblack-400'/>
         {
           errors.coursePrice && (
-            <span>Course price is required</span>
+            <span className="ml-2 text-xs tracking-wide text-pink-200">Course price is required</span>
           )
         }
       </div>
@@ -223,7 +223,7 @@ export const CourseInformationForm = () => {
         </select>
         {
           errors.courseCategory && (
-            <span>Course category is required</span>
+            <span className="ml-2 text-xs tracking-wide text-pink-200">Course category is required</span>
           )
         }
       </div>
@@ -242,10 +242,11 @@ export const CourseInformationForm = () => {
       {/* course thumbnail */}
       <Upload
         name="courseImage"
-        label="Course thumbnail"
+        label="Course Thumbnail"
         register={register}
-        errors={errors}
         setValue={setValue}
+        errors={errors}
+        editData={editCourse ? course?.thumbnail : null}
       />
 
       {/* course benefits */}
@@ -259,7 +260,7 @@ export const CourseInformationForm = () => {
         />
         {
           errors.courseBenefits && (
-            <span>Benefits of the course is required</span>
+            <span className="ml-2 text-xs tracking-wide text-pink-200">Benefits of the course is required</span>
           )
         }
       </div>
@@ -273,6 +274,7 @@ export const CourseInformationForm = () => {
         getValues={getValues}
       />
 
+      {/* Next button */}
       <div className='w-full flex space-x-4 justify-end'>
         {
           editCourse && (
