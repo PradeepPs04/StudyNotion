@@ -151,7 +151,7 @@ export const CourseInformationForm = () => {
   return (
     <form 
     onSubmit={handleSubmit(onSubmit)}
-    className='rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8 flex flex-col'>
+    className='rounded-md text-richblack-25 border-richblack-700 bg-richblack-800 p-6 space-y-8 flex flex-col'>
       {/* course title */}
       <div>
         <label htmlFor='courseTitle' className='label-style'>Course Title<sup className='text-pink-300'>*</sup></label>

@@ -25,43 +25,75 @@ export const RenderSteps = () => {
     ]
 
   return (
-    <div>
-        <>
-            {/* TODO: check last line of this div */}
-            <div>
-                {
-                    steps.map((item) => (
-                        <div key={item.id}>
-                            <div>
-                                <div className={`${step === item.id 
-                                ? 'bg-yellow-900 border-yellow-50 text-yellow-50' 
-                                : 'border-richblack-700 bg-richblack-800 text-richblack-300'}`}>
+    <>
+        {/* Step number and dashed line */}
+        <div className='relative mb-2 flex w-full justify-center'>
+            {
+                // Display current step number (if completed shows check icon) 
+                steps.map((item) => (
+                    <>
+                        <div 
+                            className='flex flex-col items-center'
+                            key={item.id}
+                        >
+                            <div
+                                className={`grid cursor-default aspect-square w-[34px] place-items-center rounded-full border-[1px] ${
+                                step === item.id 
+                                ? 'border-yellow-50 bg-yellow-900 text-yellow-50' 
+                                : 'border-richblack-700 bg-richblack-800 text-richblack-300'}`}
+                            >
                                     {
-                                        item.id < step ? (<FaCheck/>) : (item.id)
+                                        step > item.id 
+                                        ? (<FaCheck className='font-bold text-richblack-900'/>)
+                                        : (item.id)
                                     }
-                                </div>
                             </div>
-
-                            {/* TODO: Add dashed lines between steps (lines before completed steps must be yellow) */}
+                            
                         </div>
-                    ))
-                }
-            </div>
+                        
+                        {/* Display dashed lines */}
+                        {
+                            item.id != steps.length && (
+                                <>
+                                    <div
+                                        className={`h-[calc(34px/2)] w-[33%] border-dashed border-b-2
+                                        ${step > item.id ? 'border-yellow-50' : 'border-richblack-500'}`}
+                                    >
 
-            <div>
-                {
-                    steps.map((item) => (
-                        <div key={item.id}>
-                            <p>{item.title}</p>
+                                    </div>
+                                </>
+                            )
+                        }
+                    </>
+
+                ))
+            }
+        </div>
+        
+        {/* Steps name */}
+        <div className='relative mb-16 flex w-full select-none justify-between'>
+            {
+                steps.map((item) => (
+                    <>
+                        <div 
+                            className='flex min-w-[130px] flex-col items-center gap-y-2'
+                            key={item.id}
+                        >
+                            <p
+                                className={`text-sm 
+                                ${step >= item.id ? 'text-richblack-5' : 'text-richblack-500'}`}
+                            >
+                                {item.title}
+                            </p>
                         </div>
-                    ))
-                }
-            </div>
+                    </>
+                ))
+            }
+        </div>
 
-            {step === 1 && <CourseInformationForm/>}
-            {step === 2 && <CourseBuilderForm/>}
-            {/* {step === 3 && } */}
-        </>
-    </div>
+        {step === 1 && <CourseInformationForm/>}
+        {step === 2 && <CourseBuilderForm/>}
+        {/* {step === 3 && <PublishCourse/>} */}
+    </>
   )
 }
