@@ -58,7 +58,7 @@ exports.createSubSection = async (req, res) => {
 exports.updateSubSection = async (req, res) => {
     try {
       // fetch data
-      const { subSectionId, title, description } = req.body
+      const { sectionId, subSectionId, title, description } = req.body
       // serach sub-section
       const subSection = await SubSection.findById(subSectionId)
 
@@ -89,11 +89,13 @@ exports.updateSubSection = async (req, res) => {
       // save changes to sub-section entry in db
       await subSection.save();
 
+      const updatedSection = await Section.findById(sectionId).populate("subSection");
+
       // return response
       return res.json({
         success: true,
         message: "Section updated successfully",
-        subSection: subSection,
+        data: updatedSection,
       });
     } catch (error) {
       console.error(error)
@@ -129,10 +131,13 @@ exports.deleteSubSection = async (req, res) => {
           .json({ success: false, message: "SubSection not found" })
       }
 
+      const updatedSection = await Section.findById(sectionId).populate("subSection");
+
       // return response
       return res.json({
         success: true,
         message: "SubSection deleted successfully",
+        data: updatedSection,
       });
     } catch (error) {
       console.error(error)

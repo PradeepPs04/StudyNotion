@@ -55,7 +55,7 @@ exports.createSection = async (req, res) => {
 exports.updateSection = async (req, res) => {
 	try {
 		// fetch required data from req body
-		const { sectionName, sectionId } = req.body;
+		const { sectionName, sectionId, courseId } = req.body;
 
 		// find and update section
 		const section = await Section.findByIdAndUpdate(
@@ -64,14 +64,18 @@ exports.updateSection = async (req, res) => {
 			{ new: true }
 		);
 
-		const courseDetails = await Course.find(
-			{courseContent: {$in: [section._id]}}
-		).exec();
+		const course = await Course.findById(courseId)
+		.populate({
+			path: "courseContent",
+			populate: {
+				path: "subSection",
+			},
+		});
 
 		res.status(200).json({
 			success: true,
 			message: "Section updated successfully",
-			data: courseDetails,
+			data: course,
 		});
 	} catch (error) {
 		console.error("Error updating section:", error);

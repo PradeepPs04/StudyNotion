@@ -47,7 +47,11 @@ export const NestedView = ({handleChangeEditSectionName}) => {
         );
 
         if(result) {
-            dispatch(setCourse(result));
+            const updatedCourseContent = course.courseContent.map((section) => (
+                section._id === sectionId ? result : section
+            ))
+            const updatedCourse = {...course, courseContent:updatedCourseContent};
+            dispatch(setCourse(updatedCourse));
         }
 
         setConfirmationModal(null);
@@ -102,7 +106,9 @@ export const NestedView = ({handleChangeEditSectionName}) => {
                                             <p>{data.title}</p>
                                         </div>
                                         
-                                        <div className='flex items-center gap-x-3'>
+                                        <div
+                                          onClick={(e) => e.stopPropagation()} 
+                                          className='flex items-center gap-x-3'>
                                             <button
                                             onClick={() => setEditSubsection({...data, sectionId:section._id})}>
                                                 <MdEdit/>
@@ -118,7 +124,6 @@ export const NestedView = ({handleChangeEditSectionName}) => {
                                             })}>
                                                 <RiDeleteBin6Line />
                                             </button>
-
                                         </div>
                                     </div>
                                 ))

@@ -203,7 +203,7 @@ export const updateSubSection = async (data, token) => {
         );
 
         console.log("Update Sub Section API response...", response);
-        result = response?.data?.subSection;
+        result = response?.data?.data;
         toast.success("Course Section Updated")
     } catch(err) {
         console.log("Update SUB Section API error...", err);
@@ -250,7 +250,7 @@ export const deleteSubSection = async (data, token) => {
         );
 
         console.log("Delete Sub Section API response...", response);
-        result = response.data.data;
+        result = response?.data?.data;
         toast.success("Lecture deleted");
     } catch(err) {
         console.log("Delete Sub Section API error....", err);
