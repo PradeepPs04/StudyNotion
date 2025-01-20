@@ -150,7 +150,7 @@ exports.editCourse = async (req, res) => {
 
 		// update only the fields that are present in the request body
 		for (const key in updates) {
-			if(updates.hasOwnProperties(key)) {
+			if(updates.hasOwnProperty(key)) {
 				if(key === "tag" || key === "instructions") {
 					course[key] = JSON.parse(updates[key]);
 				} else {
@@ -172,7 +172,7 @@ exports.editCourse = async (req, res) => {
 			},
 		})
 		.populate("category")
-		.populate("ratingAndReveiws")
+		.populate("ratingAndReviews")
 		.populate({
 			path: "courseContent",
 			popoulate: {
