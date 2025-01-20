@@ -187,7 +187,7 @@ exports.editCourse = async (req, res) => {
 			data: updatedCourse,
 		});
 	} catch(err) {
-		console.log(error);
+		console.log(err);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error",
@@ -293,7 +293,7 @@ exports.getFullCourseDetails = async (req, res) => {
 		})
 		.populate("category")
 		.populate("ratingAndReviews")
-		.popoulate({
+		.populate({
 			path: "courseContent",
 			populate: {
 				path: "subSection",

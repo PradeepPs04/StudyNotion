@@ -32,7 +32,7 @@ export default function EditCourse () {
 
     if(loading) {
         return (
-            <div>
+            <div className='text-richblack-5'>
                 Loading...
             </div>
         )
