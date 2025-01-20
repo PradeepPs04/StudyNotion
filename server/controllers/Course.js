@@ -362,7 +362,7 @@ exports.getInstructorCourses = async (req, res) => {
 		console.error(err);
 		res.status(500).json({
 			success: false,
-			message: 'Failed to retirieve instructor courses',
+			message: 'Internal server error',
 			error: err.message,
 		});
 	}
@@ -404,6 +404,19 @@ exports.deleteCourse = async (req, res) => {
 			await Section.findByIdAndDelete(sectionId);
 		}
 
-		
+		// delete the course
+		await Course.findByIdAndDelete(courseId);
+
+		return res.status(200).json({
+			success: true,
+			message: 'Course deleted successfully',
+		});
+	} catch(err) {
+		console.error(err);
+		return res.status(500).json({
+			success: false,
+			message: 'Internal server error',
+			error: err.message,
+		});
 	}
 }
