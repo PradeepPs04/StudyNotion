@@ -68,27 +68,32 @@ export const PublishCourse = () => {
     }
 
   return (
-    <div className='rounded-md border-[1px] border-richblack-600 bg-richblack-800 text-richblack-5 p-8'>
-        <p>Publish Course</p>
+    <div className="rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
+        <p className="text-2xl font-semibold text-richblack-5">Publish Course</p>
+
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label className='label-style flex items-center' htmlFor='public'>
+            <div className="my-6 mb-8">
+                {/* checkbox */}
+                <label className="inline-flex items-center text-lg" htmlFor='public'>
                     <input
                         type='checkbox'
                         id='public'
                         {...register('public')}
-                        className='rounded-full h-4 w-4'
+                        className="border-gray-300 h-4 w-4 rounded bg-richblack-500 text-richblack-400 focus:ring-2 focus:ring-richblack-5"
                     />
-                    <span className='ml-3'>Make this Course as Public</span>
+                    <span className="ml-2 text-richblack-400">
+                        Make this Course as Public
+                    </span>
                 </label>
             </div>
-
-            <div className='flex justify-end gap-x-3'>
+            
+            {/* next & previous buttons */}
+            <div className="ml-auto flex max-w-max items-center gap-x-4">
                 <button
                     disabled={loading}
                     type='button'
                     onClick={goBack}
-                    className='flex items-center rounded-md bg-richblack-500 px-6 text-richblack-800 font-bold'
+                    className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900"
                 >
                     Back
                 </button>

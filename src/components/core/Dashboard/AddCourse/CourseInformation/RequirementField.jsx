@@ -40,10 +40,12 @@ export const RequirementField = ({label, name, register, errors, setValue, getVa
     }
 
   return (
-    <div>
-        <label htmlFor={name} className='label-style'>{label}<sup className='text-pink-300'>*</sup></label>
+    <div className="flex flex-col space-y-2">
+        <label htmlFor={name} className='text-sm text-richblack-5'>
+            {label}<sup className='text-pink-300'>*</sup>
+        </label>
 
-        <div>
+        <div className="flex flex-col items-start space-y-2">
             <input
                 type='text'
                 id={name}
@@ -62,10 +64,10 @@ export const RequirementField = ({label, name, register, errors, setValue, getVa
 
         {
             requirementList.length > 0 && (
-                <ul>
+                <ul className="mt-2 list-inside list-disc">
                     {
                         requirementList.map((value, index) => (
-                            <li key={index} className='flex space-x-2 items-center text-richblack-300'>
+                            <li key={index} className="flex items-center text-richblack-5">
                                 <span>{value}</span>
                                 <button 
                                 type='button'
@@ -81,7 +83,9 @@ export const RequirementField = ({label, name, register, errors, setValue, getVa
         }
         {
             errors[name] && (
-                <span>{label} is required</span>
+                <span className="ml-2 text-xs tracking-wide text-pink-200">
+                    {label} is required
+                </span>
             )
         }
     </div>

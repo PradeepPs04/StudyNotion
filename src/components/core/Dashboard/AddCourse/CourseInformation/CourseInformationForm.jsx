@@ -10,7 +10,7 @@ import { addCourseDetails, editCourseDetails, fetchCourseCategories } from '../.
 import { setStep, setCourse } from '../../../../../slices/courseSlice';
 
 import ChipInput from './ChipInput';
-import { Upload } from './Upload';
+import { Upload } from '../Upload';
 import { RequirementField } from './RequirementField';
 import { IconBtn } from '../../../../common/IconBtn';
 import { COURSE_STATUS } from '../../../../../utils/constants';
@@ -196,7 +196,7 @@ export const CourseInformationForm = () => {
         </div>
 
         {/* course price */}
-        <div className="flex flex-col space-y-2">
+        <div className="relative flex flex-col space-y-2">
           <label htmlFor='coursePrice' className='text-sm text-richblack-5'>
             Course Price<sup className='text-pink-300'>*</sup>
           </label>
@@ -213,7 +213,7 @@ export const CourseInformationForm = () => {
             })}
             className='w-full form-style !pl-12'
           />
-          <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400"/>
+          <HiOutlineCurrencyRupee className="absolute left-3 top-[58%] inline-block -translate-y-1/2 text-2xl text-richblack-400"/>
           {
             errors.coursePrice && (
               <span className="ml-2 text-xs tracking-wide text-pink-200">

@@ -7,7 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 
 import { createSubSection, updateSubSection } from '../../../../../services/operations/courseDetailsAPI';
 import { setCourse } from '../../../../../slices/courseSlice';
-import { Upload } from '../CourseInformation/Upload';
+import { Upload } from '../Upload';
 import { IconBtn } from '../../../../common/IconBtn';
 
 export const SubSectionModal = ({modalData, setModalData, add=false, view=false, edit=false}) => {

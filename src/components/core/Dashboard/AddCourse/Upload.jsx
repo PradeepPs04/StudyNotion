@@ -1,36 +1,34 @@
 import { useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
+import { FiUploadCloud } from "react-icons/fi"
 import { useSelector } from "react-redux"
+
 import "video-react/dist/video-react.css"
 import { Player } from "video-react"
 
-import { FiUploadCloud } from "react-icons/fi"
+export const Upload = ({name, label, register, setValue, errors, video=false, viewData=null, editData=null}) =>{
 
-export const Upload = ({name, label, register, setValue, errors, video=false, viewData=null, editData=null,
-}) => {
-
-  const { course } = useSelector((state) => state.course);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const { course } = useSelector((state) => state.course)
+  const [selectedFile, setSelectedFile] = useState(null)
   const [previewSource, setPreviewSource] = useState(
     viewData ? viewData : editData ? editData : ""
-  );
-
-  const inputRef = useRef(null);
+  )
+  const inputRef = useRef(null)
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0]
     if (file) {
-      previewFile(file);
-      setSelectedFile(file);
+      previewFile(file)
+      setSelectedFile(file)
     }
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: video
-      ? { "video/*": [".mp4"] }
-      : { "image/*": [".jpeg", ".jpg", ".png"] },
+    accept: !video
+      ? { "image/*": [".jpeg", ".jpg", ".png"] }
+      : { "video/*": [".mp4"] },
     onDrop,
-  });
+  })
 
   const previewFile = (file) => {
     // console.log(file)
@@ -51,6 +49,7 @@ export const Upload = ({name, label, register, setValue, errors, video=false, vi
 
   return (
     <div className="flex flex-col space-y-2">
+    
       <label className="text-sm text-richblack-5" htmlFor={name}>
         {label} {!viewData && <sup className="text-pink-200">*</sup>}
       </label>
@@ -71,8 +70,6 @@ export const Upload = ({name, label, register, setValue, errors, video=false, vi
             ) : (
               <Player aspectRatio="16:9" playsInline src={previewSource} />
             )}
-            
-            {/* Cancel button */}
             {!viewData && (
               <button
                 type="button"
@@ -86,14 +83,14 @@ export const Upload = ({name, label, register, setValue, errors, video=false, vi
                 Cancel
               </button>
             )}
-
           </div>
         ) : (
           <div
             className="flex w-full flex-col items-center p-6"
             {...getRootProps()}
           >
-            <input id={name} {...getInputProps()} ref={inputRef} />
+
+            <input {...getInputProps()} ref={inputRef} />
 
             <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
               <FiUploadCloud className="text-2xl text-yellow-50" />
@@ -112,13 +109,15 @@ export const Upload = ({name, label, register, setValue, errors, video=false, vi
 
           </div>
         )}
-        
+
       </div>
-      {errors[name] && (
-        <span className="ml-2 text-xs tracking-wide text-pink-200">
-          {label} is required
-        </span>
+      {
+        errors[name] && (
+          <span className="ml-2 text-xs tracking-wide text-pink-200">
+            {label} is required
+          </span>
       )}
+
     </div>
   )
 }
