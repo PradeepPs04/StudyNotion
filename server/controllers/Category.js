@@ -1,6 +1,11 @@
 const Category = require("../models/Category");
 const Course = require("../models/Course");
 
+// returns random number between [0 to n-1]
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
 // create category controller
 exports.createCategory = async (req, res) => {
 	try {
@@ -107,7 +112,7 @@ exports.categoryPageDetails = async (req, res) => {
                 ._id
             )
                 .populate({
-                    path: "course",
+                    path: "courses",
                     match: {status: "Published"},
                 })
                 .exec();
@@ -115,7 +120,7 @@ exports.categoryPageDetails = async (req, res) => {
             // get top 10 selling courses
             const allCategories = await Category.find()
                 .populate({
-                    path: "course",
+                    path: "courses",
                     match: {status: "Published"},
                     populate: {
                         path: "instructor",

@@ -28,8 +28,12 @@ export const Catalog = () => {
 
     useEffect(() => {
         const getCategoryDetails = async () => {
-            const response = await getCategoryPageData(categoryId);
-            setCatalogPageData(response);
+            try {
+                const response = await getCategoryPageData(categoryId);
+                setCatalogPageData(response);
+            } catch(err) {
+                console.error(err);
+            }
         }
 
         if(categoryId) {
