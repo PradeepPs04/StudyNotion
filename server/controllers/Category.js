@@ -48,14 +48,14 @@ exports.createCategory = async (req, res) => {
 // show all categories controller
 exports.showAllCategories = async (req, res) => {
 	try {
-		const allCategorys = await Category.find(
+		const allCategories = await Category.find(
 			{},
 			{ name: true, description: true }
 		);
 
 		res.status(200).json({
 			success: true,
-			data: allCategorys,
+			data: allCategories,
 		});
 	} catch (error) {
 		return res.status(500).json({
@@ -68,12 +68,17 @@ exports.showAllCategories = async (req, res) => {
 // categoryPageDetails 
 exports.categoryPageDetails = async (req, res) => {
     try {
-            // get categoryId
             const {categoryId} = req.body;
+
             // get courses for specified categoryId
             const selectedCategory = await Category.findById(categoryId)
-                                            .populate("courses")
-                                            .exec();
+                .populate({
+                    path: 'courses',
+                    match: {status: 'Published'},
+                    populate: "ratingAndReviews"
+                })
+                .exec();
+
             // validation
             if(!selectedCategory) {
                 return res.status(404).json({
@@ -82,17 +87,46 @@ exports.categoryPageDetails = async (req, res) => {
                 });
             }
 
-            // get courses for different categories
-            const differentCategories = await Category.find(
-                { _id: {$ne: categoryId}}) // not equals to
-                .populate("courses")
+            // when there are no courses
+            // if(selectedCategory.courses.length === 0) {
+            //     console.log("No course found for the selected category");
+            //     return res.status(404).json({
+            //         success: false,
+            //         message: 'No courses found for the selected category',
+            //     });
+            // }
+
+            // get other categories
+            const categoriesExceptSelected = await Category.find(
+                { _id: {$ne: categoryId} // not equals to
+            }) 
+
+            // get all published course of a random other category
+            let differentCategories = await Category.findOne(
+                categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]
+                ._id
+            )
+                .populate({
+                    path: "course",
+                    match: {status: "Published"},
+                })
                 .exec();
 
             // get top 10 selling courses
-            const topSellingCourses = await Course.find()
-            .sort({'studentsEnrolled.length':-1}) // sort by number of enrolled students in course (descending)
-            .limit(10) // get first 10
-            .exec();
+            const allCategories = await Category.find()
+                .populate({
+                    path: "course",
+                    match: {status: "Published"},
+                    populate: {
+                        path: "instructor",
+                    },
+                })
+                .exec();
+
+            const allCourses = allCategories.flatMap((category) => category.courses);
+            const mostSellingCourses = allCourses
+                                       .sort((a, b) => b.studentsEnrolled.length - a.studentsEnrolled.length)
+                                       .slice(0, 10);
 
             // return response
             return res.status(200).json({
@@ -100,7 +134,7 @@ exports.categoryPageDetails = async (req, res) => {
                 data: {
                     selectedCategory,
                     differentCategories,
-                    topSellingCourses,
+                    mostSellingCourses,
                 },
             });
 
@@ -109,7 +143,8 @@ exports.categoryPageDetails = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success:false,
-            message:error.message,
+            message: "Internal server error",
+            error:error.message,
         });
     }
 }
