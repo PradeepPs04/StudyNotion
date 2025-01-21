@@ -32,10 +32,10 @@ export const RenderSteps = () => {
             {
                 // Display current step number (if completed shows check icon) 
                 steps.map((item) => (
-                    <>
+                    <div key={item.id}>
                         <div 
                             className='flex flex-col items-center'
-                            key={item.id}
+                            
                         >
                             <div
                                 className={`grid cursor-default aspect-square w-[34px] place-items-center rounded-full border-[1px] ${
@@ -66,7 +66,7 @@ export const RenderSteps = () => {
                                 </>
                             )
                         }
-                    </>
+                    </div>
 
                 ))
             }
