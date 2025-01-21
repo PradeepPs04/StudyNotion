@@ -118,18 +118,26 @@ export const SubSectionModal = ({modalData, setModalData, add=false, view=false,
   }
 
   return (
-    <div>
+    <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
 
-      <div>
-        <div>
-            <p>{view && "Viewing"} {add && "Adding"} {edit && "Editing"} Lecture</p>
+      <div className="my-10 w-11/12 max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800">
+        
+        {/* modal header */}
+        <div className="flex items-center justify-between rounded-t-lg bg-richblack-700 p-5">
+            <p className="text-xl font-semibold text-richblack-5">
+              {view && "Viewing"} {add && "Adding"} {edit && "Editing"} Lecture
+            </p>
             <button
             onClick={() => (!loading ? setModalData(null) : {})}>
-              <RxCross2/>
+              <RxCross2 className="text-2xl text-richblack-5"/>
             </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        {/* modal form */}
+        <form 
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-8 px-8 py-10"
+        >
           <Upload
             name='lectureVideo'
             label='Lecture Video'
@@ -142,8 +150,10 @@ export const SubSectionModal = ({modalData, setModalData, add=false, view=false,
           />
 
           {/* Lecture title */}
-          <div>
-            <label htmlFor='lectureTitle' className='label-style'>Lecture Title<sup className='text-pink-300'>*</sup></label>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor='lectureTitle' className="text-sm text-richblack-5">
+              Lecture Title {!view && <sup className="text-pink-200">*</sup>}
+            </label>
             <input
               id='lectureTitle'
               placeholder='Enter lecture title'
@@ -152,19 +162,23 @@ export const SubSectionModal = ({modalData, setModalData, add=false, view=false,
             />
             {
               errors.lectureTitle && (
-                <span>Lecture title is required</span>
+                <span className="ml-2 text-xs tracking-wide text-pink-200">
+                  Lecture title is required
+                </span>
               )
             }
           </div>
 
           {/* Lecture description */}
-          <div>
-            <label htmlFor='lectureDescription' className='label-style'>Lecture Description<sup className='text-pink-300'>*</sup></label>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor='lectureDescription' className="text-sm text-richblack-5">
+              Lecture Description {!view && <sup className="text-pink-200">*</sup>}
+            </label>  
               <textarea
                 id='lectureDescription'
                 placeholder='Enter lecture description'
                 {...register('lectureDescription', {required:true})}
-                className='w-full form-style min-h-[130px]'
+                className="form-style resize-x-none min-h-[130px] w-full"
               />
               {
                 errors.lectureDescription && (

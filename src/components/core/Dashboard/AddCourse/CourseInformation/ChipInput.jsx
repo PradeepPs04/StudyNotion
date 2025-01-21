@@ -20,6 +20,7 @@ export default function ChipInput({label, name, placeholder, register, errors, s
     setValue(name, chips)
   }, [chips])
 
+  // Function to handle user input when chips are added
   const handleKeyDown = (event) => {
     // Check if user presses "Enter" or ","
     if (event.key === "Enter" || event.key === ",") {
@@ -39,6 +40,7 @@ export default function ChipInput({label, name, placeholder, register, errors, s
     }
   }
 
+  // Function to handle deletion of a chip
   const handleDeleteChip = (index) => {
     // Filter the chips array to remove the chip with the given index
     // const newChips = chips.filter((_, index) => index !== index)

@@ -58,21 +58,27 @@ export const NestedView = ({handleChangeEditSectionName}) => {
     }
 
   return (
-    <div>
-        <div className='rounded-md bg-richblack-700 p-6 px-8 flex flex-col gap-6'>
+    <>
+        <div 
+            className="rounded-lg bg-richblack-700 p-6 px-8"
+            id="nestedViewContainer"
+        >
             {
                 course?.courseContent?.map((section) => (
+                    // section dropdown
                     <details key={section._id} open>
-                        <summary className='flex items-center justify-between gap-x-3 border-b-2'>
-                            <div className='flex items-center gap-x-2'>
-                                <RxDropdownMenu />
-                                <p>{section.sectionName}</p>
+                        <summary className="flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2">
+                            <div className='flex items-center gap-x-3'>
+                                <RxDropdownMenu className="text-2xl text-richblack-50"/>
+                                <p className="font-semibold text-richblack-50">
+                                    {section.sectionName}
+                                </p>
                             </div>
 
-                            <div className='flex items-center gap-x-2'>
+                            <div className='flex items-center gap-x-3'>
                                 <button
                                 onClick={() => handleChangeEditSectionName(section._id, section.sectionName)}>
-                                    <MdEdit/>
+                                    <MdEdit className="text-xl text-richblack-300"/>
                                 </button>
 
                                 <button
@@ -84,26 +90,28 @@ export const NestedView = ({handleChangeEditSectionName}) => {
                                     btn1Handler: () => handleDeleteSection(section._id),
                                     btn2Handler: () => setConfirmationModal(null),
                                 })}>
-                                    <RiDeleteBin6Line />
+                                    <RiDeleteBin6Line className="text-xl text-richblack-300"/>
                                 </button>
 
-                                <span>|</span>
+                                <span className="font-medium text-richblack-300">|</span>
                                 <IoMdArrowDropdown className={`text-xl text-richblack-300`}/>
                             </div>
 
                         </summary>
-                        
-                        <div>
+                            
+                        {/* Subsections */}
+                        <div className="px-6 pb-4">
+                            {/* Render All Sub Sections Within a Section */}
                             {
                                 section.subSection.map((data) => (
                                     <div 
-                                    key={data?._id}
-                                    onClick={() => setViewSubsection(data)}
-                                    className='flex items-center justify-between gap-x-3 border-b-2'
+                                        key={data?._id}
+                                        onClick={() => setViewSubsection(data)}
+                                        className='flex cursor-pointer items-center justify-between gap-x-3 border-b-2 border-b-richblack-600 py-2'
                                     >
-                                        <div>
-                                            <RxDropdownMenu />
-                                            <p>{data.title}</p>
+                                        <div className="flex items-center gap-x-3 py-2">
+                                            <RxDropdownMenu className="text-2xl text-richblack-50"/>
+                                            <p className="font-semibold text-richblack-50">{data.title}</p>
                                         </div>
                                         
                                         <div
@@ -111,8 +119,9 @@ export const NestedView = ({handleChangeEditSectionName}) => {
                                           className='flex items-center gap-x-3'>
                                             <button
                                             onClick={() => setEditSubsection({...data, sectionId:section._id})}>
-                                                <MdEdit/>
+                                                <MdEdit className="text-xl text-richblack-300"/>
                                             </button>
+
                                             <button
                                             onClick={() => setConfirmationModal({
                                             text1: 'Delete this sub section',
@@ -129,10 +138,12 @@ export const NestedView = ({handleChangeEditSectionName}) => {
                                 ))
                             }
 
+                            {/* add new lecture (subsection) to the section */}
                             <button
-                            onClick={() => setAddSubsection(section._id)}
-                            className='flex items-center space-x-2'>
-                                <AiOutlinePlus />
+                                onClick={() => setAddSubsection(section._id)}
+                                className="mt-3 flex items-center gap-x-1 text-yellow-50"
+                            >
+                                <AiOutlinePlus className="text-lg"/>
                                 <p>Add Lecture</p>
                             </button>
 
@@ -143,6 +154,7 @@ export const NestedView = ({handleChangeEditSectionName}) => {
             }
         </div>
 
+        {/* modal display */}
         {
             addSubsection ? (
                 <SubSectionModal 
@@ -162,12 +174,12 @@ export const NestedView = ({handleChangeEditSectionName}) => {
                     setModalData={setEditSubsection}
                     edit={true}
                 />) : 
-            (<div></div>)
+            (<></>)
         }
 
         {
             confirmationModal && (<ConfirmationModal modalData={confirmationModal}/>)
         }
-    </div>
+    </>
   )
 }

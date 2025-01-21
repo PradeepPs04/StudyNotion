@@ -94,14 +94,15 @@ export const CourseBuilderForm = () => {
   }
 
   return (
-    <div className='text-richblack-5'>
-      <p>Course Builder</p>
+    <div className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
+      <p className="text-2xl font-semibold text-richblack-5">Course Builder</p>
 
       <form 
       onSubmit={handleSubmit(onSubmit)}
-      className='rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8 flex flex-col'>
-        <div>
-            <label className='label-style' htmlFor='sectionName'>section name <sup className='text-pink-300'>*</sup></label>
+      className='space-y-4'>
+        {/* Section name */}
+        <div className="flex flex-col space-y-2">
+            <label className="text-sm text-richblack-5" htmlFor='sectionName'>section name <sup className='text-pink-300'>*</sup></label>
             <input
               id='sectionName'
               placeholder='Add section name'
@@ -114,8 +115,9 @@ export const CourseBuilderForm = () => {
               )
             }
         </div>
-
-        <div className='flex space-x-10'>
+        
+        {/* create/edit section button */}
+        <div className='flex items-end gap-x-4'>
           <IconBtn
             type='Submit'
             text={editSectionName ? 'Edit Section Name' : 'Create Section'}
@@ -142,10 +144,12 @@ export const CourseBuilderForm = () => {
         )
       }
 
-      <div className='mt-6 flex justify-end space-x-3'>
+      {/* next and previous button */}
+      <div className="flex justify-end gap-x-3">
         <button
-        onClick={goBack}
-        className='text-richblack-25 rounded-md cursor-pointer flex items-center px-4 border border-richblack-300 hover:bg-richblack-700 transition-all duration-200'>
+          onClick={goBack}
+          className='flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900'
+        >
           Back
         </button>
 
