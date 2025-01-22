@@ -1,7 +1,7 @@
 .loader {
     width: 40px;
     height: 20px;
-    --c:no-repeat radial-gradient(farthest-side,#000 93%,#0000);
+    --c:no-repeat radial-gradient(farthest-side,#fff 93%,#0000);
     background:
       var(--c) 0    0,
       var(--c) 50%  0,
@@ -15,7 +15,7 @@
     position: absolute;
     width: 8px;
     height: 12px;
-    background: #000;
+    background: #fff;
     left: 0;
     top: 0;
     animation: 

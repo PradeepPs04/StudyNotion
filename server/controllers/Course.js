@@ -26,7 +26,7 @@ exports.createCourse = async (req, res) => {
 		} = req.body;
 
 		// Get thumbnail image from request files
-		const thumbnail = req.files.thumbnail;
+		const thumbnail = req.files.thumbnailImage;
 
 		// Check if any of the required fields are missing
 		if (
@@ -106,7 +106,7 @@ exports.createCourse = async (req, res) => {
 			{ _id: category },
 			{
 				$push: {
-					course: newCourse._id,
+					courses: newCourse._id,
 				},
 			},
 			{ new: true }
@@ -372,7 +372,7 @@ exports.deleteCourse = async (req, res) => {
 	try {
 		const {courseId} = req.body;
 
-		const course = Course.findById(courseId);
+		const course = await Course.findById(courseId);
 		if(!course) {
 			return res.status(400).json({
 				success: false,
@@ -387,7 +387,7 @@ exports.deleteCourse = async (req, res) => {
 				$pull: { courses: courseId },
 			});
 		}
-
+		
 		// Delete sections and sub-sections
 		const courseSections = course.courseContent;
 		for(const sectionId of courseSections) {

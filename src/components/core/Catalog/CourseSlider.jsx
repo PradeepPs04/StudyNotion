@@ -1,8 +1,7 @@
 import React from 'react'
 
-import Swiper from 'swiper';
-import { SwiperSlide } from 'swiper/react';
-import {Autoplay, Pagination, Navigation} from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import {Autoplay, Navigation, FreeMode} from 'swiper'
 
 import "swiper/css";
 import "swiper/css/free-mode"
@@ -18,18 +17,29 @@ export const CourseSlider = ({courses}) => {
                 <Swiper
                     slidesPerView={1}
                     loop={true}
-                    spaceBetween={200}
-                    pagination={true}
-                    modules={[Autoplay,Pagination,Navigation]}
-                    className="mySwiper"
+                    spaceBetween={30}
+                    freeMode={true}
                     autoplay={{
-                    delay: 1000,
+                    delay: 2500,
                     disableOnInteraction: false,
                     }}
                     navigation={true}
                     breakpoints={{
-                        1024:{slidesPerView:3,}
+                        640: {
+                            slidesPerView: 2,
+                            spaceBetween: 20,
+                        },
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 40,
+                        },
+                        1024: {
+                            slidesPerView: 4,
+                            spaceBetween: 50,
+                        },
                     }}
+                    modules={[Autoplay,FreeMode,Navigation]}
+                    className="mySwiper"
                 >
                     {
                         courses.map((course, index) => (

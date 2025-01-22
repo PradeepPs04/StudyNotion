@@ -13,6 +13,8 @@ export const getCategoryPageData = async (categoryId) => {
         {categoryId: categoryId},
     );
 
+    console.log("GET CATEGORY PAGE DATA API response......", response);
+
     if(!response?.data?.success) {
         throw new Error("Could not fetch category data");
     }

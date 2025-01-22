@@ -34,7 +34,7 @@ export const CourseCard = ({course, Height}) => {
                     <span>{course?.ratingAndReviews?.length} Ratings</span>
                 </div>
 
-                <p>{course?.price}</p>
+                <p>₹ {course?.price}</p>
             </div>
         </Link>
     </div>

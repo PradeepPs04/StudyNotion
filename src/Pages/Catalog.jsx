@@ -8,19 +8,26 @@ import { getCategoryPageData } from '../services/operations/pageAndComponentData
 import { CourseSlider } from '../components/core/Catalog/CourseSlider';
 import { CourseCard } from '../components/core/Catalog/CourseCard';
 
+import '../components/common/loader.css'
+
 export const Catalog = () => {
 
     const {catalogName} = useParams();
     const [catalogPageData, setCatalogPageData] = useState([]);
     const [categoryId, setCategoryId] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // fetch all categories
     useEffect(() => {
         const getCategoryId = async () => {
+            setLoading(true);
+
             const response = await apiConnector("GET", categories.CATEGORIES_API);
             const categoryId = response?.data?.data.filter((category) => category.name.split(" ").join("-").toLowerCase() === catalogName)[0]?._id;
 
             setCategoryId(categoryId);
+
+            setLoading(false);
         }
 
         getCategoryId();
@@ -28,18 +35,30 @@ export const Catalog = () => {
 
     useEffect(() => {
         const getCategoryDetails = async () => {
+            setLoading(true);
+
             try {
                 const response = await getCategoryPageData(categoryId);
                 setCatalogPageData(response);
             } catch(err) {
                 console.error(err);
             }
+
+            setLoading(false);
         }
 
         if(categoryId) {
             getCategoryDetails();
         }
     }, [categoryId]);
+
+    if(loading) {
+        return (
+            <div className='relative h-screen w-screen'>
+                <div className='loader absolute top-1/2 left-1/2'></div>
+            </div>
+        )
+    }
 
   return (
     <div className='text-richblack-5'>

@@ -75,19 +75,20 @@ export const CoursesTable = ({courses, setCourses}) => {
                                     <p>Created: </p>
                                     {
                                         course.status === COURSE_STATUS.DRAFT ? (
-                                            <p className='text-pink-300'>
-                                                DRAFTED <span><FaClock/></span>
+                                            <p className='text-pink-300 flex items-center'>
+                                                DRAFTED <span className='ml-1'><FaClock/></span>
                                             </p>
                                         )
                                         : (
-                                            <p className='text-yellow-50'>
-                                                PUBLISHED <span><FaCheckCircle/></span>
+                                            <p className='text-yellow-50 flex items-center'>
+                                                PUBLISHED <span className='ml-1'><FaCheckCircle/></span>
                                             </p>
                                         )
                                     }
                                 </div>
                             </Td>
-
+                            
+                            {/* duration */}
                             <Td>
                                 2hr 30mins
                             </Td>

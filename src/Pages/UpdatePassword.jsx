@@ -6,7 +6,7 @@ import { HiMiniArrowLongLeft } from "react-icons/hi2";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 
-import '../components/core/loader.css'
+import '../components/common/loader.css'
 import { resetPassword } from '../services/operations/authAPI';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
