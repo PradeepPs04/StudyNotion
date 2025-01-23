@@ -2,8 +2,8 @@
 const express = require("express")
 const router = express.Router()
 
-const { capturePayment, verifySignature } = require("../controllers/Payments")
-const { auth, isInstructor, isStudent, isAdmin } = require("../middleware/auth")
+const { capturePayment, verifyPayment, sendPaymentSuccessEmail } = require("../controllers/Payments")
+const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth")
 
 
 // ********************************************************************************************************
@@ -14,6 +14,9 @@ const { auth, isInstructor, isStudent, isAdmin } = require("../middleware/auth")
 router.post("/capturePayment", auth, isStudent, capturePayment)
 
 // route to verify signature of razorpay and server
-router.post("/verifySignature", verifySignature)
+router.post("/verifyPayment", auth, isStudent, verifyPayment)
+
+// route to send payment successfull email to student
+router.post("/sendPaymentSuccessEmail", auth, isStudent, sendPaymentSuccessEmail);
 
 module.exports = router
