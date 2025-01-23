@@ -112,6 +112,8 @@ async function sendPaymentSuccessEmail(response, amount, token) {
 }
 
 async function verifyPayment(bodyData, token, navigate, dispatch) {
+    const toastId = toast.loading("Verifying payment...");
+
     dispatch(setPaymentLoading(true));
     try {
         const response = await apiConnector(
@@ -133,5 +135,6 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
         toast.error("Could not verify payment");
     }
 
+    toast.dismiss(toastId);
     dispatch(setPaymentLoading(false));
 }

@@ -42,20 +42,28 @@ export function getUserDetails(token, navigate) {
 
 export async function getUserEnrolledCourses(token) {
     const toastId = toast.loading("Fetching courses...");
+    let data = [];
     try {
-        const response = apiConnector(
+        const response = await apiConnector(
             "GET",
             GET_USER_ENROLLED_COURSES_API,
             null,
             {Authorization: `Bearer ${token}`}
         );
 
-        toast.dismiss(toastId);
-        return response;
-    } catch(err) {
-        console.log(err);
+        if(!response?.data?.success) {
+            throw new Error("Can't fetch user enrolled courses");
+        }
 
-        toast.dismiss(toastId);
-        toast.error(err.response.data.message);
+        console.log("GET USER ENROLLED COURSE response....", response);
+
+        data = response?.data?.data;
+    } catch(err) {
+        console.log("GET USER ENROLLED COURSE error...",err);
+        toast.error(err.message);
     }
+
+    toast.dismiss(toastId);
+    
+    return data;
 }
