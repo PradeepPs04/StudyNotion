@@ -1,16 +1,22 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { IconBtn } from '../../../common/IconBtn';
+import { buyCourse } from '../../../../services/operations/studentFeaturesAPI';
+import { useNavigate } from 'react-router-dom';
 
 export const RenderTotalAmount = () => {
     const {cart, total} = useSelector((state) => state.cart);
+    const {token} = useSelector((state) => state.auth);
+
+    const navigate = useNavigate();
+    const diaptch = useDispatch();
 
     const handleBuyCourse = () => {
         const courses = cart.map((course) => course._id);
         console.log("Course will be bought: ", courses);
-        // TODO: Payment gateway integrate :)
-    }
+        buyCourse(courses, token, navigate, diaptch);
+      }
 
   return (
     <div className="min-w-[280px] rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">

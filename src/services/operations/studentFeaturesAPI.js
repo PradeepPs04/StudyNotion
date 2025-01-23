@@ -87,7 +87,7 @@ export async function buyCourse(courses, token, userDetails, navigate, dispatch)
 
     } catch(err) {
         console.error("BUY COURSE API error...", err);
-        toast.error("Could not make payment");
+        toast.error(err);
     }
 
     toast.dismiss(toastId);
@@ -132,7 +132,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
         dispatch(resetCart());
     } catch(err) {
         console.log("PAYMENT VERIFY error...", err);
-        toast.error("Could not verify payment");
+        toast.error(err.message);
     }
 
     toast.dismiss(toastId);

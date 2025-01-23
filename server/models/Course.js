@@ -43,6 +43,10 @@ const coursesSchema = new mongoose.Schema({
 		// required: true,
 		ref: "Category",
 	},
+	cretedAt: {
+		type: Date,
+		default: Date.now,
+	},
 	studentsEnrolled: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
