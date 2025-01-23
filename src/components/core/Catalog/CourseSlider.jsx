@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {Autoplay, Navigation, FreeMode} from 'swiper'
+import {Autoplay, FreeMode, Pagination} from 'swiper'
 
-import "swiper/css";
+import "swiper/css";    
 import "swiper/css/free-mode"
 import "swiper/css/pagination"
 
@@ -17,29 +17,17 @@ export const CourseSlider = ({courses}) => {
                 <Swiper
                     slidesPerView={1}
                     loop={true}
-                    spaceBetween={30}
-                    freeMode={true}
+                    spaceBetween={25}
                     autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
+                        delay: 2500,
                     }}
-                    navigation={true}
                     breakpoints={{
-                        640: {
-                            slidesPerView: 2,
-                            spaceBetween: 20,
-                        },
-                        768: {
-                            slidesPerView: 3,
-                            spaceBetween: 40,
-                        },
                         1024: {
-                            slidesPerView: 4,
-                            spaceBetween: 50,
+                        slidesPerView: 3,
                         },
                     }}
-                    modules={[Autoplay,FreeMode,Navigation]}
-                    className="mySwiper"
+                    modules={[Autoplay,FreeMode,Pagination]}
+                    className="max-h-[30rem]"
                 >
                     {
                         courses.map((course, index) => (
@@ -50,7 +38,7 @@ export const CourseSlider = ({courses}) => {
                     }
                 </Swiper>
             ) : (
-                <p>No Course Found</p>
+                <p className="text-xl text-richblack-5">No Course Found</p>
             )
         }
     </>

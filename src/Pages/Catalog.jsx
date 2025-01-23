@@ -15,6 +15,7 @@ export const Catalog = () => {
     const {catalogName} = useParams();
     const [catalogPageData, setCatalogPageData] = useState([]);
     const [categoryId, setCategoryId] = useState(null);
+    const [active, setActive] = useState(1);
     const [loading, setLoading] = useState(true);
 
     // fetch all categories
@@ -52,6 +53,7 @@ export const Catalog = () => {
         }
     }, [categoryId]);
 
+    // show loader
     if(loading) {
         return (
             <div className='relative h-screen w-screen'>
@@ -61,55 +63,97 @@ export const Catalog = () => {
     }
 
   return (
-    <div className='text-richblack-5'>
+    <section>
         
-        <div>
-            <p>{`Home / Catalog / `}
-                <span>{catalogPageData?.data?.selectedCategory?.name}</span>
+        <div className=" box-content bg-richblack-800 px-4">
+            <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
+            <p className="text-sm text-richblack-300">
+                {`Home / Catalog / `}
+                <span className="text-yellow-25">
+                    {catalogPageData?.data?.selectedCategory?.name}
+                </span>
             </p>
-            <p>{catalogPageData?.data?.selectedCategory?.name}</p>
-            <p>{catalogPageData?.data?.selectedCategory?.description}</p>
+
+            <p className="text-3xl text-richblack-5">
+                {catalogPageData?.data?.selectedCategory?.name}
+            </p>
+
+            <p className="max-w-[870px] text-richblack-200">
+                {catalogPageData?.data?.selectedCategory?.description}
+            </p>
+            </div>
         </div>
 
-        <div>
-            {/* section-1 */}
-            <div>
-                <div>Courses to get you started</div>
-                <div className='flex gap-x-3'>
-                    <p>Most Popular</p>
-                    <p>New</p>
-                </div>
-
-                <div>
-                    <CourseSlider courses={catalogPageData?.data?.selectedCategory?.courses}/>
-                </div>
+        
+        {/* section-1 */}
+        <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+            <div className="text-xl text-richblack-5 font-semibold">
+                Courses to get you started
             </div>
 
-            {/* section-2 */}
-            <div>
-                <div>Top Courses in {catalogPageData?.data?.selectedCategory?.name}</div>
-                <p>Top Courses</p>
-                <div>
-                    <CourseSlider courses={catalogPageData?.data?.differentCategory?.courses}/>
-                </div>
+            <div className="my-4 flex border-b border-b-richblack-600 text-sm">
+                <p  
+                    className={`px-4 py-2 ${
+                    active === 1
+                        ? "border-b border-b-yellow-25 text-yellow-25"
+                        : "text-richblack-50"
+                    } cursor-pointer`}   
+                    onClick={() => setActive(1)}
+                >
+                    Most Popular
+                </p>
+
+                <p 
+                    className={`px-4 py-2 ${
+                    active === 2
+                        ? "border-b border-b-yellow-25 text-yellow-25"
+                        : "text-richblack-50"
+                    } cursor-pointer`}
+                    onClick={() => setActive(2)}
+                >
+                    New
+                </p>
             </div>
 
-            {/* section-3 */}
             <div>
-                <div>Frequently Bought</div>
-                <div className='py-8'>
-                    <div className='grid grid-cols-1 lg:grid-cols-2'>
-                    {
-                        catalogPageData?.data?.mostSellingCourses.slice(0,4).map((course) => (
-                            <CourseCard course={course} Height={"h-[400px]"} key={course._id}/>
-                        ))
-                    }
-                    </div>
+                <CourseSlider 
+                    courses={catalogPageData?.data?.selectedCategory?.courses}    
+                />
+            </div>
+        </div>
+
+        {/* section-2 */}
+        <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+            <div className='text-xl text-richblack-5 font-semibold'>
+                Top Courses in {catalogPageData?.data?.differentCategories?.name}
+            </div>
+
+            <div className="py-8">
+                <CourseSlider 
+                    courses={catalogPageData?.data?.differentCategories?.courses}    
+                />
+            </div>
+        </div>
+
+
+        {/* section-3 */}
+        <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+            <div className='text-xl text-richblack-5 font-semibold'>
+                Frequently Bought
+            </div>
+
+            <div className='py-8'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                {
+                    catalogPageData?.data?.mostSellingCourses.slice(0,4).map((course) => (
+                        <CourseCard course={course} Height={"h-[400px]"} key={course._id}/>
+                    ))
+                }
                 </div>
             </div>
         </div>
 
         <Footer/>
-    </div>
+    </section>
   )
 }
