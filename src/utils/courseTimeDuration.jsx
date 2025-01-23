@@ -1,3 +1,5 @@
+import { convertSecondsToDuration } from "./secondsToDuration";
+
 export const getCourseTimeDuration = (enrolledCourses) => {
     let timeArray = [];
 
@@ -14,26 +16,14 @@ export const getCourseTimeDuration = (enrolledCourses) => {
         ///////// using reduce ///////////////
         const totalSeconds = courseObj.courseContent.reduce((total, sectionObj) => {
             return total + sectionObj.subSection.reduce((subTotal, subSection) => {
-                return subTotal + subSection.timeDuration;
+                return subTotal + Number.parseInt(subSection.timeDuration);
             }, 0);
         }, 0);
+
+        console.log("total seconds: ", totalSeconds);
 
         timeArray.push(convertSecondsToDuration(totalSeconds));
     });
 
     return timeArray;
-}
-
-const convertSecondsToDuration = (totalSeconds) => {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60 );
-    const seconds = Math.floor((totalSeconds % 3600) % 60);
-
-    if(hours > 0) {
-        return `${hours}h ${minutes}m`;
-    } else if(minutes > 0) {
-        return `${minutes}m ${seconds}s`;
-    } else {
-        return `${seconds}s`;
-    }
 }
