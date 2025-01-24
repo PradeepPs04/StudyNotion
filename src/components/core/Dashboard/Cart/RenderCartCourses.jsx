@@ -2,19 +2,25 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactStars from 'react-stars';
 
-import { removeFromCart } from '../../../../slices/cartSlice';
-
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { removeItemFromCart } from '../../../../services/operations/cartAPI';
 
 export const RenderCartCourses = () => {
     const {cart} = useSelector((state) => state.cart);
+    const {token} = useSelector((state) => state.auth);
+    const {user} = useSelector((state) => state.profile);
     const [rating, setRating] = useState(0);
     const dispatch = useDispatch();
 
     const getAverageRating = async () => {
         // call average rating api
         // set rating with response
+    }
+
+    const handleCartRemove = async (courseId) => {
+        const cartId = user.cart;
+        await removeItemFromCart(cartId, courseId, token, dispatch);
     }
 
     useEffect(() => {
@@ -68,7 +74,7 @@ export const RenderCartCourses = () => {
                             className="flex flex-col items-end space-y-2"
                         >
                                 <button 
-                                    onClick={() => dispatch(removeFromCart(course._id))}
+                                    onClick={() => handleCartRemove(course._id)}
                                     className="flex items-center gap-x-1 rounded-md border border-richblack-600 bg-richblack-700 py-3 px-[12px] text-pink-200"
                                 >
                                         <MdDelete />

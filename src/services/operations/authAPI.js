@@ -1,11 +1,14 @@
 import { toast } from "react-hot-toast"
 
 import { setLoading, setToken } from "../../slices/authSlice"
-import { resetCart } from "../../slices/cartSlice"
+import { resetCart, setTotalItems, setCart, setTotal } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
 
 import { apiConnector } from "../apiConnector"
 import { endpoints } from "../apis"
+
+import {getFullCartDetails} from './cartAPI';
+import { ACCOUNT_TYPE } from '../../utils/constants'
 
 const {
   SENDOTP_API,
@@ -14,6 +17,7 @@ const {
   RESETPASSTOKEN_API,
   RESETPASSWORD_API,
 } = endpoints
+
 
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
@@ -114,6 +118,23 @@ export function login(email, password, navigate) {
       localStorage.setItem('user', JSON.stringify({ ...response.data.user, image: userImage }));
       // set token in local storage
       localStorage.setItem("token", JSON.stringify(response.data.token))
+
+      // get user cart details
+      if(response.data.user.accountType === ACCOUNT_TYPE.STUDENT) {
+        const cartId = response.data.user.cart;
+        const token = response.data.token;
+        const cartData = await getFullCartDetails(cartId, token);
+
+        dispatch(setCart(cartData));
+        dispatch(setTotalItems(cartData?.length || 0));
+
+        const totalPrice = cartData.reduce((acc, course) => {
+          return acc += course.price;
+        }, 0);
+
+        dispatch(setTotal(totalPrice));
+      }
+
       navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("LOGIN API ERROR............", error)

@@ -94,7 +94,9 @@ export const CourseDetails = () => {
 
     const handleBuyCourse = async () => {
         if(token) {
-            buyCourse([courseId], token, user, navigate, dispatch);
+            const buyingFromCatalogPage = true;
+            await buyCourse([courseId], token, user, navigate, dispatch, buyingFromCatalogPage);
+            return;
         }
 
         // user is not logged in

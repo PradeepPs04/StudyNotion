@@ -8,6 +8,7 @@ const OTP = require("../models/OTP");
 const mailSender = require("../utils/mailSender");
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 const Profile = require("../models/Profile");
+const Cart = require("../models/Cart");
 
 // Send OTP For Email Verification
 exports.sendotp = async (req, res) => {
@@ -139,6 +140,11 @@ exports.signup = async (req, res) => {
 			contactNumber: null,
 		});
 
+		// create the cart for user
+		const cartDetails = await Cart.create({
+			courses: [],
+		});
+
 		// Create the user
 		const createdUser = await User.create({
 			firstName,
@@ -149,6 +155,7 @@ exports.signup = async (req, res) => {
 			approved: approved,
 			additionalDetails: profileDetails._id,
 			image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName}_${lastName}`,
+			cart: cartDetails._id,
 		});
 
 		// return response

@@ -49,29 +49,29 @@ exports.capturePayment = async (req, res) => {
                 err: err.message,
             });
         }
+    }
 
-        // create order
-        const options = {
-            amount: totalAmount*100,
-            currency: "INR",
-            receipt: Math.random(Date.now()).toString(),
-        }
+    // create order
+    const options = {
+        amount: totalAmount*100,
+        currency: "INR",
+        receipt: Math.random(Date.now()).toString(),
+    }
 
-        try {
-            const paymentResponse = await instance.orders.create(options);
-            res.status(200).json({
-                success: true,
-                message: 'Order created successfully',
-                data: paymentResponse,
-            });
-        } catch(err) {
-            console.log('ERROR while creating order IN CAPTURE PAYMENT backend API....', err)
-            res.status(500).json({
-                success: false,
-                message: 'Could not initiate order',
-                err: err.message,
-            });
-        }
+    try {
+        const paymentResponse = await instance.orders.create(options);
+        res.status(200).json({
+            success: true,
+            message: 'Order created successfully',
+            data: paymentResponse,
+        });
+    } catch(err) {
+        console.log('ERROR while creating order IN CAPTURE PAYMENT backend API....', err)
+        res.status(500).json({
+            success: false,
+            message: 'Could not initiate order',
+            err: err.message,
+        });
     }
 }
 
