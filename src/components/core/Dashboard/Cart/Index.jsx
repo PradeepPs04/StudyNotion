@@ -5,7 +5,8 @@ import { RenderCartCourses } from './RenderCartCourses';
 import { RenderTotalAmount } from './RenderTotalAmount';
 
 export default function Cart() {
-    const {total, totalItems} = useSelector((state) => state.cart);
+    const {cart, total, totalItems} = useSelector((state) => state.cart);
+    console.log("cart is,...", cart);
     return (
         <div>
             <h1  className="mb-14 text-3xl font-medium text-richblack-5">Your Cart</h1>

@@ -10,6 +10,7 @@ import {ACCOUNT_TYPE} from '../../../utils/constants';
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaShareSquare } from "react-icons/fa";
 import { addToCart } from '../../../slices/cartSlice';
+import { addItemToCart } from '../../../services/operations/cartAPI';
 
 
 export const CourseDetailsCard = ({course, setConfirmationModal, handleBuyCourse}) => {
@@ -26,13 +27,16 @@ export const CourseDetailsCard = ({course, setConfirmationModal, handleBuyCourse
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if(user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
             toast.error("You are an Instructor, you can't buy a course");
             return;
         }
 
         if(token) {
+            const cartId = user?.cart;
+            await addItemToCart(cartId, course._id, token);
+                
             dispatch(addToCart(course));
             return;
         }

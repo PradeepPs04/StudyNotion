@@ -4,9 +4,11 @@ import {apiConnector} from '../apiConnector';
 import {studentEndpoints} from '../apis';
 
 import { setPaymentLoading } from '../../slices/courseSlice';
-import { resetCart } from '../../slices/cartSlice';
+import { removeFromCart, resetCart, setCart, setTotal, setTotalItems } from '../../slices/cartSlice';
 
 import rzpLogo from '../../assets/Logo/rzp_logo.png'
+import { removeItemFromCart } from './cartAPI';
+import { getFullCartDetails } from './cartAPI';
 
 const {
     COURSE_PAYMENT_API,
@@ -29,7 +31,7 @@ function loadScript(src) {
     });
 }
 
-export async function buyCourse(courses, token, userDetails, navigate, dispatch) {
+export async function buyCourse(courses, token, userDetails, navigate, dispatch, buyingFromCatalogPage=false) {
     const toastId = toast.loading("Loading...");
 
     try {
@@ -71,7 +73,7 @@ export async function buyCourse(courses, token, userDetails, navigate, dispatch)
                 sendPaymentSuccessEmail(response, orderResponse.data.data.amount, token);
 
                 // verify payment
-                verifyPayment({...response, courses}, token, navigate, dispatch);
+                verifyPayment({...response, courses}, token, navigate, dispatch, userDetails.cart, buyingFromCatalogPage);
             }
         }
 
@@ -93,6 +95,8 @@ export async function buyCourse(courses, token, userDetails, navigate, dispatch)
     toast.dismiss(toastId);
 }
 
+
+// payment successful email
 async function sendPaymentSuccessEmail(response, amount, token) {
     console.log("Logging response,....", response);
     try {
@@ -111,8 +115,12 @@ async function sendPaymentSuccessEmail(response, amount, token) {
     }
 }
 
-async function verifyPayment(bodyData, token, navigate, dispatch) {
+
+// verify payment
+async function verifyPayment(bodyData, token, navigate, dispatch, cartId, buyingFromCatalogPage) {
     const toastId = toast.loading("Verifying payment...");
+
+    console.log("Logging buying from catalogpage value: ", buyingFromCatalogPage);
 
     dispatch(setPaymentLoading(true));
     try {
@@ -127,9 +135,21 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
             throw new Error(response?.data?.message);
         }
 
+        // remove all courses from card from backend
+        try {
+            bodyData.courses.forEach(async (course) => {
+                await removeItemFromCart(cartId, course, token, dispatch, buyingFromCatalogPage);
+            });
+        } catch(err) {
+            console.log("Course is being bought directly from catalog page, without adding to cart")
+        }
+
+        // update cart to cart slice
+        const cartData = await getFullCartDetails(cartId, token);
+        cartData.forEach((course) => dispatch(removeFromCart(course._id)));
+
         toast.success("Payment successful, you are added to the course");
         navigate("/dashboard/enrolled-courses");
-        dispatch(resetCart());
     } catch(err) {
         console.log("PAYMENT VERIFY error...", err);
         toast.error(err.message);

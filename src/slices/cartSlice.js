@@ -14,6 +14,14 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCart: (state, action) => {
+      state.cart = action.payload;
+
+      // Update to localstorage
+      localStorage.setItem("cart", JSON.stringify(state.cart));
+      localStorage.setItem("total", JSON.stringify(state.total));
+      localStorage.setItem("totalItems", JSON.stringify(state.totalItems));
+    },
     addToCart: (state, action) => {
       const course = action.payload;
       const index = state.cart.findIndex((item) => item._id === course._id);
@@ -34,9 +42,6 @@ const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.cart));
       localStorage.setItem("total", JSON.stringify(state.total));
       localStorage.setItem("totalItems", JSON.stringify(state.totalItems));
-
-      // show success toast
-      toast.success("Course added to cart");
     },
     removeFromCart: (state, action) => {
       const courseId = action.payload;
@@ -52,10 +57,13 @@ const cartSlice = createSlice({
         localStorage.setItem("cart", JSON.stringify(state.cart));
         localStorage.setItem("total", JSON.stringify(state.total));
         localStorage.setItem("totalItems", JSON.stringify(state.totalItems));
-
-        // show success toast
-        toast.success("Course removed from cart");
       }
+    },
+    setTotalItems: (state, action) => {
+      state.totalItems = action.payload;
+    },
+    setTotal: (state, action) => {
+      state.total = action.payload;
     },
     resetCart: (state) => {
       state.cart = [];
@@ -70,6 +78,6 @@ const cartSlice = createSlice({
   },
 })
 
-export const { addToCart, removeFromCart, resetCart } = cartSlice.actions;
+export const { setCart, addToCart, removeFromCart, setTotal, setTotalItems, resetCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
