@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { Player } from 'video-react';
-import '~video-react/dist/video-react.css';
+// import '~video-react/dist/video-react.css';
 
 import { IconBtn } from '../../common/IconBtn';
 import { updateCompletedLectures } from '../../../slices/viewCourseSlice';
@@ -128,12 +128,12 @@ export const VideoDetails = () => {
     const hadleLectureCompletion = async () => {
         setLoading(true);
 
-        const result = await markLectureAsComplete({courseId: courseId, subSectionId: subSectionId}, token);
+        // const result = await markLectureAsComplete({courseId: courseId, subSectionId: subSectionId}, token);
 
         // update state in slice
-        if(result) {
-            dispatch(updateCompletedLectures(subSectionId));
-        }
+        // if(result) {
+        //     dispatch(updateCompletedLectures(subSectionId));
+        // }
 
 
         setLoading(false);

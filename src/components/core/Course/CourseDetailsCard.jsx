@@ -1,19 +1,16 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 import toast from 'react-hot-toast';
 
 import { IconBtn } from '../../common/IconBtn';
-import {ACCOUNT_TYPE} from '../../../utils/constants';
 
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaShareSquare } from "react-icons/fa";
-import { addToCart } from '../../../slices/cartSlice';
-import { addItemToCart } from '../../../services/operations/cartAPI';
 
 
-export const CourseDetailsCard = ({course, setConfirmationModal, handleBuyCourse}) => {
+export const CourseDetailsCard = ({course, handleBuyCourse, handleAddToCart}) => {
 
 
     const {
@@ -22,34 +19,8 @@ export const CourseDetailsCard = ({course, setConfirmationModal, handleBuyCourse
     } = course;
 
     const {user} = useSelector((state) => state.profile);
-    const {token} = useSelector((state) => state.auth);
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const handleAddToCart = async () => {
-        if(user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
-            toast.error("You are an Instructor, you can't buy a course");
-            return;
-        }
-
-        if(token) {
-            const cartId = user?.cart;
-            await addItemToCart(cartId, course._id, token);
-                
-            dispatch(addToCart(course));
-            return;
-        }
-
-        setConfirmationModal({
-            text1: "You are not logged in",
-            text2: "Please login to purchase the course",
-            btn1Text:"Login",
-            btn2Text: "Cancel",
-            btn1Handler: () => navigate('/login'),
-            btn2Handler: () => setConfirmationModal(null),
-        });
-    }
 
     const handleShare = () => {
         copy(window.location.href);
@@ -57,67 +28,81 @@ export const CourseDetailsCard = ({course, setConfirmationModal, handleBuyCourse
     }
 
   return (
-    <div>
-        <img
-            src={thumbnailImage}
-            alt='thumbnail image'
-            className='mzx-h-[300px] min-h-[180px] w-[400px] rounded-xl'
-        />
-
-        <div>Rs. {currentPrice}</div>
-        
-        {/* buttons */}
-        <div>
-            <IconBtn
-                text={user && course.studentsEnrolled.includes(user?._id) 
-                    ? "Go to Course"
-                    : "Buy Now"}
-                onClick={user && course.studentsEnrolled.includes(user?._id)
-                    ? () => navigate('/dashboard/enrolled-courses')
-                    : handleBuyCourse}
+    <>
+        <div className='flex flex-col gap-4 rounded-md bg-richblack-700 p-4 text-richblack-5'>
+            {/* Course Image */}
+            <img
+                src={thumbnailImage}
+                alt='thumbnail image'
+                className='max-h-[300px] min-h-[180px] w-[400px] overflow-hidden rounded-2xl object-cover md:max-w-full'
             />
-            
-            {
-                !course?.studentsEnrolled.includes(user?._id) && (
+
+            <div className="px-4">
+                <div className="space-x-3 pb-4 text-3xl font-semibold">
+                    Rs. {currentPrice}
+                </div>
+                
+                {/* buttons */}
+                <div className="flex flex-col gap-4">
+                    <IconBtn
+                        text={user && course.studentsEnrolled.includes(user?._id) 
+                            ? "Go to Course"
+                            : "Buy Now"}
+                        onClick={user && course.studentsEnrolled.includes(user?._id)
+                            ? () => navigate('/dashboard/enrolled-courses')
+                            : handleBuyCourse}
+                    />
+                    
+                    {
+                        !course?.studentsEnrolled.includes(user?._id) && (
+                            <button
+                                className='blackButton hover:bg-richblack-900 transition-all duration-200'
+                                onClick={handleAddToCart}
+                            >
+                                Add to Cart
+                            </button>
+                        )
+                    }
+                </div>
+                
+                {/* money back gurantee */}
+                <div>
+                    <p className="pb-3 pt-6 text-center text-sm text-richblack-25">
+                        30-Day Money-Back Gurantee
+                    </p>
+                </div>
+
+                {/* course instructions */}
+                <div>
+                    <p className='my-2 text-xl font-semibold'>
+                        This Course Includes :
+                    </p>
+                    
+                    <div className='flex flex-col gap-3 text-sm text-caribbeangreen-100'>
+                        {
+                            course?.instructions?.map((item, index) => (
+                                <p key={index} className='flex gap-x-2 items-center'>
+                                    <MdKeyboardArrowRight size={18}/>
+                                    <span>{item}</span>
+                                </p>
+                            ))
+                        }
+                    </div>
+                </div>
+                
+                {/* share course */}
+                <div className='text-center'>
                     <button
-                        onClick={handleAddToCart}
+                        onClick={handleShare}
+                        className='mx-auto flex items-center gap-2 p-6 text-yellow-100'
                     >
-                        Add to Cart
+                        <FaShareSquare size={15}/>
+                        Share
                     </button>
-                )
-            }
-        </div>
-        
-        <div>
-            <p>
-                30-Day Money-Back Gurantee
-            </p>
-            <p>
-                This Course Includes:
-            </p>
-
-            <div className='flex flex-col gap-y-3'>
-                {
-                    course?.instructions?.map((item, index) => (
-                        <p key={index} className='flex gap-x-2 items-center'>
-                            <MdKeyboardArrowRight size={18}/>
-                            <span>{item}</span>
-                        </p>
-                    ))
-                }
+                </div>
             </div>
-        </div>
 
-        <div>
-            <button
-                onClick={handleShare}
-                className='mx-auto flex items-center gap-2 p-6 text-yellow-50'
-            >
-                <FaShareSquare />
-                Share
-            </button>
         </div>
-
-    </div>
+    </>
   )
 }

@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
-import { Accordion, AccordionItem } from '@szhsin/react-accordion';
 
 import '../components/common/loader.css';
-
-import {ConfirmationModal} from '../components/common/ConfirmationModal'
 
 import { buyCourse } from '../services/operations/studentFeaturesAPI';
 import {fetchCourseDetails} from '../services/operations/courseDetailsAPI';
 import GetAvgRating from '../utils/avgRating'
 import RatingStars from '../components/common/RatingStars'
+import { addItemToCart } from '../services/operations/cartAPI';
+import {ACCOUNT_TYPE} from '../utils/constants';
 
 import {formatDate} from '../services/formatDate';
 import {convertSecondsToDuration} from '../utils/secondsToDuration';
+
+import { addToCart } from '../slices/cartSlice';
+
+import {ConfirmationModal} from '../components/common/ConfirmationModal'
 import { CourseDetailsCard } from '../components/core/Course/CourseDetailsCard';
+import Footer from '../components/common/Footer';
+
+import { BiInfoCircle } from "react-icons/bi"
+import { HiOutlineGlobeAlt } from "react-icons/hi"
+import Markdown from 'react-markdown'
+import toast from 'react-hot-toast';
+import { CourseAccordionBar } from '../components/core/Course/CourseAccordionBar';
 
 export const CourseDetails = () => {
 
@@ -74,20 +84,21 @@ export const CourseDetails = () => {
     useEffect(() => {
         const totalSeconds = courseData?.courseContent?.reduce((total, sectionObj) => {
             return total + sectionObj.subSection.reduce((subTotal, subSection) => {
-                return subTotal + subSection.timeDuration;
+                return subTotal + Number.parseFloat(subSection.timeDuration);
             }, 0);
         }, 0);
         
+
         const totalTime = convertSecondsToDuration(Number.parseInt(totalSeconds));
         setTotalDuration(totalTime);
     }, [courseData]);
 
-    // show and hide course section details
+    // show and hide course Accordion
     const [isActive, setIsActive] = useState(Array(0));
     const handleActive = (id) => {
         setIsActive(
             !isActive.includes(id)
-            ? isActive.concat(id)
+            ? isActive.concat([id])
             : isActive.filter((e) => e !== id)
         )
     }
@@ -124,6 +135,31 @@ export const CourseDetails = () => {
     createdAt,
   } = courseData ? courseData : [];
 
+  const handleAddToCart = async () => {
+    if(user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
+        toast.error("You are an Instructor, you can't buy a course");
+        return;
+    }
+
+    if(token) {
+        const cartId = user?.cart;
+        await addItemToCart(cartId, course_id, token);
+            
+        dispatch(addToCart(courseData));
+        return;
+    }
+
+    setConfirmationModal({
+        text1: "You are not logged in",
+        text2: "Please login to purchase the course",
+        btn1Text:"Login",
+        btn2Text: "Cancel",
+        btn1Handler: () => navigate('/login'),
+        btn2Handler: () => setConfirmationModal(null),
+    });
+}
+
+
   if(loading || paymentLoading || !courseData) {
     return (
         <div className='h-screen w-screen relative'>
@@ -133,95 +169,188 @@ export const CourseDetails = () => {
   }
 
   return (
-    <div className='text-richblack-5'>
-        <div className='relative'>
-            <p>{courseName}</p>
-            <p>{courseDescription}</p>
-            
-            <div className='flex gap-x-2'>
-                <span>{avgReviewCount}</span>
-                <RatingStars Review_Count={avgReviewCount} Star_Size={24}/>
-                <span>{`${ratingAndReviews.length} reviews`}</span>
-                <span>{`${studentsEnrolled.length} students enrolled`}</span>
-            </div>
-        
-            <div>
-                <p>Created by {`${instructor.firstName} ${instructor.lastName}`}</p>
-            </div>
+    <>
+        {/* Hero section */}
+        <div className='relative w-full bg-richblack-800'>
+            {/* course description & card */}
+            <div className="mx-auto box-content px-4 lg:w-[1260px] 2xl:relative">
+                
+                {/* course description & card for smaller screens*/}
+                <div className="mx-auto grid min-h-[450px] max-w-maxContentTab justify-items-center py-8 lg:mx-0 lg:justify-items-start lg:py-0 xl:max-w-[810px]">
 
-            <div className='flex gap-x-3'>
-                <p>Created At {formatDate(createdAt)}</p>
-                <p>{" "} English</p>
-            </div>
+                    {/* for smaller screens*/}
+                    {/* thumbnail */}
+                    <div className="relative block max-h-[30rem] lg:hidden">
+                        {/* shadow */}
+                        <div className="absolute bottom-0 left-0 h-full w-full shadow-[#161D29_0px_-64px_36px_-28px_inset]"></div>
+                        
+                        <img
+                            src={thumbnail}
+                            alt='course thumbnail'
+                            className='max-h-full'
+                        />
+                    </div>
 
-            <div>
-                <CourseDetailsCard
-                    course={courseData}
-                    setConfirmationModal={setConfirmationModal}
-                    handleBuyCourse={handleBuyCourse}
-                />
-            </div>
+                    {/* course description */}
+                    <div className='z-30 my-5 flex flex-col justify-center gap-4 py-5 text-lg text-richblack-5'>
+                        <p className="text-4xl font-bold text-richblack-5 sm:text-[42px]">
+                            {courseName}
+                        </p>
 
-            <div>
-                <p>What you'll learn</p>
-                <p>{whatYouWillLearn}</p>
-            </div>
-        </div>
+                        <p className='text-richblack-200'>
+                            {courseDescription}
+                        </p>
 
-        <div>
-            <p>Course Content:</p>
+                        <div className="text-md flex flex-wrap items-center gap-2">
+                            <span className="text-yellow-25">{avgReviewCount}</span>
+                            <RatingStars Review_Count={avgReviewCount} Star_Size={24}/>
+                            <span>{`${ratingAndReviews.length} reviews`}</span>
+                            <span>{`${studentsEnrolled.length} students enrolled`}</span>
+                        </div>
 
-            <div className='flex gap-x-3 justify-between'>
-                <div className='flex gap-x-3'>
-                    <span>
-                        {courseContent?.length} section(s)
-                    </span>    
+                        <div>   
+                            <p>
+                                Created by {`${instructor.firstName} ${instructor.lastName}`}
+                            </p>
+                        </div>
 
-                    <span>
-                        {totalNoOfLectures} lectures
-                    </span>
-                    
-                    <span>
-                        {totalDuration} total length
-                    </span>
-                </div>
+                        <div className="flex flex-wrap gap-5 text-lg">
+                            <p className="flex items-center gap-2">
+                                {" "}
+                                <BiInfoCircle /> Created at {formatDate(createdAt)}
+                            </p>
+                            <p className="flex items-center gap-2">
+                                {" "}
+                                <HiOutlineGlobeAlt /> English
+                            </p>
+                        </div>
+                    </div>
 
-                <div>
-                    <button 
-                        onClick={() => setIsActive([])}
-                    >
-                        Collapse all sections
-                    </button>
-                </div>
-            </div>
+                    {/* for smaller screens */}
+                    {/* buy & add to cart buttons */}
+                    <div className="flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden">
+                        <p className='space-x-3 pb-4 text-3xl font-semibold text-richblack-5'>
+                            Rs. {price}
+                        </p>
 
-            <Accordion className='mt-10 mb-10'>
-                {
-                    courseData.courseContent.map((sectionObj) => (
-                        <AccordionItem 
-                            key={sectionObj._id}
-                            header={
-                                <div className='flex justify-between w-[500px] border-[1px] border-richblack-300'>
-                                    <p>{sectionObj.sectionName}</p>
-                                    <p>{sectionObj.subSection.length} lecture(s)</p>
-                                </div>
-                            }
+                        <button
+                            className="yellowButton"
+                            onClick={handleBuyCourse}
+                        >   
+                            Buy Now
+                        </button>
+
+                        <button 
+                            className="blackButton"
+                            onClick={handleAddToCart}
                         >
-                            <div>
-                                {
-                                    sectionObj.subSection.map((subSec) => (
-                                        <p>{subSec.title}</p>
-                                    ))
-                                }
-                            </div>
-                        </AccordionItem>
-                    ))
-                }
-            </Accordion>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+                
+
+                {/* Course-card for large screens*/}
+                <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute  lg:block">
+                    <CourseDetailsCard
+                        course={courseData}
+                        handleBuyCourse={handleBuyCourse}
+                        handleAddToCart={handleAddToCart}
+                    />
+                </div>
+
+            </div>
+            
         </div>
-    {
-        confirmationModal && <ConfirmationModal modalData={confirmationModal}/>
-    }
-    </div>
+
+        {/* Accordion */}
+        <div className="mx-auto box-content px-4 text-start text-richblack-5 lg:w-[1260px]">
+            <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
+
+                {/* what you will learn section */}
+                <div className='my-8 border border-richblack-600 p-8'>
+                    <p className="text-3xl font-semibold">What you'll learn</p>
+
+                    <div className='mt-5'>
+                        <Markdown>
+                            {whatYouWillLearn}
+                        </Markdown>
+                    </div>
+                </div>
+                
+                {/* course content section */}
+                <div className="max-w-[830px]">
+
+                    <div className="flex flex-col gap-3">
+                        <p className="text-[28px] font-semibold">Course Content:</p>
+                        
+                        <div className="flex flex-wrap justify-between gap-2">
+                            <div className='flex gap-2'>
+                                <span>{courseContent.length} {`section(s)`}</span>
+
+                                <span>{totalNoOfLectures} {`lecture(s)`}</span>
+
+                                <span>{totalDuration} total length</span>
+                            </div>
+
+                            <div>
+                                <button 
+                                    className='text-yellow-25'
+                                    onClick={() => setIsActive([])}
+                                >
+                                    Collapse all sections
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>          
+
+                    {/* course details Accordion */}
+                    <div className='py-4'>
+                        {
+                            courseContent?.map((course, index) => (
+                                <CourseAccordionBar
+                                    course={course}
+                                    key={index}
+                                    isActive={isActive}
+                                    handleActive={handleActive}
+                                />
+                            ))
+                        }
+                    </div>
+                    
+                    {/* author details */}
+                    <div className="mb-12 py-4">
+                        <p className='text-[28px] font-semibold'>Author</p>
+                        
+                        <div className="flex items-center gap-4 py-4">
+                            <img
+                                src={instructor.image 
+                                    ? instructor.image
+                                    : `https://api.dicebear.com/5.x/initials/svg?seed=${instructor.firstName} ${instructor.lastName}`
+                                }
+                                alt='Author'
+                                className="h-14 w-14 rounded-full object-cover"
+                            />
+
+                            <p className='text-lg'>
+                                {`${instructor.firstName} ${instructor.lastName}`}
+                            </p>
+                        </div>
+                        
+                        <p className='text-richblack-50'>
+                            {instructor?.additionalDetails?.about}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+
+        <Footer/>
+        
+        { confirmationModal && <ConfirmationModal modalData={confirmationModal}/> }
+    </>
   )
 }
