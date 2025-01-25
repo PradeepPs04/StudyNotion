@@ -1,10 +1,13 @@
 const {instance} = require("../config/razorpay");
+
 const Course = require("../models/Course");
 const User = require("../models/User");
+
 const mailSender = require("../utils/mailSender");
 const {courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmail");
-const { default: mongoose } = require("mongoose");
 const { paymentSuccessfulEmail } = require("../mail/templates/paymentSuccessfulEmail");
+
+const { default: mongoose } = require("mongoose");
 const crypto = require('crypto');
 
 // initiate the Razorpay order
@@ -12,6 +15,7 @@ exports.capturePayment = async (req, res) => {
     const {courses} = req.body;
     const userId = req.user.id;
 
+    // no courses to buy
     if(courses.length === 0) {
         return res.json({
             success: false,
@@ -80,6 +84,7 @@ exports.verifyPayment = async (req, res) => {
     const razorpay_order_id = req.body?.razorpay_order_id;
     const razorpay_payment_id = req.body?.razorpay_payment_id;
     const razorpay_signature = req.body?.razorpay_signature;
+    
     const courses = req.body?.courses;
     const userId = req.user.id;
 
