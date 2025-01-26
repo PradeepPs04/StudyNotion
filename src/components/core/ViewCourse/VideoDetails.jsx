@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-
 import { Player } from 'video-react';
-// import '~video-react/dist/video-react.css';
+import 'video-react/dist/video-react.css';
+
+import { markLectureAsComplete } from '../../../services/operations/courseDetailsAPI';
 
 import { IconBtn } from '../../common/IconBtn';
 import { updateCompletedLectures } from '../../../slices/viewCourseSlice';
@@ -24,7 +25,7 @@ export const VideoDetails = () => {
 
     const [videoData, setVideoData] = useState([]);
     const [videoEnded, setVideoEnded] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() =>{
         const setVideoSpecificDetails = () => {
@@ -64,7 +65,7 @@ export const VideoDetails = () => {
     const isLastVideo = () => {
         const currentSectionIndex = courseSectionData.findIndex((section) => section._id === sectionId);
 
-        const noOfSubSections = courseSectionData?.[currentSectionIndex]?.subsSection.length;
+        const noOfSubSections = courseSectionData?.[currentSectionIndex]?.subSection.length;
 
         const currentSubSectionIndex = courseSectionData?.[currentSectionIndex]?.subSection.findIndex((subSection) => subSection._id === subSectionId);
 
@@ -79,7 +80,7 @@ export const VideoDetails = () => {
     const goToPreviousVideo = () => {
         const currentSectionIndex = courseSectionData.findIndex((section) => section._id === sectionId);
 
-        const noOfSubSections = courseSectionData?.[currentSectionIndex]?.subsSection.length;
+        const noOfSubSections = courseSectionData?.[currentSectionIndex]?.subSection.length;
 
         const currentSubSectionIndex = courseSectionData?.[currentSectionIndex]?.subSection.findIndex((subSection) => subSection._id === subSectionId);
 
@@ -94,7 +95,7 @@ export const VideoDetails = () => {
         else {
             const previousSectionId = courseSectionData?.[currentSectionIndex - 1]._id;
             const previousSubSectionLength = courseSectionData?.[currentSectionIndex - 1]?.subSection.length;
-            const previousSubSectionId = courseSectionData?.[previousSectionId]?.subSection[previousSubSectionLength - 1]?._id;
+            const previousSubSectionId = courseSectionData?.[currentSectionIndex - 1]?.subSection[previousSubSectionLength - 1]?._id;
 
             // navigate to this video
             navigate(`/view-course/${courseId}/section/${previousSectionId}/sub-section/${previousSubSectionId}`);
@@ -104,7 +105,7 @@ export const VideoDetails = () => {
     const goToNextVideo = () => {
         const currentSectionIndex = courseSectionData.findIndex((section) => section._id === sectionId);
 
-        const noOfSubSections = courseSectionData?.[currentSectionIndex]?.subsSection.length;
+        const noOfSubSections = courseSectionData?.[currentSectionIndex]?.subSection.length;
 
         const currentSubSectionIndex = courseSectionData?.[currentSectionIndex]?.subSection.findIndex((subSection) => subSection._id === subSectionId);
 
@@ -118,7 +119,7 @@ export const VideoDetails = () => {
         // go to first video of next section
         else {
             const nextSectionId = courseSectionData?.[currentSectionIndex + 1]._id;
-            const nextSubSectionId = courseSectionData?.[nextSectionId]?.subSection?.[0]?._id;
+            const nextSubSectionId = courseSectionData?.[currentSectionIndex + 1]?.subSection?.[0]?._id;
 
             // navigate to this video
             navigate(`/view-course/${courseId}/section/${nextSectionId}/sub-section/${nextSubSectionId}`);
@@ -128,13 +129,14 @@ export const VideoDetails = () => {
     const hadleLectureCompletion = async () => {
         setLoading(true);
 
-        // const result = await markLectureAsComplete({courseId: courseId, subSectionId: subSectionId}, token);
+        console.log(subSectionId," will be completed");
+
+        const result = await markLectureAsComplete({courseId: courseId, subSectionId: subSectionId}, token);
 
         // update state in slice
-        // if(result) {
-        //     dispatch(updateCompletedLectures(subSectionId));
-        // }
-
+        if(result) {
+            dispatch(updateCompletedLectures(subSectionId));
+        }
 
         setLoading(false);
     }
@@ -182,7 +184,7 @@ export const VideoDetails = () => {
                                 />
 
                                 {/* previous & next buttons */}
-                                <div>
+                                <div className='flex gap-2 mt-4'>
                                     {/* previous */}
                                     {
                                         !isFirstVideo() && (

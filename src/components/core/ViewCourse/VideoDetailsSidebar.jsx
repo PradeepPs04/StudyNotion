@@ -29,6 +29,7 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
             const currentSectionIndex = courseSectionData.findIndex((section) => section._id === sectionId);
             const currentSubSectionIndex = courseSectionData?.[currentSectionIndex]?.subSection.findIndex((subSection) => subSection._id === subSectionId);
 
+
             const activeSectionId = courseSectionData?.[currentSectionIndex]?._id;
             const activeSubSectionId = courseSectionData[currentSectionIndex].subSection?.[currentSubSectionIndex]?._id;
 
@@ -36,8 +37,13 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
             setActiveStaus(activeSectionId);
             // set current sub-section
             setVideoBarActive(activeSubSectionId);
-        }, [courseSectionData, courseEntireData, location.pathname])()
-    })
+
+            // console.log("Logging courseSection data:....", courseSectionData);
+            // console.log("logging course entire data:...", courseEntireData);
+            // console.log("logging completed lectures:...", completedLectures);
+            // console.log("logging total no of lectures:...", totalNoOfLectures);
+        })()
+    },[courseSectionData, courseEntireData, location.pathname]);
 
     const goToVideo = (sectionId, subSectionId) => {
         navigate(`/view-course/${courseEntireData?._id}/section/${sectionId}/sub-section/${subSectionId}`);
@@ -46,17 +52,18 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
 
   return (
     <>
-        <div>
+        <div className='text-richblack-25'>
             {/* buttons & headings */}
             <div>
                 {/* buttons */}
                 <div>
-                    <div
+                    <button
                         onClick={() => navigate('/dashboard/enrolled-courses')}
+                        className='blackButton'
                     >
                         {/* TODO: use back icon instead */}
                         Back
-                    </div>
+                    </button>
 
                     <div>
                         <IconBtn
@@ -69,7 +76,7 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
                 {/* headings */}
                 <div>
                     <p>{courseEntireData?.courseName}</p>
-                    <p>{completedLectures?.length} / {totalNoOfLectures?.length}</p>
+                    <p>{completedLectures?.length} / {totalNoOfLectures}</p>
                 </div>
             </div>
 
@@ -80,6 +87,7 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
                         <div 
                             key={section._id}
                             onClick={(() => setActiveStaus(section._id))}
+                            className='cursor-pointer'
                         >
 
                             {/* section */}
@@ -96,7 +104,7 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
                                     activeStatus === section._id && (
                                         <div>
                                             {
-                                                section.subSection.map((subSection) => {
+                                                section.subSection.map((subSection) => (
                                                     <div 
                                                         key={subSection._id}
                                                         className={`flex gap-5 p-5 
@@ -109,11 +117,11 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
                                                             <input
                                                                 type='checkbox'
                                                                 checked={completedLectures.includes(subSection._id)}
-                                                                onChange=""
+                                                                onChange={() => console.log("clicked on check")}
                                                             />
                                                             <span>{subSection.title}</span>
                                                     </div>
-                                                })
+                                                ))
                                             }
                                         </div>
                                     )

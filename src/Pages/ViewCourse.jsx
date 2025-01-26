@@ -13,9 +13,12 @@ import {getFullDetailsOfCourse} from '../services/operations/courseDetailsAPI';
 import { VideoDetailsSidebar } from '../components/core/ViewCourse/VideoDetailsSidebar';
 import { CourseReviewModal } from '../components/core/ViewCourse/CourseReviewModal';
 
+import '../components/common/loader.css';
+
 export const ViewCourse = () => {
 
     const [reviewModal, setReviewModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     const {courseId} = useParams();
 
     const {token} = useSelector((state) => state.auth);
@@ -24,6 +27,8 @@ export const ViewCourse = () => {
 
     useEffect(() => {
       const setCourseSpecificDetails = async () => {
+        setLoading(true);
+
         const courseData = await getFullDetailsOfCourse(courseId, token);
         dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
         dispatch(setCourseEntireData(courseData.courseDetails));
@@ -34,11 +39,21 @@ export const ViewCourse = () => {
           lectures += section.subSection.length;
         });
         dispatch(setTotalNoOfLectures(lectures));
+
+        setLoading(false);
       }
 
       setCourseSpecificDetails();
     }, []);
 
+
+  if(loading) {
+    return (
+      <div className='h-screen w-screen flex items-center justify-center'>
+        <div className='loader'></div>
+      </div>
+    )
+  }
 
   return (
     <>

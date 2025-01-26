@@ -6,22 +6,17 @@ import { getUserEnrolledCourses } from '../../../services/operations/profileAPI'
 
 import '../../common/loader.css';
 import { useNavigate } from 'react-router-dom';
-import { getCourseTimeDuration } from '../../../utils/courseTimeDuration';
 
 function EnrolledCourses() {
     const {token} = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
     const [enrolledCourses, setEnrolledCourses] = useState(null);
-    const [courseTimeDurationArray, setCourseTimeDurationArray] = useState([]);
 
     const getEnrolledCourses = async () => {
         try {
            const response = await getUserEnrolledCourses(token);
            setEnrolledCourses(response);
-
-            const timeDurationArray = getCourseTimeDuration(response);
-            setCourseTimeDurationArray(timeDurationArray);
         } catch(err) {
             console.log('Error while fetching enrolled courses...', err);
         }
@@ -90,7 +85,7 @@ function EnrolledCourses() {
 
                                 </div>
 
-                                <div className="w-1/4 px-2 py-3"> {courseTimeDurationArray[index]}</div>
+                                <div className="w-1/4 px-2 py-3">{course?.totalDuration}</div>
                                 
                                 {/* progress-bar */}
                                 <div className="flex w-1/5 flex-col gap-2 px-2 py-3">

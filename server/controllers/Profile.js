@@ -1,6 +1,8 @@
+const CourseProgress = require("../models/CourseProgress");
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { convertSecondsToDuration } = require("../utils/secToDuration");
 
 // controller for updating proifle picture of user
 exports.updateDisplayPicture = async (req, res) => {
@@ -143,8 +145,9 @@ exports.getAllUserDetails = async (req, res) => {
 exports.getEnrolledCourses = async (req, res) => {
     try {
 		const userId = req.user.id;
+
 		// search user
-		const userDetails = await User.findOne(
+		let userDetails = await User.findOne(
 			{_id: userId})
 			.populate({
 				path: 'courses',
@@ -167,6 +170,31 @@ exports.getEnrolledCourses = async (req, res) => {
 			});
 		}
 		
+		userDetails = userDetails.toObject();
+		let subSectionLength = 0;
+		for(let i = 0; i < userDetails.courses.length; i++) {
+			let totalDurationInSeconds = 0;
+			subSectionLength = 0;
+			for(let j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+				totalDurationInSeconds += userDetails.courses[i].courseContent[j].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0);
+				userDetails.courses[i].totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+				subSectionLength += userDetails.courses[i].courseContent[j].subSection.length;
+			}
+			
+			let courseProgressCount = await CourseProgress.findOne({
+				courseID: userDetails.courses[i]._id,
+				userId: userId,
+			});
+			courseProgressCount = courseProgressCount?.completedVideos.length
+			if(subSectionLength == 0) {
+			userDetails.courses[i].progressPercentage = 100;
+			} else{
+				// to make upto 2 decimal points
+				const multiplier = Math.pow(10,2);
+				userDetails.courses[i].progressPercentage = Math.round((courseProgressCount/subSectionLength) * 100 * multiplier) / multiplier
+			}
+		}
+
 		return res.status(200).json({
 			success: true,
 			data: userDetails.courses,
