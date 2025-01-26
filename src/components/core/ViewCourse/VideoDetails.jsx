@@ -179,6 +179,7 @@ export const VideoDetails = () => {
                                     text="Rewatch"
                                     onClick={() => {
                                         playerRef?.current?.seek(0);
+                                        playerRef?.current?.play();
                                         setVideoEnded(false);
                                     }}
                                 />

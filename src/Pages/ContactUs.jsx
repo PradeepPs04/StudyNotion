@@ -6,6 +6,7 @@ import { ContactUsForm } from '../components/ContactPage/ContactUsForm'
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 import { FaEarthAfrica } from "react-icons/fa6";
 import { MdCall } from "react-icons/md";
+import { ReviewSlider } from '../components/common/ReviewSlider';
 
 export const ContactUs = () => {
   return (
@@ -34,7 +35,7 @@ export const ContactUs = () => {
                         <div className='text-richblack-200 text-sm flex flex-col gap-1'>
                             <h2 className='text-richblack-25 text-lg font-[500]'>Visit us</h2>
                             <p>Come here and say hello at our office HQ.</p>
-                            <p>97-New Basti Clementown Dehradun</p>
+                            <p>Speke Rd, Kampala Capital City, Uganda</p>
                         </div>
                     </div>
 
@@ -73,6 +74,7 @@ export const ContactUs = () => {
                 <h2 className='text-4xl font-semibold text-richblack-25'>Reviews from other learners</h2>
 
                 {/* Review slider */}
+                <ReviewSlider/>
             </section>
         </div>
 

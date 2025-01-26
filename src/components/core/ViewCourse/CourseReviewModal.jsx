@@ -42,7 +42,7 @@ export const CourseReviewModal = ({setReviewModal}) => {
     }, []);
 
   return (
-    <div>
+    <div className='text-richblack-50'>
         <div>
             {/* heading */}
             <div>
