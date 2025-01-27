@@ -8,7 +8,8 @@ import { logout } from "./authAPI";
 
 const {
     GET_USER_DETAILS_API,
-    GET_USER_ENROLLED_COURSES_API
+    GET_USER_ENROLLED_COURSES_API,
+    GET_INSTRUCTOR_DATA_API,
 } = profileEndpoints;
 
 export function getUserDetails(token, navigate) {
@@ -66,4 +67,29 @@ export async function getUserEnrolledCourses(token) {
     toast.dismiss(toastId);
     
     return data;
+}
+
+export async function getInstructorData(token) {
+    const toastId = toast.loading("Loading...");
+    let result = [];
+
+    try {
+        const response = await apiConnector(
+            "GET",
+            GET_INSTRUCTOR_DATA_API,
+            {},
+            {Authorization: `Bearer ${token}`},
+        )
+
+        console.log("GET INSTRUCTOR DATA API response...", response);
+
+        result = response?.data;
+
+    } catch(err) {
+        console.log("error in GET INSTRUCTOR DATA API.....", err);
+        toast.error("Could not get instructor data");
+    }
+
+    toast.dismiss(toastId);
+    return result;
 }

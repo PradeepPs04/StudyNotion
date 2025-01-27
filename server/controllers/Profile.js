@@ -1,6 +1,7 @@
 const CourseProgress = require("../models/CourseProgress");
 const Profile = require("../models/Profile");
 const User = require("../models/User");
+const Course = require('../models/Course');
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
 
@@ -206,3 +207,47 @@ exports.getEnrolledCourses = async (req, res) => {
 		});
     }
 };
+
+// controller for getting details for instructor dashboard
+exports.instructorDashboard = async (req, res) => {
+	try {
+		const userId = req.user.id;
+		// find all course of instructor
+		const courseDetails = await Course.find({instructor:userId});
+		let allCourseAmountGenerated = 0;
+		let allStudentsEntrolled = 0;
+
+		const courseData = courseDetails?.map((course) => {
+			const totalStudentsEnrolled = course.studentsEnrolled.length;
+			const totalAmountGenerated = totalStudentsEnrolled * course.price;
+
+			allStudentsEntrolled += totalStudentsEnrolled;
+			allCourseAmountGenerated += totalAmountGenerated;
+
+			// create a new object with the additional field
+			const courseDataWithStats = {
+				_id: course._id,
+				courseName: course.courseName,
+				courseDescription: course.courseDescription,
+				totalStudentsEnrolled,
+				totalAmountGenerated,
+			}
+
+			return courseDataWithStats;
+		});
+
+		return res.status(200).json({
+			success: true,
+			courses: courseData,
+			totalAmountGenerated: allCourseAmountGenerated,
+			totalStudentsEnrolled: allStudentsEntrolled,
+		})
+	} catch(err) {
+		console.log("INSTRUCTOR DASHBOARD backend error...", err);
+		return res.status(500).json({
+			success: false,
+			message: 'Internal server error',
+			error: err,
+		});
+	}
+}
