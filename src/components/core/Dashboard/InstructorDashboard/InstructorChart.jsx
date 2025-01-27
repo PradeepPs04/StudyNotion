@@ -81,7 +81,7 @@ export const InstructorChart = ({instructorData}) => {
         </div>
 
         {/* pie-chart */}
-        <div className="relative mx-auto aspect-square h-[80%] w-full">
+        <div className="relative mx-auto aspect-square h-[80%] w-[80%]">
             <Pie
                 data={currentChart === "students" ? chartDataForStudents : chartDataForIncome}
                 options={options}

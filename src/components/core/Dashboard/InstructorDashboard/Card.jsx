@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Card = ({course}) => {
   return (
-    <div className="w-1/3">
+    <div className="w-full md:w-1/3">
         <img
             src={course.thumbnail}
             alt={course.courseName}

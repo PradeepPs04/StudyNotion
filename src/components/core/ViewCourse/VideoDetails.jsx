@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { Player } from 'video-react';
+import { BigPlayButton, Player } from 'video-react';
 import 'video-react/dist/video-react.css';
 
 import { markLectureAsComplete } from '../../../services/operations/courseDetailsAPI';
 
 import { IconBtn } from '../../common/IconBtn';
 import { updateCompletedLectures } from '../../../slices/viewCourseSlice';
-
-import { CiPlay1 } from "react-icons/ci";
 
 export const VideoDetails = () => {
 
@@ -23,6 +21,7 @@ export const VideoDetails = () => {
     const {token} = useSelector((state) => state.auth);
     const {courseSectionData, courseEntireData, completedLectures} = useSelector((state) => state.viewCourse);
 
+    const [previewSource, setPreviewSource] = useState('');
     const [videoData, setVideoData] = useState([]);
     const [videoEnded, setVideoEnded] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -40,7 +39,8 @@ export const VideoDetails = () => {
 
                 // get video data
                 const filteredVideoData = fileterdData?.[0]?.subSection.filter((subSection) => subSection._id === subSectionId);
-
+                
+                setPreviewSource(courseEntireData.thumbnail);
                 setVideoData(filteredVideoData[0]);
                 setVideoEnded(false);
             }
@@ -142,12 +142,14 @@ export const VideoDetails = () => {
     }
 
   return (
-    <div>
+    <div className="flex flex-col gap-5 text-white">
         {
             !videoData ? (
-                <div>
-                    No Data Found
-                </div>
+                <img
+                    src={previewSource}
+                    alt="Preview"
+                    className="h-full w-full rounded-md object-cover"
+                />
             ) : (
                 <Player
                     ref={playerRef}
@@ -157,11 +159,17 @@ export const VideoDetails = () => {
                     src={videoData?.videoUrl}
                 >
                     {/* Play icon */}
-                    <CiPlay1 />
+                    <BigPlayButton position='center'/>
 
                     {
                         videoEnded && (
-                            <div>
+                            <div
+                                style={{
+                                    backgroundImage:
+                                    "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1)",
+                                }}
+                                className="full absolute inset-0 z-[100] grid h-full place-content-center font-inter"
+                            >
                                 {
                                     // complete button
                                     !completedLectures.includes(subSectionId) && (
@@ -169,6 +177,7 @@ export const VideoDetails = () => {
                                             disabled={loading}
                                             onClick={hadleLectureCompletion}
                                             text={!loading ? "Mark as Completed" : "Loading..."}
+                                            customClasses="text-xl max-w-max px-4 mx-auto bg-yellow-50 text-richblack-900 font-semibold"
                                         />
                                     )
                                 }
@@ -182,17 +191,18 @@ export const VideoDetails = () => {
                                         playerRef?.current?.play();
                                         setVideoEnded(false);
                                     }}
+                                    customClasses="text-xl max-w-max px-4 mx-auto mt-2 bg-yellow-50 text-richblack-900 font-semibold"
                                 />
 
                                 {/* previous & next buttons */}
-                                <div className='flex gap-2 mt-4'>
+                                <div className="mt-10 flex min-w-[250px] justify-center gap-x-4 text-xl">
                                     {/* previous */}
                                     {
                                         !isFirstVideo() && (
                                             <button
                                                 disabled={loading}
                                                 onClick={goToPreviousVideo}
-                                                className='blackButton'
+                                                className='blackButton hover:bg-richblack-900 duration-200'
                                             >
                                                 Prev  
                                             </button>
@@ -204,7 +214,7 @@ export const VideoDetails = () => {
                                             <button
                                                 disabled={loading}
                                                 onClick={goToNextVideo}
-                                                className='blackButton'
+                                                className='blackButton hover:bg-richblack-900 duration-200'
                                             >
                                                 Next
                                             </button>
@@ -218,14 +228,12 @@ export const VideoDetails = () => {
             )
         }
 
-        <div>
-            <h1>
-                {videoData?.title}
-            </h1>
-            <p>
-                {videoData?.description}
-            </p>
-        </div>
+        <h1 className="mt-4 text-3xl font-semibold">
+            {videoData?.title}
+        </h1>
+        <p className="pt-2 pb-6">
+            {videoData?.description}
+        </p>
     </div>
   )
 }

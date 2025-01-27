@@ -59,20 +59,22 @@ export const Instructor = () => {
           coursesData?.length > 0 
           ? (
             <div>
-              <div className="my-4 flex flex-col md:flex-row h-[450px] space-x-4">
-                {
-                  totalAmountGenerated > 0 || totalStudentsEnrolled > 0 
-                  ? (
-                      <InstructorChart instructorData={instructorData}/>
-                  ) : (
-                    <div className='flex-1 rounded-md bg-richblack-800 p-6'>
-                      <p className="text-lg font-bold text-richblack-5">Visualize</p>
-                      <p className="mt-4 text-xl font-medium text-richblack-50">
-                        Not Enough Data To Visualize
-                      </p>
-                    </div>
-                  )
-                }
+              {/* pie-chart & statistics */}
+              <div className="my-4 flex space-x-4">
+                {/* pie-chart */}
+                  {
+                    totalAmountGenerated > 0 || totalStudentsEnrolled > 0 
+                    ? (
+                        <InstructorChart instructorData={instructorData}/>
+                    ) : (
+                      <div className='flex-1 rounded-md bg-richblack-800 p-6'>
+                        <p className="text-lg font-bold text-richblack-5">Visualize</p>
+                        <p className="mt-4 text-xl font-medium text-richblack-50">
+                          Not Enough Data To Visualize
+                        </p>
+                      </div>
+                    )
+                  }
 
                 {/* Statistics */}
                 <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 p-6">
@@ -97,26 +99,25 @@ export const Instructor = () => {
                   </div>
 
                 </div>
+                
               </div>
 
                 {/* Render 3 courses */}
-                <div>
-                  <div className="rounded-md bg-richblack-800 p-6">
-                    <div className="flex items-center justify-between">
-                      <p className="text-lg font-bold text-richblack-5">Your courses</p>
+                <div className="rounded-md bg-richblack-800 p-6">
+                  <div className="flex items-center justify-between">
+                    <p className="text-lg font-bold text-richblack-5">Your courses</p>
 
-                      <Link to="/dashboard/my-courses">
-                        <p className="text-xs font-semibold text-yellow-50">View all</p>
-                      </Link>
-                    </div>
+                    <Link to="/dashboard/my-courses">
+                      <p className="text-xs font-semibold text-yellow-50">View all</p>
+                    </Link>
+                  </div>
 
-                    <div className="my-4 flex items-start space-x-6">
-                      {
-                        coursesData.slice(0, 3).map((course) => (
-                          <Card key={course._id} course={course}/>
-                        ))
-                      }
-                    </div>
+                  <div className="my-4 flex flex-col md:flex-row items-start space-x-6">
+                    {
+                      coursesData.slice(0, 3).map((course) => (
+                        <Card key={course._id} course={course}/>
+                      ))
+                    }
                   </div>
                 </div>
 
@@ -124,10 +125,12 @@ export const Instructor = () => {
 
           )
           : (
-            <div>
-              <p>You have not created any courses yet</p>
+            <div className="mt-20 rounded-md bg-richblack-800 p-6 py-20">
+              <p className="text-center text-2xl font-bold text-richblack-5">You have not created any courses yet</p>
               <Link to="/dashboard/add-course">
-                Create a course
+                <p className="mt-1 text-center text-lg font-semibold text-yellow-50">
+                  Create a course
+                </p>
               </Link>
             </div>
           )

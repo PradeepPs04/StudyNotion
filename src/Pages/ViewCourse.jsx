@@ -60,8 +60,8 @@ export const ViewCourse = () => {
       <div className='relative flex min-h[calc(100vh-3.5rem)]'>
           <VideoDetailsSidebar setReviewModal={setReviewModal}/>
 
-          <div className='w-full h-[calc(100vh-3.5rem)] overflow-auto'>
-              <div className='mx-auto w-11/12 max-w-[1000px] py-10'>
+          <div className='h-[calc(100vh-3.5rem)] flex-1 overflow-auto'>
+              <div className='mx-6'>
                   <Outlet/>
               </div>
           </div>
