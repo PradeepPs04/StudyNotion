@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 
+import "../../common/loader.css";
+
 import { fetchInstructorCourses } from '../../../services/operations/courseDetailsAPI';
 
 import { IconBtn } from '../../common/IconBtn';
@@ -12,13 +14,18 @@ export const MyCourses = () => {
     const navigate = useNavigate();
 
     const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchCourses = async () => {
+            setLoading(true);
+
             const result = await fetchInstructorCourses(token);
             if(result) {
                 setCourses(result);
             }
+
+            setLoading(false);
         }
 
         fetchCourses();
@@ -35,7 +42,11 @@ export const MyCourses = () => {
             />
         </div>
 
-        {courses && <CoursesTable courses={courses} setCourses={setCourses}/>}
+        {
+            loading 
+            ? (<div className='loader absolute top-1/2 left-1/2'></div>) 
+            : (<CoursesTable courses={courses} setCourses={setCourses}/>)
+        }
     </div>
   )
 }

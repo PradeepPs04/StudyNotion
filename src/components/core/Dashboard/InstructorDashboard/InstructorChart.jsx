@@ -46,30 +46,42 @@ export const InstructorChart = ({instructorData}) => {
 
     // create options
     const options = {
-
+        maintainAspectRatio: false,
     }
 
   return (
-    <div>
-        <p>Visualize</p>
+    <div className="flex flex-1 flex-col gap-y-4 rounded-md bg-richblack-800 p-6">
+        <p className="text-lg font-bold text-richblack-5">Visualize</p>
         
         {/* buttons */}
-        <div className='flex gap-x-5'>
+        <div className="space-x-4 font-semibold">
+            {/* button to switch to student chart */}
             <button
                 onClick={() => setCurrentChart("students")}
+                className={`rounded-sm p-1 px-3 transition-all duration-200 ${
+                    currentChart === "students"
+                    ? "bg-richblack-700 text-yellow-50"
+                    : "text-yellow-400"
+            }`}
             >
-                Student
+                Students
             </button>
+
+            {/* button to switch to income chart */}
             <button
                 onClick={() => setCurrentChart("income")}
+                className={`rounded-sm p-1 px-3 transition-all duration-200 ${
+                    currentChart === "income"
+                    ? "bg-richblack-700 text-yellow-50"
+                    : "text-yellow-400"
+                }`}
             >
                 Income
-
             </button>
         </div>
 
         {/* pie-chart */}
-        <div>
+        <div className="relative mx-auto aspect-square h-[80%] w-full">
             <Pie
                 data={currentChart === "students" ? chartDataForStudents : chartDataForIncome}
                 options={options}
