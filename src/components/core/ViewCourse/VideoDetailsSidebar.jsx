@@ -136,6 +136,7 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
                                                             type='checkbox'
                                                             checked={completedLectures.includes(subSection._id)}
                                                             onChange={() => {}}
+                                                            className='pointer-events-none'
                                                         />
                                                         <span>{subSection.title}</span>
                                                 </div>
