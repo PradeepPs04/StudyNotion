@@ -34,7 +34,8 @@ import { Instructor } from "./components/core/Dashboard/Instructor";
 
 function App() {
   const {user} = useSelector((state) => state.profile);
-  console.log('logging user: ', user);
+  // console.log('logging user: ', user);
+
   return (
    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
     <Navbar/>

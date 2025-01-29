@@ -25,13 +25,13 @@ export function uploadDisplayPicture(token, displayPicture) {
                     Authorization: `Bearer ${token}`,
                 }
             );
-            console.log('Logging response', response);
+            // console.log('Logging UPLOAD DISPLAY PICTURE API response...', response);
 
             // update user details in the store
             dispatch(setUser(response.data.data));
             toast.success('Profile picture updated successfully');
         } catch(err) {
-            console.log(err);
+            // console.log('UPLOAD DISPLAY PICTURE API error...',err);
             toast.error(err.response.data.message);
         }
         toast.dismiss(toastId);
@@ -49,7 +49,7 @@ export function updateProfileDetails(token, formData, navigate) {
                 { Authorization: `Bearer ${token}`,}
             );
 
-            // console.log("update profile response: ",response);
+            // console.log("UPDATE PROFILE DETAILS API response... ",response);
 
             // update user image if it was created using dicebar API
             const responseImage = response.data.data.image;
@@ -62,7 +62,7 @@ export function updateProfileDetails(token, formData, navigate) {
             toast.success('Profile details updated successfully');
             navigate('/dashboard/my-profile');
         } catch(err) {
-            console.log(err);
+            // console.log('UPDATE PROFILE DETAILS API error...',err);
             toast.error(err.response.data.message);
         }
         toast.dismiss(toastId);
@@ -79,12 +79,12 @@ export async function changePassword(token, formData, navigate) {
         { Authorization: `Bearer ${token}` },
         )
 
-        // console.log("change password response: ", response);
+        // console.log("CHANGE PASSWORD API response... ", response);
 
         toast.success("Password changed successfully");
         navigate('/dashboard/my-profile');
     } catch(err) {
-        console.log(err);
+        // console.log('CHANGE PASSWORD API error...',err);
         toast.error(err.response.data.message);
     }
 
@@ -94,6 +94,7 @@ export async function changePassword(token, formData, navigate) {
 export function deleteAccount(token, navigate) {
     return async (dispatch) => {
         const toastId = toast.loading("Deleting account...");
+
         try {
             await apiConnector(
                 "DELETE",
@@ -101,10 +102,11 @@ export function deleteAccount(token, navigate) {
                 null,
                 { Authorization: `Bearer ${token}`,}
             );
+            
             toast.success("Account deleted successfully");
             dispatch(logout(navigate));
         } catch(err) {
-            console.log(err);
+            // console.log('DELETE  ACCOUNT API error...', err);
             toast.error(err.response.data.message);
         }
 

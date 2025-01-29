@@ -21,6 +21,7 @@ export const ContactUs = () => {
                         <div className='text-richblack-200 mt-[5px] text-xl'>
                             <HiChatBubbleLeftRight />
                         </div>
+
                         <div className='text-richblack-200 text-sm'>
                             <h2 className='text-richblack-25 text-lg font-[500]'>Chat on us</h2>
                             <p>Our friendly team is here to help.</p>
@@ -32,6 +33,7 @@ export const ContactUs = () => {
                         <div className='text-richblack-200 mt-[5px] text-xl'>
                             <FaEarthAfrica />
                         </div>
+
                         <div className='text-richblack-200 text-sm flex flex-col gap-1'>
                             <h2 className='text-richblack-25 text-lg font-[500]'>Visit us</h2>
                             <p>Come here and say hello at our office HQ.</p>
@@ -39,17 +41,17 @@ export const ContactUs = () => {
                         </div>
                     </div>
 
-                        <div className='flex space-x-2'>    
-                            <div className='text-richblack-200 mt-[5px] text-xl'>
-                                <MdCall />
-                            </div>
-                            <div className='text-richblack-200 text-sm'>
-                                <h2 className='text-richblack-25 text-lg font-[500]'>Call us</h2>
-                                <p>Mon-Fri from 8am to 5pm</p>
-                                <p>+123 456 7890</p>
-
-                            </div>
+                    <div className='flex space-x-2'>    
+                        <div className='text-richblack-200 mt-[5px] text-xl'>
+                            <MdCall />
                         </div>
+                        
+                        <div className='text-richblack-200 text-sm'>
+                            <h2 className='text-richblack-25 text-lg font-[500]'>Call us</h2>
+                            <p>Mon-Fri from 8am to 5pm</p>
+                            <p>+123 456 7890</p>
+                        </div>
+                    </div>
                 </div>
                 
                 {/* Right box */}

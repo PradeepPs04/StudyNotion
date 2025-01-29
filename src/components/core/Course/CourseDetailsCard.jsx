@@ -38,6 +38,7 @@ export const CourseDetailsCard = ({course, handleBuyCourse, handleAddToCart}) =>
             />
 
             <div className="px-4">
+                {/* price */}
                 <div className="space-x-3 pb-4 text-3xl font-semibold">
                     Rs. {currentPrice}
                 </div>

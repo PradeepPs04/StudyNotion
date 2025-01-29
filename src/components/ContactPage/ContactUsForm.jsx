@@ -15,9 +15,9 @@ export const ContactUsForm = () => {
   } = useForm();  
 
   const contactFormSubmitHandler = async (data) => {
-    console.log("logging data: ", data);
+    // console.log("logging data: ", data);
     // call API
-    contactUs(setLoading, data);
+    await contactUs(setLoading, data);
   }
 
   useEffect(() => {

@@ -16,6 +16,7 @@ export function getUserDetails(token, navigate) {
     return async (dispatch) => {
         const toastId = toast.loading("Loading...");
         dispatch(setLoading(true));
+
         try {
             const response = await apiConnector(
                 "GET",
@@ -24,7 +25,7 @@ export function getUserDetails(token, navigate) {
                 {Authorization: `Bearer ${token}`},
             );
 
-            console.log('get user details api response: ', response);
+            // console.log('get user details api response: ', response);
 
             const userImage = response.data.data.image 
                 ? response.data.data.image
@@ -32,7 +33,7 @@ export function getUserDetails(token, navigate) {
             
             dispatch(setUser({...response.data.data, image:userImage}));
         } catch(err) {
-            console.log('Get user details api error...', err);
+            // console.log('Get user details api error...', err);
             toast.error(err.response.data.message);
             dispatch(logout(navigate));
         }
@@ -56,11 +57,11 @@ export async function getUserEnrolledCourses(token) {
             throw new Error("Can't fetch user enrolled courses");
         }
 
-        console.log("GET USER ENROLLED COURSE response....", response);
+        // console.log("GET USER ENROLLED COURSE response....", response);
 
         data = response?.data?.data;
     } catch(err) {
-        console.log("GET USER ENROLLED COURSE error...",err);
+        // console.log("GET USER ENROLLED COURSE error...",err);
         toast.error(err.message);
     }
 
@@ -81,12 +82,12 @@ export async function getInstructorData(token) {
             {Authorization: `Bearer ${token}`},
         )
 
-        console.log("GET INSTRUCTOR DATA API response...", response);
+        // console.log("GET INSTRUCTOR DATA API response...", response);
 
         result = response?.data;
 
     } catch(err) {
-        console.log("error in GET INSTRUCTOR DATA API.....", err);
+        // console.log("error in GET INSTRUCTOR DATA API.....", err);
         toast.error("Could not get instructor data");
     }
 

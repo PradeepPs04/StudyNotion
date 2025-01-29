@@ -135,7 +135,7 @@ export const VideoDetailsSidebar = ({setReviewModal}) => {
                                                         <input
                                                             type='checkbox'
                                                             checked={completedLectures.includes(subSection._id)}
-                                                            onChange={() => console.log("clicked on check")}
+                                                            onChange={() => {}}
                                                         />
                                                         <span>{subSection.title}</span>
                                                 </div>

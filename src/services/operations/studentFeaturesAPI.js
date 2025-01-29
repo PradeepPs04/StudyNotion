@@ -84,11 +84,11 @@ export async function buyCourse(courses, token, userDetails, navigate, dispatch,
 
         paymentObject.on("payment.failed", function(response) {
             toast.error('oops, payment failed');
-            console.log(response.error);
+            // console.log(response.error);
         })
 
     } catch(err) {
-        console.error("BUY COURSE API error...", err);
+        // console.error("BUY COURSE API error...", err);
         toast.error(err);
     }
 
@@ -98,7 +98,6 @@ export async function buyCourse(courses, token, userDetails, navigate, dispatch,
 
 // payment successful email
 async function sendPaymentSuccessEmail(response, amount, token) {
-    console.log("Logging response,....", response);
     try {
         await apiConnector(
             "POST",
@@ -120,7 +119,7 @@ async function sendPaymentSuccessEmail(response, amount, token) {
 async function verifyPayment(bodyData, token, navigate, dispatch, cartId, buyingFromCatalogPage) {
     const toastId = toast.loading("Verifying payment...");
 
-    console.log("Logging buying from catalogpage value: ", buyingFromCatalogPage);
+    // console.log("Logging buying from catalogpage value: ", buyingFromCatalogPage);
 
     dispatch(setPaymentLoading(true));
     try {
@@ -136,13 +135,10 @@ async function verifyPayment(bodyData, token, navigate, dispatch, cartId, buying
         }
 
         // remove all courses from card from backend
-        try {
-            bodyData.courses.forEach(async (course) => {
-                await removeItemFromCart(cartId, course, token, dispatch, buyingFromCatalogPage);
-            });
-        } catch(err) {
-            console.log("Course is being bought directly from catalog page, without adding to cart")
-        }
+        bodyData.courses.forEach(async (course) => {
+            await removeItemFromCart(cartId, course, token, dispatch, buyingFromCatalogPage);
+        });
+       
 
         // update cart to cart slice
         const cartData = await getFullCartDetails(cartId, token);
@@ -151,7 +147,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch, cartId, buying
         toast.success("Payment successful, you are added to the course");
         navigate("/dashboard/enrolled-courses");
     } catch(err) {
-        console.log("PAYMENT VERIFY error...", err);
+        // console.log("PAYMENT VERIFY error...", err);
         toast.error(err.message);
     }
 

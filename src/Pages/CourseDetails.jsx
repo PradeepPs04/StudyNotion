@@ -47,7 +47,7 @@ export const CourseDetails = () => {
             try {
                 const result = await fetchCourseDetails(courseId);
                 if(result) {
-                    console.log("Logging result:...", result);
+                    // console.log("Logging result:...", result);
                     setCourseData(result);
                 }
             } catch(err) {
@@ -63,7 +63,7 @@ export const CourseDetails = () => {
     // get average review count
     const [avgReviewCount, setAvgReviewCount] = useState(0);
     useEffect(() => {
-        const count = GetAvgRating(courseData?.data?.courseDetails.ratingAndReviews);
+        const count = GetAvgRating(courseData?.ratingAndReviews);
         setAvgReviewCount(count);
     }, [courseData]);
 
@@ -105,6 +105,12 @@ export const CourseDetails = () => {
 
     const handleBuyCourse = async () => {
         if(token) {
+            // check if instructor is trying to buy
+            if(user.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
+                toast.error("You are an Instructor, you can't buy a course");
+                return;
+            }
+
             const buyingFromCatalogPage = true;
             await buyCourse([courseId], token, user, navigate, dispatch, buyingFromCatalogPage);
             return;
@@ -175,7 +181,7 @@ export const CourseDetails = () => {
             {/* course description & card */}
             <div className="mx-auto box-content px-4 lg:w-[1260px] 2xl:relative">
                 
-                {/* course description & card for smaller screens*/}
+                {/* course description & rating & card for smaller screen*/}
                 <div className="mx-auto grid min-h-[450px] max-w-maxContentTab justify-items-center py-8 lg:mx-0 lg:justify-items-start lg:py-0 xl:max-w-[810px]">
 
                     {/* for smaller screens*/}
@@ -191,7 +197,7 @@ export const CourseDetails = () => {
                         />
                     </div>
 
-                    {/* course description */}
+                    {/* course description & rating */}
                     <div className='z-30 my-5 flex flex-col justify-center gap-4 py-5 text-lg text-richblack-5'>
                         <p className="text-4xl font-bold text-richblack-5 sm:text-[42px]">
                             {courseName}

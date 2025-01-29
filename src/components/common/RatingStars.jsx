@@ -28,7 +28,7 @@ function RatingStars({Review_Count, Star_Size}) {
             /* 
                 let arr = [...new Array(4)] 
                 The above code will return an array of 4 size having all values as undefined
-                console.log(arr) ====> [undefined, undefined, undefined, undefine]
+                console.log(arr) ===> output ====> [undefined, undefined, undefined, undefine]
             */
             
             [...new Array(starCount.full)].map((_, index) => (

@@ -72,6 +72,7 @@ function About() {
                                 <div>
                                     <h2 className='text-3xl font-semibold text-pink-200'>Our Founding Story</h2>
                                 </div>
+
                                 <div className='text-richblack-300 flex flex-col space-y-4'>
                                     <p>
                                         Our e-learning platform was born out of a shared vision and passion for transforming education. It all began with a group of educators, technologists, and lifelong learners who recognized the need for accessible, flexible, and high-quality learning opportunities in a rapidly evolving digital world.
@@ -128,9 +129,9 @@ function About() {
         {/* Section-5 */}
         <section className='bg-richblack-900 pt-16'>
             <div className='w-11/12 max-w-maxContent mx-auto text-white'>
-                <section>
+                <div>
                     <LearningGrid/>
-                </section>
+                </div>
             </div>
         </section>
 
@@ -139,17 +140,17 @@ function About() {
             <div className='w-11/12 max-w-maxContent mx-auto text-white'>
 
                 {/* Section-6 */}
-                <section className='flex justify-center items-center'>
+                <div className='flex justify-center items-center'>
                     <ContactForm/>
-                </section>
+                </div>
 
                 {/* Section-7 */}
-                <section className='mt-28 text-center mb-14'>
+                <div className='mt-28 text-center mb-14'>
                     <h2 className='text-3xl font-semibold'>Reviews from other learners</h2>
 
                     {/* Review slider */}
                     <ReviewSlider/>
-                </section>
+                </div>
             </div>
         </div>
 

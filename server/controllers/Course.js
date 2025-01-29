@@ -225,7 +225,7 @@ exports.getAllCourses = async (req, res) => {
 	}
 };
 
-//controller for getting all details of a course
+//controller for getting a course details
 exports.getCourseDetails = async (req, res) => {
     try {
 		//get course id
@@ -249,8 +249,7 @@ exports.getCourseDetails = async (req, res) => {
 				})
 			.populate("category")
 			.populate({
-				path: "ratingAndreviews",
-				strictPopulate: false, // populate only if available
+				path: "ratingAndReviews",
 			})
 			.populate({
 				path:"courseContent",
@@ -360,7 +359,15 @@ exports.getInstructorCourses = async (req, res) => {
 
 		const instructorCourses = await Course.find({
 			instructor: instructorId,
-		}).sort({createdAt: -1})
+		})
+		.sort({createdAt: -1})
+		.populate({
+			path: 'courseContent',
+			populate: {
+				path: 'subSection',
+			}
+		})
+		.exec();
 
 		return res.status(200).json({
 			success: true,

@@ -15,7 +15,6 @@ export const RenderTotalAmount = () => {
 
     const handleBuyCourse = () => {
         const courses = cart.map((course) => course._id);
-        console.log("Course will be bought: ", courses);
         buyCourse(courses, token, user, navigate, dispatch);
       }
 

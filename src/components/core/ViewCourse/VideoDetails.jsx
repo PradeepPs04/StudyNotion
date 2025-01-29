@@ -129,8 +129,6 @@ export const VideoDetails = () => {
     const hadleLectureCompletion = async () => {
         setLoading(true);
 
-        console.log(subSectionId," will be completed");
-
         const result = await markLectureAsComplete({courseId: courseId, subSectionId: subSectionId}, token);
 
         // update state in slice

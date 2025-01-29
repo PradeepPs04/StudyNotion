@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Table, Tbody, Td, Th, Thead, Tr } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
@@ -15,6 +15,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteCourse, fetchInstructorCourses } from '../../../../services/operations/courseDetailsAPI';
+import { convertSecondsToDuration } from '../../../../utils/secondsToDuration';
 
 export const CoursesTable = ({courses, setCourses}) => {
     const {token} = useSelector((state) => state.auth);
@@ -37,6 +38,18 @@ export const CoursesTable = ({courses, setCourses}) => {
 
         setConfirmationModal(null);
         setLoading(false);
+    }
+
+    const getDuration = (course) => {
+        const totalSeconds = course.courseContent.reduce((total, section) => {
+            return total + section.subSection.reduce((sectionTotal, subSection) => {
+                return sectionTotal + parseFloat(subSection.timeDuration);
+            }, 0);
+        }, 0);
+
+        // console.log(`${course.courseName} : ${totalSeconds}`);
+
+        return convertSecondsToDuration(totalSeconds);
     }
 
   return (
@@ -121,7 +134,7 @@ export const CoursesTable = ({courses, setCourses}) => {
                             
                             {/* duration */}
                             <Td className="text-sm font-medium text-richblack-100">
-                                2hr 30mins
+                                {getDuration(course)}
                             </Td>
                             
                             {/* Price */}

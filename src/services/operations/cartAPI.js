@@ -23,8 +23,8 @@ export const addItemToCart = async (cartId, courseId, token) => {
         
         toast.success("Course added to cart");
     } catch(err) {
-        console.log("ADD TO CART API error....", err);
-        // toast.error("Can't add item to the cart");
+        // console.log("ADD TO CART API error....", err);
+        toast.error("Can't add item to the cart");
     }
 
     toast.dismiss(toastId);
@@ -58,7 +58,8 @@ export const removeItemFromCart = async (cartId, courseId, token, dispatch, buyi
             toast.success("Course removed from cart");
         }
     } catch(err) {
-        console.log("REMOVE FROM CART API error....", err);
+        // console.log("REMOVE FROM CART API error....", err);
+
         // if call was made from catalog page then 
         // it may be possible that user is buying course without adding it to cart
         // so don't show the toast
@@ -80,11 +81,11 @@ export const getFullCartDetails = async (cartId, token) => {
             {Authorization: `Bearer ${token}`},
         );
 
-        console.log("Logging GET FULL CART DETAILS response...", response);
+        // console.log("Logging GET FULL CART DETAILS response...", response);
 
         result = response?.data?.data?.courses;
     } catch(err) {
-        console.log("GET FULL CART DETAILS API error...", err);
+        // console.log("GET FULL CART DETAILS API error...", err);
         toast.error("Can't get cart details");
     }
 
