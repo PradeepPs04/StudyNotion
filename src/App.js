@@ -42,6 +42,7 @@ function App() {
 
     <Routes>
       <Route path="/" element={<Home/>} />
+
       <Route
           path="signup"
           element={
@@ -113,6 +114,7 @@ function App() {
       >
           <Route path="dashboard/my-profile" element={<MyProfile/>}/>
           <Route path="/dashboard/settings" element={<Settings/>}/> 
+
           {/* Student profile routes */}
           {
             user?.accountType === ACCOUNT_TYPE.STUDENT && (
@@ -122,6 +124,7 @@ function App() {
               </>
             )
           }
+
           {/* Instructor profile routes */}
           {
             user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (

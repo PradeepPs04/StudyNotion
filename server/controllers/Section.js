@@ -58,7 +58,7 @@ exports.updateSection = async (req, res) => {
 		const { sectionName, sectionId, courseId } = req.body;
 
 		// find and update section
-		const section = await Section.findByIdAndUpdate(
+		await Section.findByIdAndUpdate(
 			sectionId,
 			{ sectionName },
 			{ new: true }

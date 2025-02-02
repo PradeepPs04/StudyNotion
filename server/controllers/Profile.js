@@ -8,7 +8,7 @@ const { convertSecondsToDuration } = require("../utils/secToDuration");
 // controller for updating proifle picture of user
 exports.updateDisplayPicture = async (req, res) => {
     try {
-	  // fetch file
+	  	// fetch file
 		const displayPicture = req.files.displayPicture
 		const userId = req.user.id
 
@@ -70,9 +70,6 @@ exports.updateProfile = async (req, res) => {
 
 		const updatedUser = await User.findById(id).populate('additionalDetails');
 
-
-		console.log('logging user details:', updatedUser);
-
 		return res.json({
 			success: true,
 			message: "Profile updated successfully",
@@ -90,8 +87,6 @@ exports.updateProfile = async (req, res) => {
 // controller for deleting an account
 exports.deleteAccount = async (req, res) => {
 	try {
-		// TODO: Delete user after few days using job schedule
-
 		const id = req.user.id;
 		// search user
 		const user = await User.findById({ _id: id });
@@ -103,7 +98,6 @@ exports.deleteAccount = async (req, res) => {
 		}
 		// Delete Assosiated Profile with the User
 		await Profile.findByIdAndDelete({ _id: user.additionalDetails });
-		// TODO: Unenroll User From All the Enrolled Courses
 		
 		// Delete User
 		await User.findByIdAndDelete({ _id: id });
@@ -115,7 +109,7 @@ exports.deleteAccount = async (req, res) => {
 		console.log(error);
 		res.status(500).json({ 
 			success: false,
-			message: "User Cannot be deleted successfully" 
+			message: "User Cannot be deleted" 
 		});
 	}
 };
@@ -127,7 +121,8 @@ exports.getAllUserDetails = async (req, res) => {
 		const userDetails = await User.findById(id)
 			.populate("additionalDetails")
 			.exec();
-		console.log(userDetails);
+
+		// console.log(userDetails);
 
 		res.status(200).json({
 			success: true,
@@ -171,6 +166,7 @@ exports.getEnrolledCourses = async (req, res) => {
 			});
 		}
 		
+		// add total duration and course progress to each course of userDetails object
 		userDetails = userDetails.toObject();
 		let subSectionLength = 0;
 		for(let i = 0; i < userDetails.courses.length; i++) {
@@ -217,6 +213,7 @@ exports.instructorDashboard = async (req, res) => {
 		let allCourseAmountGenerated = 0;
 		let allStudentsEntrolled = 0;
 
+		// find enrolled students and amount generated for each course
 		const courseData = courseDetails?.map((course) => {
 			const totalStudentsEnrolled = course.studentsEnrolled.length;
 			const totalAmountGenerated = totalStudentsEnrolled * course.price;

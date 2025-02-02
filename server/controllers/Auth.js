@@ -5,12 +5,13 @@ require("dotenv").config();
 
 const User = require("../models/User");
 const OTP = require("../models/OTP");
-const mailSender = require("../utils/mailSender");
-const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 const Profile = require("../models/Profile");
 const Cart = require("../models/Cart");
 
-// Send OTP For Email Verification
+const mailSender = require("../utils/mailSender");
+const { passwordUpdated } = require("../mail/templates/passwordUpdate");
+
+// controller for creating OTP
 exports.sendotp = async (req, res) => {
 	try {
 		const { email } = req.body;
@@ -63,7 +64,7 @@ exports.sendotp = async (req, res) => {
 	}
 };
 
-// Signup Controller for Registering USers
+// Signup Controller for Registering Users
 exports.signup = async (req, res) => {
 	try {
 		// fetch data from the request body
@@ -116,7 +117,7 @@ exports.signup = async (req, res) => {
 			// OTP not found for the email
 			return res.status(400).json({
 				success: false,
-				message: "The OTP is not valid",
+				message: "OTP not found in db",
 			});
 		} else if (otp !== response[0].otp) {
 			// Invalid OTP
