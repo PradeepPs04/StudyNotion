@@ -23,7 +23,7 @@ export const UpdateProfileDetails = () => {
     });
 
     const handleChange = (e) => {
-        const {name, value, type} = e.target;
+        const {name, value} = e.target;
         setFormData((prevData) => {
             return {
                 ...prevData,
