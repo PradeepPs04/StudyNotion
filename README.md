@@ -1,12 +1,12 @@
-#StudyNotion
+# StudyNotion
 
-##📚 An Ed-Tech Platform
+## 📚 An Ed-Tech Platform
 
 StudyNotion is a fully functional ed-tech platform that enables users to create, consume, and rate educational content. Built using the MERN stack (MongoDB, ExpressJS, ReactJS, NodeJS), it provides a seamless and interactive learning experience for students while allowing instructors to showcase their expertise.
 
-##🚀 Features
+## 🚀 Features
 
-###For Students
+### For Students
 
 📌 Browse and enroll in courses
 
@@ -30,7 +30,7 @@ StudyNotion is a fully functional ed-tech platform that enables users to create,
 
 💲 Set pricing and manage enrollments
 
-###For Admin (Future Scope)
+### For Admin (Future Scope)
 
 📈 Platform insights and analytics
 
@@ -38,9 +38,9 @@ StudyNotion is a fully functional ed-tech platform that enables users to create,
 
 🔍 User management and moderation
 
-##🛠️ Tech Stack
+## 🛠️ Tech Stack
 
-###Front-End
+### Front-End
 
 ReactJS (User Interface)
 
@@ -48,7 +48,7 @@ Redux (State Management)
 
 Tailwind CSS (Styling)
 
-###Back-End
+### Back-End
 
 Node.js & Express.js (API Development)
 
@@ -62,7 +62,7 @@ Razorpay (Payment Gateway)
 
 API Design
 
-###StudyNotion follows RESTful API principles with standard HTTP methods (GET, POST, PUT, DELETE).
+### StudyNotion follows RESTful API principles with standard HTTP methods (GET, POST, PUT, DELETE).
 
 Example API endpoints:
 
