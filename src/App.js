@@ -4,21 +4,21 @@ import { ACCOUNT_TYPE } from "./utils/constants";
 
 import {Route, Routes } from "react-router-dom";
 import Navbar from "./components/common/Navbar"
-import Home from "./pages/Home"
+import Home from "./Pages/Home"
 import OpenRoute from "./components/core/auth/OpenRoute"
 
-import Login from "./pages/Login"
-import Signup from "./pages/Signup"
-import ForgotPassword from "./pages/ForgotPassword";
-import UpdatePassword from "./pages/UpdatePassword";
-import VerifyEmail from "./pages/VerifyEmail";
+import Login from "./Pages/Login"
+import Signup from "./Pages/Signup"
+import ForgotPassword from "./Pages/ForgotPassword";
+import UpdatePassword from "./Pages/UpdatePassword";
+import VerifyEmail from "./Pages/VerifyEmail";
 
-import About from "./pages/About";
-import { ContactUs } from "./pages/ContactUs";
+import About from "./Pages/About";
+import { ContactUs } from "./Pages/ContactUs";
 import { MyProfile } from "./components/core/Dashboard/MyProfile";
 import { PrivateRoute } from "./components/core/auth/PrivateRoute";
-import { Error } from "./pages/Error";
-import { Dashboard } from "./pages/Dashboard";
+import { Error } from "./Pages/Error";
+import { Dashboard } from "./Pages/Dashboard";
 import { Settings } from "./components/core/Dashboard/Settings/Settings";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import Cart from "./components/core/Dashboard/Cart/Index";
@@ -26,9 +26,9 @@ import { useSelector } from "react-redux";
 import AddCourse from "./components/core/Dashboard/AddCourse";
 import { MyCourses } from "./components/core/Dashboard/MyCourses";
 import EditCourse from "./components/core/Dashboard/EditCourse";
-import { Catalog } from "./pages/Catalog";
-import { CourseDetails } from "./pages/CourseDetails";
-import { ViewCourse } from "./pages/ViewCourse";
+import { Catalog } from "./Pages/Catalog";
+import { CourseDetails } from "./Pages/CourseDetails";
+import { ViewCourse } from "./Pages/ViewCourse";
 import { VideoDetails } from "./components/core/ViewCourse/VideoDetails";
 import { Instructor } from "./components/core/Dashboard/Instructor";
 
@@ -42,6 +42,7 @@ function App() {
 
     <Routes>
       <Route path="/" element={<Home/>} />
+
       <Route
           path="signup"
           element={
@@ -113,6 +114,7 @@ function App() {
       >
           <Route path="dashboard/my-profile" element={<MyProfile/>}/>
           <Route path="/dashboard/settings" element={<Settings/>}/> 
+
           {/* Student profile routes */}
           {
             user?.accountType === ACCOUNT_TYPE.STUDENT && (
@@ -122,6 +124,7 @@ function App() {
               </>
             )
           }
+
           {/* Instructor profile routes */}
           {
             user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (

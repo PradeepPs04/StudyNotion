@@ -4,7 +4,7 @@ import {apiConnector} from '../apiConnector';
 import {studentEndpoints} from '../apis';
 
 import { setPaymentLoading } from '../../slices/courseSlice';
-import { removeFromCart, resetCart, setCart, setTotal, setTotalItems } from '../../slices/cartSlice';
+import { removeFromCart } from '../../slices/cartSlice';
 
 import rzpLogo from '../../assets/Logo/rzp_logo.png'
 import { removeItemFromCart } from './cartAPI';

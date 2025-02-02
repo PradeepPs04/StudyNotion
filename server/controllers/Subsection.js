@@ -59,6 +59,7 @@ exports.updateSubSection = async (req, res) => {
     try {
       // fetch data
       const { sectionId, subSectionId, title, description } = req.body
+      
       // serach sub-section
       const subSection = await SubSection.findById(subSectionId)
 

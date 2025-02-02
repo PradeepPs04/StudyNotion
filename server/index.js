@@ -33,7 +33,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: 'https://study-notion-front-end-plum.vercel.app',
         credentials: true,
         // Without credentials: true, cookies (such as session cookies) or other credentials would not be sent in cross-origin requests.
     })

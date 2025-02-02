@@ -24,10 +24,11 @@ export function sendOtp(email, navigate) {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
-      const response = await apiConnector("POST", SENDOTP_API, {
-        email,
-        checkUserPresent: true,
-      })
+      const response = await apiConnector(
+        "POST", 
+        SENDOTP_API, 
+        {email}
+      );
       // console.log("SENDOTP API RESPONSE............", response)
 
       if (!response.data.success) {
@@ -40,6 +41,7 @@ export function sendOtp(email, navigate) {
       // console.log("SENDOTP API ERROR............", error)
       toast.error("Could Not Send OTP")
     }
+
     dispatch(setLoading(false))
     toast.dismiss(toastId)
   }
@@ -59,14 +61,17 @@ export function signUp(
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
-      const response = await apiConnector("POST", SIGNUP_API, {
-        accountType,
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword,
-        otp,
+      const response = await apiConnector(
+        "POST", 
+        SIGNUP_API, 
+        {
+          accountType,
+          firstName,
+          lastName,
+          email,
+          password,
+          confirmPassword,
+          otp,
       })
 
       // console.log("SIGNUP API RESPONSE............", response)
@@ -81,6 +86,7 @@ export function signUp(
       toast.error("Signup Failed")
       navigate("/signup")
     }
+    
     dispatch(setLoading(false))
     toast.dismiss(toastId)
   }

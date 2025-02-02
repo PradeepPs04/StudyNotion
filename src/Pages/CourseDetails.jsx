@@ -118,7 +118,7 @@ export const CourseDetails = () => {
 
         // user is not logged in
         setConfirmationModal({
-            text1: "You are not logged in",
+            text1: "You are not logged in halwa",
             text2: "Please login to purchase the course",
             btn1Text:"Login",
             btn2Text: "Cancel",

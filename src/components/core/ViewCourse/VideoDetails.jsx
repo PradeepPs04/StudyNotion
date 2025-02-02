@@ -80,8 +80,6 @@ export const VideoDetails = () => {
     const goToPreviousVideo = () => {
         const currentSectionIndex = courseSectionData.findIndex((section) => section._id === sectionId);
 
-        const noOfSubSections = courseSectionData?.[currentSectionIndex]?.subSection.length;
-
         const currentSubSectionIndex = courseSectionData?.[currentSectionIndex]?.subSection.findIndex((subSection) => subSection._id === subSectionId);
 
         // go to previous video of same section

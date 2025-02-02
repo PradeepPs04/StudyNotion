@@ -145,7 +145,7 @@ exports.editCourse = async (req, res) => {
 			const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
 
 			// add thumbnail field to course object (will be used to save data in db)
-			course.thumbnail = thumbnail.secure_url;
+			course.thumbnail = thumbnailImage.secure_url;
 		}
 
 		// update only the fields that are present in the request body
