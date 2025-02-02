@@ -3,6 +3,7 @@ import "./App.css";
 import { ACCOUNT_TYPE } from "./utils/constants";
 
 import {Route, Routes } from "react-router-dom";
+
 import Navbar from "./components/common/Navbar"
 import Home from "./pages/Home"
 import OpenRoute from "./components/core/auth/OpenRoute"
