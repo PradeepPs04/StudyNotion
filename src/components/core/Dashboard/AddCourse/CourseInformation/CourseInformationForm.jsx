@@ -44,6 +44,7 @@ export default function CourseInformationForm() {
       }
       setLoading(false)
     }
+    
     // if form is in edit mode
     if (editCourse) {
       // console.log("data populated", editCourse)
@@ -56,9 +57,8 @@ export default function CourseInformationForm() {
       setValue("courseRequirements", course.instructions)
       setValue("courseImage", course.thumbnail)
     }
-    getCategories()
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getCategories()
   }, [])
 
   const isFormUpdated = () => {
@@ -165,6 +165,7 @@ export default function CourseInformationForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
     >
+
       {/* Course Title */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseTitle">
@@ -182,6 +183,7 @@ export default function CourseInformationForm() {
           </span>
         )}
       </div>
+
       {/* Course Short Description */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseShortDesc">
@@ -199,6 +201,7 @@ export default function CourseInformationForm() {
           </span>
         )}
       </div>
+
       {/* Course Price */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="coursePrice">
@@ -225,6 +228,7 @@ export default function CourseInformationForm() {
           </span>
         )}
       </div>
+
       {/* Course Category */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseCategory">
@@ -252,6 +256,7 @@ export default function CourseInformationForm() {
           </span>
         )}
       </div>
+
       {/* Course Tags */}
       <ChipInput
         label="Tags"
@@ -262,6 +267,7 @@ export default function CourseInformationForm() {
         setValue={setValue}
         getValues={getValues}
       />
+
       {/* Course Thumbnail Image */}
       <Upload
         name="courseImage"
@@ -271,6 +277,7 @@ export default function CourseInformationForm() {
         errors={errors}
         editData={editCourse ? course?.thumbnail : null}
       />
+
       {/* Benefits of the course */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
@@ -288,6 +295,7 @@ export default function CourseInformationForm() {
           </span>
         )}
       </div>
+
       {/* Requirements/Instructions */}
       <RequirementsField
         name="courseRequirements"
@@ -297,6 +305,7 @@ export default function CourseInformationForm() {
         errors={errors}
         getValues={getValues}
       />
+      
       {/* Next Button */}
       <div className="flex justify-end gap-x-2">
         {editCourse && (

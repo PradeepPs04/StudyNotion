@@ -30,7 +30,7 @@ export default function RenderSteps() {
         {steps.map((item) => (
           <>
             <div
-              className="flex flex-col items-center "
+              className="flex flex-col items-center"
               key={item.id}
             >
               <button
@@ -48,6 +48,7 @@ export default function RenderSteps() {
               </button>
               
             </div>
+            
             {item.id !== steps.length && (
               <>
                 <div

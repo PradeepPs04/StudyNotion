@@ -31,7 +31,6 @@ export default function ChipInput({
 
   useEffect(() => {
     setValue(name, chips)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chips])
 
   // Function to handle user input when chips are added
